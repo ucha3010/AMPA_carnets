@@ -16,6 +16,8 @@ public class AMPAcarnets {
 	        String absolutePath = new File("").getAbsolutePath();
 	        String absolutePathImegenes = absolutePath + "\\src\\imagenes\\";
 	        String absolutePathArchivos = absolutePath + "\\src\\archivos\\";
+	        String curso = "2018-2019";
+	        String validoHasta = "01/09/2019";
 	        
 	        //Leer archivo XLSX
 			LeerFicherosExcel lfe = new LeerFicherosExcel();
@@ -23,7 +25,7 @@ public class AMPAcarnets {
 			System.out.println();
 			
 			EscribirSobreImagen esi = new EscribirSobreImagen();
-			esi.rellenarCarnet(leerExcel, absolutePathImegenes + archivoCarnet);
+			esi.rellenarCarnet(leerExcel, absolutePathImegenes + archivoCarnet, curso, validoHasta);
 
 			//Generar archivo PDF
 //			String ubicacionDondeDejarArchivoPDF = "C:\\Users\\Damian\\Desktop\\workspace-sts\\GeneratePDFFileIText.pdf";
