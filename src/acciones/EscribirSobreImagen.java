@@ -35,8 +35,8 @@ public class EscribirSobreImagen {
 
 				// verifico que exista el directorio donde voy a guardar los carnets. Si no existe lo creo.
 				String rutaCarnetsFinal = "";
-				if(Comprobaciones.noEsNullNiBlanco(carpetaCarnets)){
-					verificarDirectorio(carpetaCarnets + curso);
+				if(Comprobaciones.noEsNullNiBlanco(carpetaCarnets) && Comprobaciones.noEsNullNiBlanco(curso)){
+					Comprobaciones.verificarCrearDirectorio(carpetaCarnets + curso);
 					rutaCarnetsFinal = carpetaCarnets + "\\" + curso + "\\";
 				}
 
@@ -79,6 +79,8 @@ public class EscribirSobreImagen {
 						File file = new File(
 								rutaCarnetsFinal + datos.get(i).get("Nº SOCIO") + ".jpg");
 						ImageIO.write(bufferedImage, "jpg", file);
+					} else {
+						System.out.println("Carnet de posición " + (i+1) + " del listado no se puede generar");
 					}
 				}
 			}
@@ -86,19 +88,6 @@ public class EscribirSobreImagen {
 			System.out.println(e.getStackTrace());
 		} catch (Exception e) {
 			System.out.println(e.getStackTrace());
-		}
-	}
-
-	private void verificarDirectorio(String carpetaCarnets) {
-		if(Comprobaciones.noEsNullNiBlanco(carpetaCarnets)){
-			String[] listadoRuta = carpetaCarnets.split("\\\\");
-			String rutaAux = "C:", rutaFinal = "";
-			for (int i = 1; i < listadoRuta.length; i++) {
-				rutaFinal = rutaAux.concat("\\" + listadoRuta[i]);
-				File directorio = new File(rutaFinal);
-				directorio.mkdir();
-				rutaAux = rutaFinal;
-			}
 		}
 	}
 

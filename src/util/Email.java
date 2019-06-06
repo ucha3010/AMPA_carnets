@@ -1,97 +1,48 @@
 package util;
 
 import java.net.PasswordAuthentication;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Properties;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
-import javax.mail.*;
-import javax.mail.internet.*;
+import javax.mail.Authenticator;
+import javax.mail.BodyPart;
+import javax.mail.Message;
+import javax.mail.Multipart;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
 public class Email{
     
-    static String ruta;
-    
-    public static boolean enviarAlta(String destinatario, int id){
-        boolean enviadoAlta = false;
-        String asunto = "Activación de cuenta de usuario";
-        String mensaje = EmailDisenio.DisenioAlta(id);
-        enviadoAlta = funcionEnviar(destinatario, "", asunto, mensaje);
-        return enviadoAlta;
-    }
-    
-    public static boolean enviarCorreo(String to, String file){
-        boolean enviadoCompra = false;
+    public static boolean enviarCarnet(String to, String rutaArchivo){
         String asunto = "Envío de factura";
-        String mensaje = EmailDisenio.DisenioCompra(to, file);
-        enviadoCompra = funcionEnviar(to, file, asunto, mensaje);
+        String mensaje = EmailDisenio.DisenioCompra(to, nombreArchivo(rutaArchivo));
+        boolean enviadoCompra = funcionEnviar(to, rutaArchivo, asunto, mensaje);
         if(enviadoCompra){
             //Esto sirve para enviarle la factura también al vendedor cada vez que se realice una venta
             asunto = "Se realizó una compra";
             mensaje = "Factura de la compra";
-            funcionEnviar(Acciones.HomePropiedades.muestraValor("email.vendedor"),file,asunto,mensaje);
+            funcionEnviar("email.vendedor",rutaArchivo,asunto,mensaje);
         }
-        return enviadoCompra;
-    }
-    
-    public static boolean enviarApadrina(String nombre, String email, Usuarios u){
-        boolean enviadoCompra = Boolean.FALSE;
-        String asunto = "Invitación enviada por "+u.getUsuNombre();
-        String mensaje = EmailDisenio.DisenioApadrina(nombre, email, u);
-        enviadoCompra = funcionEnviar(email, "", asunto, mensaje);
-        if(enviadoCompra){
-            Usuarios invitado = new Usuarios();
-            Date ahora = new Date();
-            invitado.setUsuNombre("");
-            invitado.setUsuApellidos("");
-            invitado.setUsuEmail(email);
-            invitado.setUsuPassword("qualisoftware");
-            invitado.setUsuDni("");
-            invitado.setUsuDireccion("");
-            invitado.setUsuCp("");
-            invitado.setUsuFechaNac(ahora);
-            invitado.setUsuSexo(Boolean.FALSE);
-            invitado.setUsuTelefono("");
-            invitado.setUsuLocalidad("");
-            double desc = 0;
-            invitado.setUsuDescuento(desc);
-            invitado.setUsuFechaLimiteDesc(ahora);
-            invitado.setUsuAdministrador(2);
-            invitado.setProvincias("d");
-            Calendar cal = Calendar.getInstance();
-            cal.set(Calendar.YEAR, 1908);
-            cal.set(Calendar.MONTH, Calendar.APRIL);
-            cal.set(Calendar.DAY_OF_MONTH, 1);
-            Date alta = cal.getTime();
-            invitado.setUsuAlta(alta);
-            invitado.setUsuActivo(Boolean.FALSE);
-            ControladoresDAO.cUsuarios.Inserta(invitado);            
-        }
-        return enviadoCompra;
-    }
-    
-    public static boolean enviarRecuperaPass(Usuarios u){
-        boolean enviadoCompra = Boolean.FALSE;
-        String asunto = "Recuperación de contraseña de "+u.getUsuNombre();
-        String mensaje = EmailDisenio.DisenioRecuperaPass(u);
-        enviadoCompra = funcionEnviar(u.getUsuEmail(), "", asunto, mensaje);
         return enviadoCompra;
     }
     
     //public static boolean enviarCorreo(String[] para){
-    private static boolean funcionEnviar(String para, String archivo, String asunto, String mensaje){
+    private static boolean funcionEnviar(String para, String rutaArchivo, String asunto, String mensaje){
         boolean enviado = false;
             try{
-                String de = Acciones.HomePropiedades.muestraValor("email.empresa");
+                String de = "info@ampacolegioelvallesanchinarro.com";
 //                String host = "smtp.gmail.com";
 //                final String username = "empresa2016sl@gmail.com";
 //                final String password = "********";
                 String host = "smtp.superlook.es";
                 final String username = "no-reply@superlook.es";
-                final String password = "Superl@@k2017";
+                final char[] password = "Superl@@k2017".toCharArray();
                 
                 Properties prop = System.getProperties();
                 
@@ -102,8 +53,9 @@ public class Email{
                 prop.put("mail.smtp.auth","true");
                 
                 Session sesion = Session.getInstance(prop,
-                   new javax.mail.Authenticator() {
-                      protected PasswordAuthentication getPasswordAuthentication() {
+                   new Authenticator() {
+            		@Override
+                    protected PasswordAuthentication getPasswordAuthentication() {
                          return new PasswordAuthentication(username, password);
                       }
                 });                
@@ -128,11 +80,12 @@ public class Email{
                 //messageBodyPart.setText(mensaje);
                 Multipart multipart = new MimeMultipart();
                 multipart.addBodyPart(messageBodyPart);
-                if(!archivo.equals("")){
+                String tipoDeFormato = Comprobaciones.verSiExisteCarpetaOArchivo(rutaArchivo);
+                if(Comprobaciones.noEsNullNiBlanco(rutaArchivo) && tipoDeFormato != null && 
+                		tipoDeFormato.equals("archivo")){
                     messageBodyPart = new MimeBodyPart();
-                    Ruta();
-                    String filename = ruta + archivo;
-                    DataSource source = new FileDataSource(filename);
+                    String archivo = nombreArchivo(rutaArchivo);
+                    DataSource source = new FileDataSource(rutaArchivo);
                     messageBodyPart.setDataHandler(new DataHandler(source));
                     messageBodyPart.setFileName(archivo);
                     multipart.addBodyPart(messageBodyPart);
@@ -149,15 +102,13 @@ public class Email{
             }        
         return enviado;
     }
-        
-    private static void Ruta(){
-        ruta = ServletActionContext.getRequest().getSession().getServletContext().getRealPath("/");
-        String eliminar = "build"+System.getProperty("file.separator");
-        ruta = ruta.replace(eliminar, "");
-        ruta += "Archivos"+System.getProperty("file.separator");       
-   }
     
-    public static Multipart addCID(String cidname,String pathname, Multipart multipart) throws Exception {
+    private static String nombreArchivo(String rutaArchivo) {
+		String[] listado = rutaArchivo.split("\\\\");
+		return listado[listado.length - 1];
+	}
+
+	public static Multipart addCID(String cidname,String pathname, Multipart multipart) throws Exception {
         DataSource fds = new FileDataSource(pathname);
         BodyPart messageBodyPart = new MimeBodyPart();
         messageBodyPart.setDataHandler(new DataHandler(fds));
