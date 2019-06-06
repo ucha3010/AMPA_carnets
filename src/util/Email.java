@@ -1,6 +1,5 @@
 package util;
 
-import java.net.PasswordAuthentication;
 import java.util.Properties;
 
 import javax.activation.DataHandler;
@@ -16,19 +15,20 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.mail.PasswordAuthentication;
 
 public class Email{
     
     public static boolean enviarCarnet(String to, String rutaArchivo){
-        String asunto = "Envío de factura";
-        String mensaje = EmailDisenio.DisenioCompra(to, nombreArchivo(rutaArchivo));
+        String asunto = "Envío de carnet AMPA";
+        String mensaje = EmailDisenio.disenioCarnets(to, nombreArchivo(rutaArchivo));
         boolean enviadoCompra = funcionEnviar(to, rutaArchivo, asunto, mensaje);
-        if(enviadoCompra){
+        /*if(enviadoCompra){
             //Esto sirve para enviarle la factura también al vendedor cada vez que se realice una venta
             asunto = "Se realizó una compra";
             mensaje = "Factura de la compra";
             funcionEnviar("email.vendedor",rutaArchivo,asunto,mensaje);
-        }
+        }*/
         return enviadoCompra;
     }
     
@@ -36,20 +36,16 @@ public class Email{
     private static boolean funcionEnviar(String para, String rutaArchivo, String asunto, String mensaje){
         boolean enviado = false;
             try{
-                String de = "info@ampacolegioelvallesanchinarro.com";
-//                String host = "smtp.gmail.com";
-//                final String username = "empresa2016sl@gmail.com";
-//                final String password = "********";
-                String host = "smtp.superlook.es";
-                final String username = "no-reply@superlook.es";
-                final char[] password = "Superl@@k2017".toCharArray();
+                String de = "damianjava@gmail.com";
+                String host = "smtp.gmail.com";
+                final String username = "damianjava@gmail.com";
+                final String password = "sepultura30";
                 
                 Properties prop = System.getProperties();
                 
-                prop.put("mail.smtp.starttls.enable","false");
+                prop.put("mail.smtp.starttls.enable","true");
                 prop.put("mail.smtp.host", host);
-//                prop.put("mail.smtp.port",587);
-                prop.put("mail.smtp.port",25);
+                prop.put("mail.smtp.port",587);
                 prop.put("mail.smtp.auth","true");
                 
                 Session sesion = Session.getInstance(prop,
@@ -76,8 +72,7 @@ public class Email{
                 message.setRecipient(Message.RecipientType.TO, new InternetAddress(para));                
                 message.setSubject(asunto);                
                 BodyPart messageBodyPart = new MimeBodyPart();
-                messageBodyPart.setContent(mensaje, "text/html");                
-                //messageBodyPart.setText(mensaje);
+                messageBodyPart.setContent(mensaje, "text/html");     
                 Multipart multipart = new MimeMultipart();
                 multipart.addBodyPart(messageBodyPart);
                 String tipoDeFormato = Comprobaciones.verSiExisteCarpetaOArchivo(rutaArchivo);
@@ -93,12 +88,13 @@ public class Email{
                     //debería ser, o si se agregará lo que traigo a lo que ya había, con lo cual se duplicarán cosas)
                     //multipart = addCID("cidnombre","ruta comleta del archivo",multipart);
                 }                
-                message.setContent(multipart);                
+                message.setContent(multipart);            
+//                messageBodyPart.setText(mensaje);               
                 Transport.send(message);
                 multipart = null;
                 enviado = true;                
             }catch(Exception e){
-                e.printStackTrace();
+                e.printStackTrace();               
             }        
         return enviado;
     }

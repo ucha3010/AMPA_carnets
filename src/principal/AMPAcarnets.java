@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 
+import acciones.EnviarEmailConCarnet;
 import acciones.EscribirSobreImagen;
 import acciones.LeerFicherosExcel;
 
@@ -18,7 +19,7 @@ public class AMPAcarnets {
 		String absolutePathArchivos = absolutePath + "\\src\\archivos\\";
 		String curso = "2018-2019";
 		String validoHasta = "01/09/2019";
-		String carpetaCarnets = ""; //"C:\\AMPA\\Carnets\\";
+		String carpetaCarnets = "C:\\AMPA\\Carnets\\";
 
 		// Leer archivo XLSX
 		LeerFicherosExcel lfe = new LeerFicherosExcel();
@@ -27,6 +28,9 @@ public class AMPAcarnets {
 
 		EscribirSobreImagen esi = new EscribirSobreImagen();
 		esi.rellenarCarnet(leerExcel, absolutePathImegenes + archivoCarnet, carpetaCarnets, curso, validoHasta);
+		
+		EnviarEmailConCarnet eecc = new EnviarEmailConCarnet();
+		eecc.enviarEmail(leerExcel, carpetaCarnets, curso);
 
 		// Generar archivo PDF
 		// String ubicacionDondeDejarArchivoPDF = "C:\\Users\\Damian\\Desktop\\workspace-sts\\GeneratePDFFileIText.pdf";

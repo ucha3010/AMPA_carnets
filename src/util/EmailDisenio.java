@@ -10,7 +10,7 @@ public class EmailDisenio {
         return mensaje;
     }
     
-    public static String DisenioCompra(String to, String file){
+    public static String disenioCarnets(String to, String file){
         String mensaje = "<HTML><BODY>"
                 + "Se adjunta la factura"
                 + "</BODY></HTML>";
