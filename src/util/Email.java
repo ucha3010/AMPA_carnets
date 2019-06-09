@@ -35,6 +35,7 @@ public class Email{
     //public static boolean enviarCorreo(String[] para){
     private static boolean funcionEnviar(String para, String rutaArchivo, String asunto, String mensaje){
         boolean enviado = false;
+        boolean existeArchivo = false; //variable para obligar a que exista el archivo para el envío del email
             try{
                 String de = "damianjava@gmail.com";
                 String host = "smtp.gmail.com";
@@ -84,19 +85,22 @@ public class Email{
                     messageBodyPart.setDataHandler(new DataHandler(source));
                     messageBodyPart.setFileName(archivo);
                     multipart.addBodyPart(messageBodyPart);
+                    existeArchivo = true;
                     //para agregar la imagen al multipart (aunque no estoy seguro si el multipart se reemplazará, como
                     //debería ser, o si se agregará lo que traigo a lo que ya había, con lo cual se duplicarán cosas)
                     //multipart = addCID("cidnombre","ruta comleta del archivo",multipart);
                 }                
                 message.setContent(multipart);            
-//                messageBodyPart.setText(mensaje);               
-                Transport.send(message);
+//                messageBodyPart.setText(mensaje); 
+                if(existeArchivo) {
+                	Transport.send(message);
+                }
                 multipart = null;
                 enviado = true;                
             }catch(Exception e){
                 e.printStackTrace();               
             }        
-        return enviado;
+        return enviado && existeArchivo;
     }
     
     private static String nombreArchivo(String rutaArchivo) {

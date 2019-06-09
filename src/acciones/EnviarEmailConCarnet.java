@@ -13,13 +13,15 @@ public class EnviarEmailConCarnet {
 		String rutaCarnets = carpetaCarnets + curso + "\\";
 		String rutaOArchivo = Comprobaciones.verSiExisteCarpetaOArchivo(rutaCarnets);
 		boolean enviados = false;
-		if(rutaOArchivo != null && rutaOArchivo.equals("carpeta")){
-
+		if(rutaOArchivo != null && rutaOArchivo.equals("carpeta") && datos != null && datos.size() > 0){
+			enviados = true;
 			for (int i = 0; i < datos.size(); i++) {
 				if (datos.get(i) != null && Comprobaciones.noEsNullNiBlanco(datos.get(i).get("EMAIL"))
 						&& Comprobaciones.noEsNullNiBlanco(datos.get(i).get("Nº SOCIO"))) {
 					
-					enviados = Email.enviarCarnet(datos.get(i).get("EMAIL"), rutaCarnets + datos.get(i).get("Nº SOCIO") + ".jpg");
+					if(!Email.enviarCarnet(datos.get(i).get("EMAIL"), rutaCarnets + datos.get(i).get("Nº SOCIO") + ".jpg")) {
+						enviados = false;
+					}
 					
 
 				} else {

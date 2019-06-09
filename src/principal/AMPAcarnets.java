@@ -4,9 +4,12 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.JFrame;
+
 import acciones.EnviarEmailConCarnet;
 import acciones.EscribirSobreImagen;
 import acciones.LeerFicherosExcel;
+import pantalla.VentanaPrincipal;
 
 public class AMPAcarnets {
 
@@ -20,17 +23,23 @@ public class AMPAcarnets {
 		String curso = "2018-2019";
 		String validoHasta = "01/09/2019";
 		String carpetaCarnets = "C:\\AMPA\\Carnets\\";
+		
+		// Pantalla de visualización
+		VentanaPrincipal ventanaPrincipal = new VentanaPrincipal();
+		ventanaPrincipal.setVisible(true);
+		ventanaPrincipal.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Leer archivo XLSX
-		LeerFicherosExcel lfe = new LeerFicherosExcel();
-		List<Map<String, String>> leerExcel = lfe.leerExcel(absolutePathArchivos + nombreArchivoXML);
-		System.out.println();
+		LeerFicherosExcel leerFicherosExcel = new LeerFicherosExcel();
+//		List<Map<String, String>> leerExcel = leerFicherosExcel.leerExcel(absolutePathArchivos + nombreArchivoXML);
 
-		EscribirSobreImagen esi = new EscribirSobreImagen();
-		esi.rellenarCarnet(leerExcel, absolutePathImegenes + archivoCarnet, carpetaCarnets, curso, validoHasta);
+		// Generar carnets
+		EscribirSobreImagen escribirSobreImagen = new EscribirSobreImagen();
+//		escribirSobreImagen.rellenarCarnet(leerExcel, absolutePathImegenes + archivoCarnet, carpetaCarnets, curso, validoHasta);
 		
-		EnviarEmailConCarnet eecc = new EnviarEmailConCarnet();
-		eecc.enviarEmail(leerExcel, carpetaCarnets, curso);
+		// Enviar emails
+		EnviarEmailConCarnet enviarEmailConCarnet = new EnviarEmailConCarnet();
+//		enviarEmailConCarnet.enviarEmail(leerExcel, carpetaCarnets, curso);
 
 		// Generar archivo PDF
 		// String ubicacionDondeDejarArchivoPDF = "C:\\Users\\Damian\\Desktop\\workspace-sts\\GeneratePDFFileIText.pdf";
