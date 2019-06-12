@@ -22,19 +22,20 @@ public class VentanaPrincipal extends JFrame {
 		
 		Toolkit monitor = Toolkit.getDefaultToolkit();
 		
+		//detecto la resolución del monitor donde se abre la aplicación
 		Dimension screenSize = monitor.getScreenSize();
 		int anchoMonitor = screenSize.width;
-		int altoMonitor = screenSize.height;		
+		int altoMonitor = screenSize.height;
+		//centro la aplicación en el monitor
 		setSize(anchoMonitor/2,altoMonitor/2);
 		setLocation(anchoMonitor/4, altoMonitor/4);
-		
+		//título
 		setTitle("AMPA - Creación y envío de carnets");
-		
+		//Icono con el logo
 		Image icono = monitor.getImage("src/imagenes/Logo_AMPA.gif");
 		setIconImage(icono);
 				
-		Lamina lamina = new Lamina(anchoMonitor, altoMonitor);
-		lamina.setBackground(new Color(170,170,170));
+		PantallaAcceso lamina = new PantallaAcceso();
 		add(lamina);
 		
 	}

@@ -1,65 +1,57 @@
 package pantalla;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.Image;
-import java.awt.Toolkit;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.JLabel;
+import java.awt.FlowLayout;
 import java.awt.Font;
-import javax.swing.JTextField;
-import java.awt.Choice;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.List;
+import java.util.Map;
+
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 
-public class PantallaAcceso extends JFrame {
+import com.toedter.calendar.JDateChooser;
 
-	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
+import acciones.LeerFicherosExcel;
+
+public class PantallaAcceso extends JPanel {
 
 	/**
-	 * Launch the application.
+	 * 
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					PantallaAcceso frame = new PantallaAcceso();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	private static final long serialVersionUID = 1L;
+	
+	private JPanel contentPane;
+	private JTextField textFieldRutaBBDD;
+	private JButton btnSeleccionar;
+	private JComboBox comboBox;
+	private JDateChooser dateChooser;
+	private List<Map<String, String>> lista;
 
 	/**
 	 * Create the frame.
 	 */
 	public PantallaAcceso() {
-
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
 		
-		Toolkit monitor = Toolkit.getDefaultToolkit();
-		
-		Dimension screenSize = monitor.getScreenSize();
-		int anchoMonitor = screenSize.width;
-		int altoMonitor = screenSize.height;		
-		setSize(anchoMonitor/2,altoMonitor/2);
-		setLocation(anchoMonitor/4, altoMonitor/4);
-		
-		setTitle("AMPA - Creación y envío de carnets");
-		
-		Image icono = monitor.getImage("src/imagenes/Logo_AMPA.gif");
-		setIconImage(icono);
+//		Toolkit monitor = Toolkit.getDefaultToolkit();
+//		
+//		Dimension screenSize = monitor.getScreenSize();
+//		int anchoMonitor = screenSize.width;
+//		int altoMonitor = screenSize.height;		
+//		setSize(anchoMonitor/2,altoMonitor/2);
+//		setLocation(anchoMonitor/4, altoMonitor/4);
+//		
+//		setTitle("AMPA - Creación y envío de carnets");
+//		
+//		Image icono = monitor.getImage("src/imagenes/Logo_AMPA.gif");
+//		setIconImage(icono);
 				
 //		Lamina lamina = new Lamina(anchoMonitor, altoMonitor);
 //		lamina.setBackground(new Color(170,170,170));
@@ -67,21 +59,32 @@ public class PantallaAcceso extends JFrame {
 		
 		
 		
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
+		
+		setBorder(new EmptyBorder(5, 5, 5, 5));
+//		setContentPane(contentPane);
 		
 		JLabel lblRutaBBDD = new JLabel("Ruta Base de Datos");
 		lblRutaBBDD.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		
+		textFieldRutaBBDD = new JTextField();
+		textFieldRutaBBDD.setEditable(false);
+		textFieldRutaBBDD.setColumns(30);
+		
+		btnSeleccionar = new JButton("Examinar");
+		
 		JLabel lblCurso = new JLabel("Curso");
 		lblCurso.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+		
+		comboBox = new JComboBox();
+		comboBox.addItem("2018-2019");
+		comboBox.addItem("2019-2020");
+		comboBox.addItem("2020-2021");
+		comboBox.addItem("2021-2022");
 		
 		JLabel lblValidoHasta = new JLabel("Válido hasta");
 		lblValidoHasta.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		
-		textField = new JTextField();
-		textField.setColumns(10);
+		dateChooser = new JDateChooser();
 		
 		JButton btnGenerarCarnets = new JButton("Generar carnets");
 		btnGenerarCarnets.setBackground(new Color(153, 204, 153));
@@ -89,53 +92,97 @@ public class PantallaAcceso extends JFrame {
 		
 		JButton btnEnviarEmail = new JButton("Enviar email");
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		GroupLayout gl_contentPane = new GroupLayout(contentPane);
-		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(144)
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addComponent(lblValidoHasta, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
-									.addGap(18)
-									.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, 145, GroupLayout.PREFERRED_SIZE))
-								.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-									.addComponent(btnEnviarEmail, GroupLayout.PREFERRED_SIZE, 188, GroupLayout.PREFERRED_SIZE)
-									.addGroup(gl_contentPane.createSequentialGroup()
-										.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
-											.addComponent(lblCurso, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-											.addComponent(lblRutaBBDD, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-										.addGap(18)
-										.addComponent(textField, GroupLayout.PREFERRED_SIZE, 482, GroupLayout.PREFERRED_SIZE)))))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(186)
-							.addComponent(btnGenerarCarnets, GroupLayout.PREFERRED_SIZE, 188, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(180, Short.MAX_VALUE))
-		);
-		gl_contentPane.setVerticalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGap(76)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblRutaBBDD)
-						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(41)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(lblCurso)
-							.addGap(47)
-							.addComponent(lblValidoHasta, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE))
-						.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(96)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addComponent(btnGenerarCarnets, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnEnviarEmail, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(138, Short.MAX_VALUE))
-		);
-		contentPane.setLayout(gl_contentPane);
+//		GroupLayout gl_contentPane = new GroupLayout(contentPane);
+//		gl_contentPane.setHorizontalGroup(
+//			gl_contentPane.createParallelGroup(Alignment.LEADING)
+//				.addGroup(gl_contentPane.createSequentialGroup()
+//					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+//						.addGroup(gl_contentPane.createSequentialGroup()
+//							.addGap(144)
+//							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+//								.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+//									.addComponent(btnEnviarEmail, GroupLayout.PREFERRED_SIZE, 188, GroupLayout.PREFERRED_SIZE)
+//									.addGroup(gl_contentPane.createSequentialGroup()
+//										.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
+//											.addComponent(lblCurso, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+//											.addComponent(lblRutaBBDD, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+//										.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+//											.addGroup(gl_contentPane.createSequentialGroup()
+//												.addGap(18)
+//												.addComponent(textField, GroupLayout.PREFERRED_SIZE, 140, GroupLayout.PREFERRED_SIZE))
+//											.addGroup(gl_contentPane.createSequentialGroup()
+//												.addGap(18)
+//												.addComponent(comboBox, 0, 145, Short.MAX_VALUE)))))
+//								.addGroup(gl_contentPane.createSequentialGroup()
+//									.addComponent(lblValidoHasta, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
+//									.addGap(18)
+//									.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, 145, GroupLayout.PREFERRED_SIZE)))
+//							.addGap(337))
+//						.addGroup(gl_contentPane.createSequentialGroup()
+//							.addGap(186)
+//							.addComponent(btnGenerarCarnets, GroupLayout.PREFERRED_SIZE, 188, GroupLayout.PREFERRED_SIZE)))
+//					.addGap(180))
+//		);
+//		gl_contentPane.setVerticalGroup(
+//			gl_contentPane.createParallelGroup(Alignment.LEADING)
+//				.addGroup(gl_contentPane.createSequentialGroup()
+//					.addGap(76)
+//					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+//						.addComponent(lblRutaBBDD)
+//						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+//					.addGap(41)
+//					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+//						.addGroup(gl_contentPane.createSequentialGroup()
+//							.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+//								.addComponent(lblCurso)
+//								.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+//							.addGap(47)
+//							.addComponent(lblValidoHasta, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE))
+//						.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+//					.addGap(96)
+//					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+//						.addComponent(btnGenerarCarnets, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)
+//						.addComponent(btnEnviarEmail, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE))
+//					.addContainerGap(135, Short.MAX_VALUE))
+//		);
+//		contentPane.setLayout(gl_contentPane);
+		setLayout(new FlowLayout());
+		add(lblRutaBBDD);
+		add(textFieldRutaBBDD);
+		add(btnSeleccionar);
+		add(lblCurso);
+		add(comboBox);
+		add(lblValidoHasta);
+		add(dateChooser);
+		add(btnGenerarCarnets);
+		add(btnEnviarEmail);
+		
+		
+		btnSeleccionar.addActionListener(new ActionListener(){
+            public void actionPerformed (ActionEvent e){
+            	
+            	JFileChooser fc=new JFileChooser();
+            	contentPane = new JPanel();
+            	int seleccion=fc.showOpenDialog(contentPane);
+            	if(seleccion==JFileChooser.APPROVE_OPTION){
+            		File fichero=fc.getSelectedFile();
+            		textFieldRutaBBDD.setText(fichero.getAbsolutePath());
+            	}
+ 
+            }
+        });
+
+		btnGenerarCarnets.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				LeerFicherosExcel leerFicherosExcel = new LeerFicherosExcel();
+				lista = leerFicherosExcel.leerExcel(textFieldRutaBBDD.getText());
+			}
+		});
+		
+		btnEnviarEmail.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println(lista);
+			}
+		});
 	}
 }
