@@ -6,6 +6,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Map;
 
@@ -30,14 +32,16 @@ public class VentanaPrincipal extends JFrame {
 	private JButton btnSeleccionar;
 	private JComboBox comboBox;
 	private JDateChooser dateChooser;
+	private JButton btnGenerarCarnets;
+	private JButton btnEnviarEmail;
 	private List<Map<String, String>> lista;
 	private JButton btnContinuar;
 	private JButton btnCancelar;
 
 	public VentanaPrincipal() {
 		
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLayout(null);
 		panelPrincipal = new JPanel();
 		panelPrincipal.setVisible(true);
 		panelListado = new JPanel();
@@ -94,13 +98,13 @@ public class VentanaPrincipal extends JFrame {
 		
 		dateChooser = new JDateChooser();
 		
-		JButton btnGenerarCarnets = new JButton("Generar carnets");
+		btnGenerarCarnets = new JButton("Generar carnets");
 		btnGenerarCarnets.setBackground(new Color(153, 204, 153));
 		btnGenerarCarnets.setForeground(Color.BLACK);
 		
-		JButton btnEnviarEmail = new JButton("Enviar email");
+		btnEnviarEmail = new JButton("Enviar email");
 		
-		panelPrincipal.setLayout(new FlowLayout());
+//		panelPrincipal.setLayout(new FlowLayout());
 		panelPrincipal.add(lblRutaBBDD);
 		panelPrincipal.add(textFieldRutaBBDD);
 		panelPrincipal.add(btnSeleccionar);
@@ -110,6 +114,23 @@ public class VentanaPrincipal extends JFrame {
 		panelPrincipal.add(dateChooser);
 		panelPrincipal.add(btnGenerarCarnets);
 		panelPrincipal.add(btnEnviarEmail);
+	
+		btnGenerarCarnets.addActionListener(new ActionListener(){
+	        public void actionPerformed (ActionEvent e){
+				panelPrincipal.setVisible(false);
+				panelListado.setVisible(true);
+				System.out.println("Debería mostrar el panel listado");	        	
+	        }
+		});
+
+		btnEnviarEmail.addActionListener(new ActionListener(){
+	        public void actionPerformed (ActionEvent e){
+				panelPrincipal.setVisible(false);
+				panelListado.setVisible(true);
+				System.out.println("Debería mostrar el panel listado");	        	
+	        }
+		});
+		
 	}
 	
 	private void inicializarPanelListado() {
@@ -117,8 +138,25 @@ public class VentanaPrincipal extends JFrame {
 		btnContinuar = new JButton("Continuar");
 		btnCancelar = new JButton("Cancelar");
 		
+//		panelListado.setLayout(new FlowLayout());
 		panelListado.add(btnContinuar);
 		panelListado.add(btnCancelar);
+	
+		btnContinuar.addActionListener(new ActionListener(){
+	        public void actionPerformed (ActionEvent e){
+				panelPrincipal.setVisible(true);
+				panelListado.setVisible(false);
+				System.out.println("Debería mostrar el panel principal");	        	
+	        }
+		});
+
+		btnCancelar.addActionListener(new ActionListener(){
+	        public void actionPerformed (ActionEvent e){
+				panelPrincipal.setVisible(true);
+				panelListado.setVisible(false);
+				System.out.println("Debería mostrar el panel principal");	        	
+	        }
+		});
 		
 	}
 
