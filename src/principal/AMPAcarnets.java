@@ -26,7 +26,6 @@ public class AMPAcarnets {
 		// Pantalla de visualización
 		VentanaPrincipal ventanaPrincipal = new VentanaPrincipal();
 		ventanaPrincipal.setVisible(true);
-		ventanaPrincipal.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Leer archivo XLSX
 		LeerFicherosExcel leerFicherosExcel = new LeerFicherosExcel();
