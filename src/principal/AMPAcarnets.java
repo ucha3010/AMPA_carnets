@@ -2,12 +2,9 @@ package principal;
 
 import java.io.File;
 
-import javax.swing.JFrame;
-
 import acciones.EnviarEmailConCarnet;
 import acciones.EscribirSobreImagen;
 import acciones.LeerFicherosExcel;
-import pantalla.PantallaAcceso;
 import pantalla.VentanaPrincipal;
 
 public class AMPAcarnets {
