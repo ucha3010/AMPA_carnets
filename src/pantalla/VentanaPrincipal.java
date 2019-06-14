@@ -42,11 +42,13 @@ public class VentanaPrincipal extends JFrame {
 		
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		inicializarVentana();
 		panelPrincipal = new JPanel();
+		panelPrincipal.setBounds(0, 0, anchoVentana, altoVentana);
 		panelPrincipal.setVisible(true);
 		panelListado = new JPanel();
+		panelListado.setBounds(0, 0, anchoVentana, altoVentana);
 		panelListado.setVisible(false);
-		inicializarVentana();
 		inicializarPanelPrincipal();
 		inicializarPanelListado();
 		add(panelPrincipal);
