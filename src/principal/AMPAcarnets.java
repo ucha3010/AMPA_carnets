@@ -3,7 +3,7 @@ package principal;
 import java.io.File;
 
 import acciones.EnviarEmailConCarnet;
-import acciones.EscribirSobreImagen;
+import acciones.GenerarCarnets;
 import acciones.LeerFicherosExcel;
 import pantalla.VentanaPrincipal;
 
@@ -29,7 +29,7 @@ public class AMPAcarnets {
 //		List<Map<String, String>> leerExcel = leerFicherosExcel.leerExcel(absolutePathArchivos + nombreArchivoXML);
 
 		// Generar carnets
-		EscribirSobreImagen escribirSobreImagen = new EscribirSobreImagen();
+		GenerarCarnets escribirSobreImagen = new GenerarCarnets();
 //		escribirSobreImagen.rellenarCarnet(leerExcel, absolutePathImegenes + archivoCarnet, carpetaCarnets, curso, validoHasta);
 		
 		// Enviar emails

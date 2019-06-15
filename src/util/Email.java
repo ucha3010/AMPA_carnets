@@ -1,5 +1,6 @@
 package util;
 
+import java.io.FileReader;
 import java.util.Properties;
 
 import javax.activation.DataHandler;
@@ -24,10 +25,10 @@ public class Email{
         String mensaje = EmailDisenio.disenioCarnets(to, nombreArchivo(rutaArchivo));
         boolean enviadoCompra = funcionEnviar(to, rutaArchivo, asunto, mensaje);
         /*if(enviadoCompra){
-            //Esto sirve para enviarle la factura también al vendedor cada vez que se realice una venta
-            asunto = "Se realizó una compra";
-            mensaje = "Factura de la compra";
-            funcionEnviar("email.vendedor",rutaArchivo,asunto,mensaje);
+            //Esto sirve para enviarle el mismo email al remitente
+            asunto = "Copia del original";
+            mensaje = "Una copia de lo enviado";
+            funcionEnviar(p.getProperty("email"),rutaArchivo,asunto,mensaje);
         }*/
         return enviadoCompra;
     }
@@ -37,17 +38,19 @@ public class Email{
         boolean enviado = false;
         boolean existeArchivo = false; //variable para obligar a que exista el archivo para el envío del email
             try{
-                String de = "damianjava@gmail.com";
-                String host = "smtp.gmail.com";
-                final String username = "damianjava@gmail.com";
-                final String password = "sepultura30";
+            	Properties p = new Properties();
+    			p.load(new FileReader("src/util/Conexion.properties"));
+        		
+                String de = p.getProperty("email");
+                final String username = p.getProperty("usuario");
+                final String password = p.getProperty("clave");
                 
                 Properties prop = System.getProperties();
                 
-                prop.put("mail.smtp.starttls.enable","true");
-                prop.put("mail.smtp.host", host);
-                prop.put("mail.smtp.port",587);
-                prop.put("mail.smtp.auth","true");
+                prop.put("mail.smtp.starttls.enable",p.getProperty("mail.smtp.starttls.enable"));
+                prop.put("mail.smtp.host", p.getProperty("mail.smtp.host"));
+                prop.put("mail.smtp.port",p.getProperty("mail.smtp.port"));
+                prop.put("mail.smtp.auth",p.getProperty("mail.smtp.auth"));
                 
                 Session sesion = Session.getInstance(prop,
                    new Authenticator() {

@@ -9,10 +9,10 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +32,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.toedter.calendar.JDateChooser;
 
+import acciones.GenerarCarnets;
 import acciones.LeerFicherosExcel;
 
 public class VentanaPrincipal extends JFrame {
@@ -45,7 +46,7 @@ public class VentanaPrincipal extends JFrame {
 	private JTextField textFieldRutaBBDD;
 	private JButton btnSeleccionar;
 	private JPanel contentPane;
-	private JComboBox comboBox;
+	private JComboBox comboCursos;
 	private JDateChooser dateChooser;
 	private JButton btnGenerarCarnets;
 	private JTable table;
@@ -58,6 +59,7 @@ public class VentanaPrincipal extends JFrame {
 	private JButton seleccionarTodo;
 	private JCheckBox chckbxSelectAll;
 	private JPanel panelScroll;
+	private String vieneDe;
 	
 	Properties p;
 
@@ -100,6 +102,7 @@ public class VentanaPrincipal extends JFrame {
 		// Icono con el logo
 		Image icono = monitor.getImage(p.getProperty("ruta_logo"));
 		setIconImage(icono);
+		vieneDe = new String();
 
 	}
 
@@ -117,11 +120,12 @@ public class VentanaPrincipal extends JFrame {
 		JLabel lblCurso = new JLabel(p.getProperty("lblCurso"));
 		lblCurso.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 
-		comboBox = new JComboBox();
-		comboBox.addItem("2018-2019");
-		comboBox.addItem("2019-2020");
-		comboBox.addItem("2020-2021");
-		comboBox.addItem("2021-2022");
+		String[] cursos = p.getProperty("listaCursos").split(",");
+
+		comboCursos = new JComboBox();
+		for(String curso: cursos) {
+			comboCursos.addItem(curso);
+		}
 
 		JLabel lblValidoHasta = new JLabel(p.getProperty("lblValidoHasta"));
 		lblValidoHasta.setFont(new Font("Times New Roman", Font.PLAIN, 14));
@@ -138,7 +142,7 @@ public class VentanaPrincipal extends JFrame {
 		panelPrincipal.add(textFieldRutaBBDD);
 		panelPrincipal.add(btnSeleccionar);
 		panelPrincipal.add(lblCurso);
-		panelPrincipal.add(comboBox);
+		panelPrincipal.add(comboCursos);
 		panelPrincipal.add(lblValidoHasta);
 		panelPrincipal.add(dateChooser);
 		panelPrincipal.add(btnGenerarCarnets);
@@ -229,9 +233,7 @@ public class VentanaPrincipal extends JFrame {
 						model.setValueAt(lista.get(i).get("NOMBRE2 PADRE"), i, 5);
 					}
 				}
-				
-				
-				
+				vieneDe = "generarCarnets";
 			}
 		});
 
@@ -240,6 +242,7 @@ public class VentanaPrincipal extends JFrame {
 				panelPrincipal.setVisible(false);
 				panelListado.setVisible(true);
 				lista = leerFicherosExcel.leerExcel(textFieldRutaBBDD.getText());
+				vieneDe = "enviarEmail";
 			}
 		});
 		
@@ -288,9 +291,24 @@ public class VentanaPrincipal extends JFrame {
 						dato = new HashMap<>();
 						dato.put("Nº SOCIO", table.getValueAt(i, 1).toString());
 						dato.put("EMAIL", table.getValueAt(i, 2).toString());
+						dato.put("FAMILIAS", table.getValueAt(i, 3).toString());
 						lista.add(dato);
 						//JOptionPane.showMessageDialog(null, dataCol1);
 					}
+				}
+
+				String absolutePath = new File("").getAbsolutePath();
+				if(vieneDe.equals("generarCarnets")) {
+					GenerarCarnets generarCarnets = new GenerarCarnets();
+					Date date = dateChooser.getDate();
+					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/YYYY");
+					generarCarnets.rellenarCarnet(lista,
+							absolutePath + "\\src\\imagenes\\" + p.getProperty("archivoCarnetVacio"),
+							p.getProperty("carpetaGuardarCarnets"),
+							comboCursos.getSelectedItem().toString(),
+							String.valueOf(sdf.format(date)));
+				} else if(vieneDe.equals("enviarEmail")) {
+					
 				}
 
 				System.out.println(lista);

@@ -20,10 +20,11 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class LeerFicherosExcel {
 
 	/**
-	 * pom.xml <!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
+	 * pom.xml 
+	 * <!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
 	 * <dependency> <groupId>org.apache.poi</groupId> <artifactId>poi</artifactId>
-	 * <version>3.16</version> </dependency> <!--
-	 * https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml --> <dependency>
+	 * <version>3.16</version> </dependency> 
+	 * <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml --> <dependency>
 	 * <groupId>org.apache.poi</groupId> <artifactId>poi-ooxml</artifactId>
 	 * <version>3.16</version> </dependency> <!--
 	 * https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml-schemas -->
@@ -40,7 +41,6 @@ public class LeerFicherosExcel {
 		List<Map<String, String>> listaDatos = new ArrayList<>();
 
 		try {
-			System.out.println("Acceso a leerExcel");
 			FileInputStream file = new FileInputStream(new File(rutaArchivo));
 			Map<String, String> datos = null;
 
@@ -67,7 +67,7 @@ public class LeerFicherosExcel {
 				Cell cell;
 				// se recorre cada celda
 				while (cellIterator.hasNext()) {
-					// se obtiene la celda en específico y se la imprime
+					// se obtiene la celda en especï¿½fico y se la imprime
 					cell = cellIterator.next();
 					if (guardoDatos) {
 						if (cell.getCellTypeEnum() == CellType.STRING) {

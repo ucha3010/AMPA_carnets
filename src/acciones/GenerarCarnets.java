@@ -16,7 +16,7 @@ import javax.imageio.ImageIO;
 
 import util.Comprobaciones;
 
-public class EscribirSobreImagen {
+public class GenerarCarnets {
 
 	public void rellenarCarnet(List<Map<String, String>> datos, String rutaImagen, String carpetaCarnets, String curso,
 			String validoHasta) {
