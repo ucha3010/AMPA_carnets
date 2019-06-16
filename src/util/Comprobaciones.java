@@ -1,6 +1,7 @@
 package util;
 
 import java.io.File;
+import java.util.Arrays;
 
 public class Comprobaciones {
 	
@@ -46,6 +47,13 @@ public class Comprobaciones {
 		    }
 		}
 		return respuesta;
+	}
+	
+	/*
+	 * Verifica si un archivo tiene una extensión de las del listado
+	 */
+	public static boolean verificarExtensionDeArchivo(String s, String[] extn) {
+	    return Arrays.stream(extn).anyMatch(entry -> s.endsWith(entry));
 	}
 
 }

@@ -34,6 +34,7 @@ import com.toedter.calendar.JDateChooser;
 
 import acciones.GenerarCarnets;
 import acciones.LeerFicherosExcel;
+import util.Comprobaciones;
 
 public class VentanaPrincipal extends JFrame {
 
@@ -45,9 +46,13 @@ public class VentanaPrincipal extends JFrame {
 	private JPanel panelListado;
 	private JTextField textFieldRutaBBDD;
 	private JButton btnSeleccionar;
+	private JLabel lblRutaBBDDError;
 	private JPanel contentPane;
+	private String[] cursos;
 	private JComboBox comboCursos;
-	private JDateChooser dateChooser;
+	private JLabel lblCursoError;
+	private Date date;
+	private JLabel lblDateChooserError;
 	private JButton btnGenerarCarnets;
 	private JTable table;
 	private JScrollPane scrollPane;
@@ -60,7 +65,7 @@ public class VentanaPrincipal extends JFrame {
 	private JCheckBox chckbxSelectAll;
 	private JPanel panelScroll;
 	private String vieneDe;
-	
+
 	Properties p;
 
 	public VentanaPrincipal() {
@@ -111,26 +116,49 @@ public class VentanaPrincipal extends JFrame {
 		JLabel lblRutaBBDD = new JLabel(p.getProperty("lblBBDD"));
 		lblRutaBBDD.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 
+		// ruta de la base de datos
 		textFieldRutaBBDD = new JTextField();
 		textFieldRutaBBDD.setEditable(false);
 		textFieldRutaBBDD.setColumns(30);
 
+		// botón para buscar archivo base de datos
 		btnSeleccionar = new JButton(p.getProperty("btnSeleccionar"));
+
+		// aviso de ruta vacía o errónea
+		lblRutaBBDDError = new JLabel(p.getProperty("lblRutaBBDDError"));
+		lblRutaBBDDError.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+		lblRutaBBDDError.setForeground(Color.RED);
+		lblRutaBBDDError.setVisible(false);
 
 		JLabel lblCurso = new JLabel(p.getProperty("lblCurso"));
 		lblCurso.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 
-		String[] cursos = p.getProperty("listaCursos").split(",");
+		// listado de cursos
+		cursos = p.getProperty("listaCursos").split(",");
 
+		// combo con cursos a seleccionar
 		comboCursos = new JComboBox();
-		for(String curso: cursos) {
+		for (String curso : cursos) {
 			comboCursos.addItem(curso);
 		}
+
+		// aviso de curso no seleccionado
+		lblCursoError = new JLabel(p.getProperty("lblCursoError"));
+		lblCursoError.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+		lblCursoError.setForeground(Color.RED);
+		lblCursoError.setVisible(false);
 
 		JLabel lblValidoHasta = new JLabel(p.getProperty("lblValidoHasta"));
 		lblValidoHasta.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 
-		dateChooser = new JDateChooser();
+		// cuadro de selección de fecha de vencimiento
+		JDateChooser dateChooser = new JDateChooser();
+
+		// aviso de fecha de vencimiento no seleccionada
+		lblDateChooserError = new JLabel(p.getProperty("lblDateChooserError"));
+		lblDateChooserError.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+		lblDateChooserError.setForeground(Color.RED);
+		lblDateChooserError.setVisible(false);
 
 		btnGenerarCarnets = new JButton(p.getProperty("btnGenerarCarnets"));
 		btnGenerarCarnets.setBackground(new Color(153, 204, 153));
@@ -141,18 +169,22 @@ public class VentanaPrincipal extends JFrame {
 		panelPrincipal.add(lblRutaBBDD);
 		panelPrincipal.add(textFieldRutaBBDD);
 		panelPrincipal.add(btnSeleccionar);
+		panelPrincipal.add(lblRutaBBDDError);
 		panelPrincipal.add(lblCurso);
 		panelPrincipal.add(comboCursos);
+		panelPrincipal.add(lblCursoError);
 		panelPrincipal.add(lblValidoHasta);
 		panelPrincipal.add(dateChooser);
+		panelPrincipal.add(lblDateChooserError);
 		panelPrincipal.add(btnGenerarCarnets);
 		panelPrincipal.add(btnEnviarEmail);
 
-		//Este checkbox es del otro panel pero se escucha en este por eso lo inicializo acá
+		// Este checkbox es del otro panel pero se escucha en este por eso lo inicializo
+		// acá
 		chckbxSelectAll = new JCheckBox(p.getProperty("chckbxSelectAll"));
-//        chckbxSelectAll.setBounds(150, 29, 97, 23);
-        chckbxSelectAll.setBackground(Color.WHITE);
-        chckbxSelectAll.setFont(new Font("Verdana", Font.PLAIN, 15));
+		// chckbxSelectAll.setBounds(150, 29, 97, 23);
+		chckbxSelectAll.setBackground(Color.WHITE);
+		chckbxSelectAll.setFont(new Font("Verdana", Font.PLAIN, 15));
 
 		btnSeleccionar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -170,70 +202,95 @@ public class VentanaPrincipal extends JFrame {
 
 		btnGenerarCarnets.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				panelPrincipal.setVisible(false);
-				panelListado.setVisible(true);
-				lista = leerFicherosExcel.leerExcel(textFieldRutaBBDD.getText());		
+				String[] extn = p.getProperty("extensionBBDD").split(",");
+				date = dateChooser.getDate();
+				if (Comprobaciones.noEsNullNiBlanco(textFieldRutaBBDD.getText())
+						&& Comprobaciones.verificarExtensionDeArchivo(textFieldRutaBBDD.getText(), extn)
+						&& !comboCursos.getSelectedItem().toString().equals(cursos[0]) && 
+						date != null) {
 
-		        panelScroll.add(chckbxSelectAll);
+					lblRutaBBDDError.setVisible(false);
+					lblCursoError.setVisible(false);
+					lblDateChooserError.setVisible(false);
+					panelPrincipal.setVisible(false);
+					panelListado.setVisible(true);
+					lista = leerFicherosExcel.leerExcel(textFieldRutaBBDD.getText());
 
-				// ScrollPane for Table
-				if(scrollPane == null)
-				scrollPane = new JScrollPane();
-				scrollPane.setBounds(0, 0, anchoVentana - (anchoVentana / 5), altoVentana - (altoVentana / 10));
-				panelScroll.add(scrollPane);
+					panelScroll.add(chckbxSelectAll);
 
-				// Table
-				table = new JTable();
-				scrollPane.setViewportView(table);
+					// ScrollPane for Table
+					if (scrollPane == null)
+						scrollPane = new JScrollPane();
+					scrollPane.setBounds(0, 0, anchoVentana - (anchoVentana / 5), altoVentana - (altoVentana / 10));
+					panelScroll.add(scrollPane);
 
-				// Model for Table
-				DefaultTableModel model = new DefaultTableModel() {
+					// Table
+					table = new JTable();
+					scrollPane.setViewportView(table);
 
-					public Class<?> getColumnClass(int column) {
-						switch (column) {
-						case 0:
-							return Boolean.class;
-						case 1:
-							return String.class;
-						case 2:
-							return String.class;
-						case 3:
-							return String.class;
-						case 4:
-							return String.class;
-						case 5:
-							return String.class;
-						case 6:
-							return String.class;
-						default:
-							return String.class;
+					// Model for Table
+					DefaultTableModel model = new DefaultTableModel() {
+
+						public Class<?> getColumnClass(int column) {
+							switch (column) {
+							case 0:
+								return Boolean.class;
+							case 1:
+								return String.class;
+							case 2:
+								return String.class;
+							case 3:
+								return String.class;
+							case 4:
+								return String.class;
+							case 5:
+								return String.class;
+							case 6:
+								return String.class;
+							default:
+								return String.class;
+							}
+						}
+					};
+
+					table.setModel(model);
+
+					model.addColumn("");
+					model.addColumn(p.getProperty("col1"));
+					model.addColumn(p.getProperty("col2"));
+					model.addColumn(p.getProperty("col3"));
+					model.addColumn(p.getProperty("col4"));
+					model.addColumn(p.getProperty("col5"));
+
+					// Data Row
+					if (lista != null) {
+						for (int i = 0; i < lista.size(); i++) {
+							model.addRow(new Object[0]);
+							model.setValueAt(false, i, 0);
+							model.setValueAt(lista.get(i).get("Nº SOCIO"), i, 1);
+							model.setValueAt(lista.get(i).get("EMAIL"), i, 2);
+							model.setValueAt(lista.get(i).get("FAMILIAS"), i, 3);
+							model.setValueAt(lista.get(i).get("NOMBRE MADRE"), i, 4);
+							model.setValueAt(lista.get(i).get("NOMBRE2 PADRE"), i, 5);
 						}
 					}
-				};
-				
-		        
-				table.setModel(model);
-
-				model.addColumn("");
-				model.addColumn(p.getProperty("col1"));
-				model.addColumn(p.getProperty("col2"));
-				model.addColumn(p.getProperty("col3"));
-				model.addColumn(p.getProperty("col4"));
-				model.addColumn(p.getProperty("col5"));
-
-				// Data Row
-				if (lista != null) {
-					for (int i = 0; i < lista.size(); i++) {
-						model.addRow(new Object[0]);
-						model.setValueAt(false, i, 0);
-						model.setValueAt(lista.get(i).get("Nº SOCIO"), i, 1);
-						model.setValueAt(lista.get(i).get("EMAIL"), i, 2);
-						model.setValueAt(lista.get(i).get("FAMILIAS"), i, 3);
-						model.setValueAt(lista.get(i).get("NOMBRE MADRE"), i, 4);
-						model.setValueAt(lista.get(i).get("NOMBRE2 PADRE"), i, 5);
+					vieneDe = "generarCarnets";
+				}
+				if (!vieneDe.equals("generarCarnets")) {
+					lblRutaBBDDError.setVisible(false);
+					lblCursoError.setVisible(false);
+					lblDateChooserError.setVisible(false);
+					if (!Comprobaciones.noEsNullNiBlanco(textFieldRutaBBDD.getText())
+							|| !Comprobaciones.verificarExtensionDeArchivo(textFieldRutaBBDD.getText(), extn)) {
+						lblRutaBBDDError.setVisible(true);
+					}
+					if (comboCursos.getSelectedItem().toString().equals(cursos[0])) {
+						lblCursoError.setVisible(true);
+					}
+					if(date == null) {
+						lblDateChooserError.setVisible(true);
 					}
 				}
-				vieneDe = "generarCarnets";
 			}
 		});
 
@@ -245,19 +302,19 @@ public class VentanaPrincipal extends JFrame {
 				vieneDe = "enviarEmail";
 			}
 		});
-		
+
 		chckbxSelectAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(chckbxSelectAll.isSelected()){
+				if (chckbxSelectAll.isSelected()) {
 
-	                for(int i=0;i<table.getRowCount();i++)
-	                table.getModel().setValueAt(true, i, 0);
+					for (int i = 0; i < table.getRowCount(); i++)
+						table.getModel().setValueAt(true, i, 0);
 
-	            }else{
+				} else {
 
-	                for(int i=0;i<table.getRowCount();i++)
-	                    table.getModel().setValueAt(false, i, 0);                   
-	            }  
+					for (int i = 0; i < table.getRowCount(); i++)
+						table.getModel().setValueAt(false, i, 0);
+				}
 			}
 		});
 
@@ -267,9 +324,9 @@ public class VentanaPrincipal extends JFrame {
 
 		btnContinuar = new JButton(p.getProperty("btnContinuar"));
 		btnCancelar = new JButton(p.getProperty("btnCancelar"));
-		
+
 		panelListado.setLayout(new BorderLayout());
-		
+
 		panelScroll = new JPanel();
 		panelListado.add(panelScroll, BorderLayout.CENTER);
 
@@ -285,30 +342,37 @@ public class VentanaPrincipal extends JFrame {
 				lista = new ArrayList<>();
 				Map<String, String> dato;
 				for (int i = 0; i < table.getRowCount(); i++) {
-					Boolean chked = Boolean.valueOf(table.getValueAt(i, 0).toString());
-					//String dataCol1 = table.getValueAt(i, 1).toString();
-					if (chked) {
-						dato = new HashMap<>();
-						dato.put("Nº SOCIO", table.getValueAt(i, 1).toString());
-						dato.put("EMAIL", table.getValueAt(i, 2).toString());
-						dato.put("FAMILIAS", table.getValueAt(i, 3).toString());
-						lista.add(dato);
-						//JOptionPane.showMessageDialog(null, dataCol1);
+					// miro que, si se va a enviar email traiga número de socio e email
+					// y si se va a generar carnet traiga número de socio
+					if ((vieneDe.equals("enviarEmail")
+							&& Comprobaciones.noEsNullNiBlanco(table.getValueAt(i, 1).toString())
+							&& Comprobaciones.noEsNullNiBlanco(table.getValueAt(i, 2).toString()))
+							|| (vieneDe.equals("generarCarnets")
+									&& Comprobaciones.noEsNullNiBlanco(table.getValueAt(i, 1).toString()))) {
+
+						Boolean chked = Boolean.valueOf(table.getValueAt(i, 0).toString());
+						// String dataCol1 = table.getValueAt(i, 1).toString();
+						if (chked) {
+							dato = new HashMap<>();
+							dato.put("Nº SOCIO", table.getValueAt(i, 1).toString());
+							dato.put("EMAIL", table.getValueAt(i, 2).toString());
+							dato.put("FAMILIAS", table.getValueAt(i, 3).toString());
+							lista.add(dato);
+							// JOptionPane.showMessageDialog(null, dataCol1);
+						}
 					}
 				}
 
 				String absolutePath = new File("").getAbsolutePath();
-				if(vieneDe.equals("generarCarnets")) {
+				if (vieneDe.equals("generarCarnets") && lista.size() > 0) {
 					GenerarCarnets generarCarnets = new GenerarCarnets();
-					Date date = dateChooser.getDate();
 					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/YYYY");
 					generarCarnets.rellenarCarnet(lista,
 							absolutePath + "\\src\\imagenes\\" + p.getProperty("archivoCarnetVacio"),
-							p.getProperty("carpetaGuardarCarnets"),
-							comboCursos.getSelectedItem().toString(),
+							p.getProperty("carpetaGuardarCarnets"), comboCursos.getSelectedItem().toString(),
 							String.valueOf(sdf.format(date)));
-				} else if(vieneDe.equals("enviarEmail")) {
-					
+				} else if (vieneDe.equals("enviarEmail") && lista.size() > 0) {
+
 				}
 
 				System.out.println(lista);
