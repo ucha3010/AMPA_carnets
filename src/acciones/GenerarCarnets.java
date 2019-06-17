@@ -8,6 +8,7 @@ import java.awt.font.TextAttribute;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -15,11 +16,14 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 
 import util.Comprobaciones;
+import util.Logger;
 
 public class GenerarCarnets {
 
-	public void rellenarCarnet(List<Map<String, String>> datos, String rutaImagen, String carpetaCarnets, String curso,
+	public Map<String, Integer> rellenarCarnet(List<Map<String, String>> datos, String rutaImagen, String carpetaCarnets, String curso,
 			String validoHasta) {
+		
+		Map<String, Integer> salida = null;
 
 		try {
 			if (datos != null) {
@@ -39,6 +43,9 @@ public class GenerarCarnets {
 					Comprobaciones.verificarCrearDirectorio(carpetaCarnets + curso);
 					rutaCarnetsFinal = carpetaCarnets + "\\" + curso + "\\";
 				}
+				
+				int carnetsOK = 0;				
+				salida = new HashMap<String, Integer>();
 
 				for (int i = 0; i < datos.size(); i++) {
 					if (datos.get(i) != null && Comprobaciones.noEsNullNiBlanco(datos.get(i).get("FAMILIAS"))
@@ -79,16 +86,21 @@ public class GenerarCarnets {
 						File file = new File(
 								rutaCarnetsFinal + datos.get(i).get("Nº SOCIO") + ".jpg");
 						ImageIO.write(bufferedImage, "jpg", file);
+						carnetsOK++;
 					} else {
-						System.out.println("Carnet de posición " + (i+1) + " del listado no se puede generar");
+						System.out.println(Logger.log(this.getClass().getName(), "Carnet de posición " + (i+1) + " del listado no se puede generar"));
 					}
 				}
+				salida.put("OK", carnetsOK);
+				salida.put("KO", datos.size() - carnetsOK);
 			}
 		} catch (IOException e) {
 			System.out.println(e.getStackTrace());
 		} catch (Exception e) {
 			System.out.println(e.getStackTrace());
 		}
+		
+		return salida;
 	}
 
 }

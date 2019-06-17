@@ -1,44 +1,54 @@
 package acciones;
 
+import java.io.FileReader;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import util.Comprobaciones;
 import util.Email;
+import util.Hora;
+import util.Logger;
 
 public class EnviarEmailConCarnet {
 	
-	public void enviarEmail(List<Map<String, String>> datos, String carpetaCarnets, String curso){
+	public String enviarEmail(List<Map<String, String>> datos, String carpetaCarnets, String curso, String idioma) throws Exception {
 		
+
+		Properties p = new Properties();
+		p.load(new FileReader("src/util/Constantes_" + idioma + ".properties"));
+		
+		String respuesta = null;
 		String rutaCarnets = carpetaCarnets + curso + "\\";
 		String rutaOArchivo = Comprobaciones.verSiExisteCarpetaOArchivo(rutaCarnets);
-		boolean enviados = false;
 		if(rutaOArchivo != null && rutaOArchivo.equals("carpeta") && datos != null && datos.size() > 0){
-			enviados = true;
+			boolean enviados = true;
+			int contarOK = 0;
 			for (int i = 0; i < datos.size(); i++) {
 				if (datos.get(i) != null && Comprobaciones.noEsNullNiBlanco(datos.get(i).get("EMAIL"))
 						&& Comprobaciones.noEsNullNiBlanco(datos.get(i).get("Nº SOCIO"))) {
 					
 					if(!Email.enviarCarnet(datos.get(i).get("EMAIL"), rutaCarnets + datos.get(i).get("Nº SOCIO") + ".jpg")) {
 						enviados = false;
-					}
-					
+					} else {
+						contarOK++;
+					}					
 
 				} else {
-					System.out.println("Email de posición " + (i+1) + " del listado no se puede enviar");	
+					System.out.println(Logger.log(this.getClass().getName(), "Email de posición " + (i+1) + " del listado no se puede enviar por falta de datos - " + datos.get(i)));	
 				}
+			}
+			if(enviados) {
+				respuesta = p.getProperty("enviosOK") + " " + contarOK + " " + p.getProperty("enviosFinMensaje");
+			} else {
+				respuesta = p.getProperty("enviosKO1") + " " + contarOK + " " + p.getProperty("enviosKO2") + " " + datos.size() + " " + p.getProperty("enviosFinMensaje");
 			}
 			
 		} else {
-			System.out.println("No existe la carpeta donde buscar los carnets");
+			respuesta = p.getProperty("carpetaError");
 		}
 		
-		if(enviados) {
-			System.out.println("Se enviaron todos los emails");
-		} else {
-			System.out.println("No se enviaron todos los emails");
-		}
-		
+		return respuesta;
 	}
 
 }

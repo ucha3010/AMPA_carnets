@@ -1,6 +1,7 @@
 package principal;
 
 import java.io.File;
+import java.util.Locale;
 
 import acciones.EnviarEmailConCarnet;
 import acciones.GenerarCarnets;
@@ -21,8 +22,13 @@ public class AMPAcarnets {
 		String carpetaCarnets = "C:\\AMPA\\Carnets\\";
 		
 		// Pantalla de visualización
-		VentanaPrincipal ventanaPrincipal = new VentanaPrincipal();
-		ventanaPrincipal.setVisible(true);
+		try {
+			VentanaPrincipal ventanaPrincipal = new VentanaPrincipal(Locale.getDefault().getLanguage());
+			ventanaPrincipal.setVisible(true);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		// Leer archivo XLSX
 		LeerFicherosExcel leerFicherosExcel = new LeerFicherosExcel();

@@ -17,6 +17,9 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import util.Hora;
+import util.Logger;
+
 public class LeerFicherosExcel {
 
 	/**
@@ -100,7 +103,7 @@ public class LeerFicherosExcel {
 			System.out.println(e.getStackTrace());
 		}
 
-		System.out.println(listaDatos);
+		System.out.println(Logger.log(this.getClass().getName(), listaDatos.toString()));
 		return listaDatos;
 	}
 }

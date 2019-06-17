@@ -32,9 +32,12 @@ import javax.swing.table.DefaultTableModel;
 
 import com.toedter.calendar.JDateChooser;
 
+import acciones.EnviarEmailConCarnet;
 import acciones.GenerarCarnets;
 import acciones.LeerFicherosExcel;
 import util.Comprobaciones;
+import util.Hora;
+import util.Logger;
 
 public class VentanaPrincipal extends JFrame {
 
@@ -49,7 +52,7 @@ public class VentanaPrincipal extends JFrame {
 	private JLabel lblRutaBBDDError;
 	private JPanel contentPane;
 	private String[] cursos;
-	private JComboBox comboCursos;
+	private JComboBox<String> comboCursos;
 	private JLabel lblCursoError;
 	private Date date;
 	private JLabel lblDateChooserError;
@@ -61,22 +64,22 @@ public class VentanaPrincipal extends JFrame {
 	private JButton btnContinuar;
 	private JButton btnCancelar;
 	private LeerFicherosExcel leerFicherosExcel;
-	private JButton seleccionarTodo;
 	private JCheckBox chckbxSelectAll;
 	private JPanel panelScroll;
 	private String vieneDe;
+	private JLabel lblCarnetsGenerados;
+	private JLabel lblCarnetsEnviados;
+	private JLabel lblError;
+	private String idioma;
 
 	Properties p;
 
-	public VentanaPrincipal() {
+	public VentanaPrincipal(String idioma) throws Exception {
 
+		this.idioma = idioma;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		p = new Properties();
-		try {
-			p.load(new FileReader("src/util/Constantes_es.properties"));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		p.load(new FileReader("src/util/Constantes_" + this.idioma + ".properties"));
 		inicializarVentana();
 		panelPrincipal = new JPanel();
 		panelPrincipal.setBounds(0, 0, anchoVentana, altoVentana);
@@ -137,7 +140,7 @@ public class VentanaPrincipal extends JFrame {
 		cursos = p.getProperty("listaCursos").split(",");
 
 		// combo con cursos a seleccionar
-		comboCursos = new JComboBox();
+		comboCursos = new JComboBox<String>();
 		for (String curso : cursos) {
 			comboCursos.addItem(curso);
 		}
@@ -160,6 +163,23 @@ public class VentanaPrincipal extends JFrame {
 		lblDateChooserError.setForeground(Color.RED);
 		lblDateChooserError.setVisible(false);
 
+		// confirmación de generación de carnets
+		lblCarnetsGenerados = new JLabel();
+		lblCarnetsGenerados.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+		lblCarnetsGenerados.setForeground(Color.BLUE);
+		lblCarnetsGenerados.setVisible(false);
+
+		// confirmación de generación de carnets
+		lblCarnetsEnviados = new JLabel();
+		lblCarnetsEnviados.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+		lblCarnetsEnviados.setForeground(Color.BLUE);
+		lblCarnetsEnviados.setVisible(false);
+
+		lblError = new JLabel(p.getProperty("lblError"));
+		lblError.setFont(new Font("Arial", Font.PLAIN, 16));
+		lblError.setForeground(Color.RED);
+		lblError.setVisible(false);
+
 		btnGenerarCarnets = new JButton(p.getProperty("btnGenerarCarnets"));
 		btnGenerarCarnets.setBackground(new Color(153, 204, 153));
 		btnGenerarCarnets.setForeground(Color.BLACK);
@@ -176,6 +196,9 @@ public class VentanaPrincipal extends JFrame {
 		panelPrincipal.add(lblValidoHasta);
 		panelPrincipal.add(dateChooser);
 		panelPrincipal.add(lblDateChooserError);
+		panelPrincipal.add(lblError);
+		panelPrincipal.add(lblCarnetsGenerados);
+		panelPrincipal.add(lblCarnetsEnviados);
 		panelPrincipal.add(btnGenerarCarnets);
 		panelPrincipal.add(btnEnviarEmail);
 
@@ -204,82 +227,23 @@ public class VentanaPrincipal extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String[] extn = p.getProperty("extensionBBDD").split(",");
 				date = dateChooser.getDate();
+				ocultarAvisos();
+				chckbxSelectAll.setSelected(false);
+				boolean entro = false;
 				if (Comprobaciones.noEsNullNiBlanco(textFieldRutaBBDD.getText())
 						&& Comprobaciones.verificarExtensionDeArchivo(textFieldRutaBBDD.getText(), extn)
-						&& !comboCursos.getSelectedItem().toString().equals(cursos[0]) && 
-						date != null) {
+						&& !comboCursos.getSelectedItem().toString().equals(cursos[0]) && date != null) {
 
-					lblRutaBBDDError.setVisible(false);
-					lblCursoError.setVisible(false);
-					lblDateChooserError.setVisible(false);
 					panelPrincipal.setVisible(false);
 					panelListado.setVisible(true);
 					lista = leerFicherosExcel.leerExcel(textFieldRutaBBDD.getText());
 
-					panelScroll.add(chckbxSelectAll);
+					cargarListado();
 
-					// ScrollPane for Table
-					if (scrollPane == null)
-						scrollPane = new JScrollPane();
-					scrollPane.setBounds(0, 0, anchoVentana - (anchoVentana / 5), altoVentana - (altoVentana / 10));
-					panelScroll.add(scrollPane);
-
-					// Table
-					table = new JTable();
-					scrollPane.setViewportView(table);
-
-					// Model for Table
-					DefaultTableModel model = new DefaultTableModel() {
-
-						public Class<?> getColumnClass(int column) {
-							switch (column) {
-							case 0:
-								return Boolean.class;
-							case 1:
-								return String.class;
-							case 2:
-								return String.class;
-							case 3:
-								return String.class;
-							case 4:
-								return String.class;
-							case 5:
-								return String.class;
-							case 6:
-								return String.class;
-							default:
-								return String.class;
-							}
-						}
-					};
-
-					table.setModel(model);
-
-					model.addColumn("");
-					model.addColumn(p.getProperty("col1"));
-					model.addColumn(p.getProperty("col2"));
-					model.addColumn(p.getProperty("col3"));
-					model.addColumn(p.getProperty("col4"));
-					model.addColumn(p.getProperty("col5"));
-
-					// Data Row
-					if (lista != null) {
-						for (int i = 0; i < lista.size(); i++) {
-							model.addRow(new Object[0]);
-							model.setValueAt(false, i, 0);
-							model.setValueAt(lista.get(i).get("Nº SOCIO"), i, 1);
-							model.setValueAt(lista.get(i).get("EMAIL"), i, 2);
-							model.setValueAt(lista.get(i).get("FAMILIAS"), i, 3);
-							model.setValueAt(lista.get(i).get("NOMBRE MADRE"), i, 4);
-							model.setValueAt(lista.get(i).get("NOMBRE2 PADRE"), i, 5);
-						}
-					}
+					entro = true;
 					vieneDe = "generarCarnets";
 				}
-				if (!vieneDe.equals("generarCarnets")) {
-					lblRutaBBDDError.setVisible(false);
-					lblCursoError.setVisible(false);
-					lblDateChooserError.setVisible(false);
+				if (!entro) {
 					if (!Comprobaciones.noEsNullNiBlanco(textFieldRutaBBDD.getText())
 							|| !Comprobaciones.verificarExtensionDeArchivo(textFieldRutaBBDD.getText(), extn)) {
 						lblRutaBBDDError.setVisible(true);
@@ -287,7 +251,7 @@ public class VentanaPrincipal extends JFrame {
 					if (comboCursos.getSelectedItem().toString().equals(cursos[0])) {
 						lblCursoError.setVisible(true);
 					}
-					if(date == null) {
+					if (date == null) {
 						lblDateChooserError.setVisible(true);
 					}
 				}
@@ -296,10 +260,30 @@ public class VentanaPrincipal extends JFrame {
 
 		btnEnviarEmail.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				panelPrincipal.setVisible(false);
-				panelListado.setVisible(true);
-				lista = leerFicherosExcel.leerExcel(textFieldRutaBBDD.getText());
-				vieneDe = "enviarEmail";
+				ocultarAvisos();
+				String[] extn = p.getProperty("extensionBBDD").split(",");
+				boolean entro = false;
+				if (Comprobaciones.noEsNullNiBlanco(textFieldRutaBBDD.getText())
+						&& Comprobaciones.verificarExtensionDeArchivo(textFieldRutaBBDD.getText(), extn)
+						&& !comboCursos.getSelectedItem().toString().equals(cursos[0])) {
+					panelPrincipal.setVisible(false);
+					panelListado.setVisible(true);
+					lista = leerFicherosExcel.leerExcel(textFieldRutaBBDD.getText());
+
+					cargarListado();
+
+					entro = true;
+					vieneDe = "enviarEmail";
+				}
+				if (!entro) {
+					if (!Comprobaciones.noEsNullNiBlanco(textFieldRutaBBDD.getText())
+							|| !Comprobaciones.verificarExtensionDeArchivo(textFieldRutaBBDD.getText(), extn)) {
+						lblRutaBBDDError.setVisible(true);
+					}
+					if (comboCursos.getSelectedItem().toString().equals(cursos[0])) {
+						lblCursoError.setVisible(true);
+					}
+				}
 			}
 		});
 
@@ -337,6 +321,7 @@ public class VentanaPrincipal extends JFrame {
 
 		btnContinuar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				ocultarAvisos();
 				panelPrincipal.setVisible(true);
 				panelListado.setVisible(false);
 				lista = new ArrayList<>();
@@ -367,25 +352,120 @@ public class VentanaPrincipal extends JFrame {
 				if (vieneDe.equals("generarCarnets") && lista.size() > 0) {
 					GenerarCarnets generarCarnets = new GenerarCarnets();
 					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/YYYY");
-					generarCarnets.rellenarCarnet(lista,
+					Map<String, Integer> respuestaGenerarCarnets = generarCarnets.rellenarCarnet(lista,
 							absolutePath + "\\src\\imagenes\\" + p.getProperty("archivoCarnetVacio"),
 							p.getProperty("carpetaGuardarCarnets"), comboCursos.getSelectedItem().toString(),
 							String.valueOf(sdf.format(date)));
+					if (respuestaGenerarCarnets == null) {
+						lblCarnetsGenerados.setText(p.getProperty("lblCarnetsGeneradosError"));
+						lblCarnetsGenerados.setVisible(true);
+					} else {
+						lblCarnetsGenerados.setText(p.getProperty("carnets1") + " " + respuestaGenerarCarnets.get("OK")
+								+ " " + p.getProperty("carnets2") + " " + respuestaGenerarCarnets.get("KO") + " "
+								+ p.getProperty("carnets3"));
+						lblCarnetsGenerados.setVisible(true);
+					}
 				} else if (vieneDe.equals("enviarEmail") && lista.size() > 0) {
-
+					EnviarEmailConCarnet enviarEmailConCarnet = new EnviarEmailConCarnet();
+					try {
+						lblCarnetsEnviados
+								.setText(enviarEmailConCarnet.enviarEmail(lista, p.getProperty("carpetaGuardarCarnets"),
+										comboCursos.getSelectedItem().toString(), idioma));
+						lblCarnetsEnviados.setVisible(true);
+					} catch (Exception e1) {
+						lblError.setVisible(true);
+						e1.printStackTrace();
+					}
+				} else {
+					lblError.setVisible(true);
 				}
 
-				System.out.println(lista);
+				System.out.println(Logger.log(this.getClass().getName(), lista.toString()));
 			}
 		});
 
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				ocultarAvisos();
 				panelPrincipal.setVisible(true);
 				panelListado.setVisible(false);
+				vieneDe = "cancelar";
 			}
 		});
 
+	}
+
+	private void cargarListado() {
+
+		panelScroll.add(chckbxSelectAll);
+
+		// ScrollPane for Table
+		if (scrollPane == null)
+			scrollPane = new JScrollPane();
+		scrollPane.setBounds(0, 0, anchoVentana - (anchoVentana / 5), altoVentana - (altoVentana / 10));
+		panelScroll.add(scrollPane);
+
+		// Table
+		table = new JTable();
+		scrollPane.setViewportView(table);
+
+		// Model for Table
+		@SuppressWarnings("serial")
+		DefaultTableModel model = new DefaultTableModel() {
+
+			public Class<?> getColumnClass(int column) {
+				switch (column) {
+				case 0:
+					return Boolean.class;
+				case 1:
+					return String.class;
+				case 2:
+					return String.class;
+				case 3:
+					return String.class;
+				case 4:
+					return String.class;
+				case 5:
+					return String.class;
+				case 6:
+					return String.class;
+				default:
+					return String.class;
+				}
+			}
+		};
+
+		table.setModel(model);
+
+		model.addColumn("");
+		model.addColumn(p.getProperty("col1"));
+		model.addColumn(p.getProperty("col2"));
+		model.addColumn(p.getProperty("col3"));
+		model.addColumn(p.getProperty("col4"));
+		model.addColumn(p.getProperty("col5"));
+
+		// Data Row
+		if (lista != null) {
+			for (int i = 0; i < lista.size(); i++) {
+				model.addRow(new Object[0]);
+				model.setValueAt(false, i, 0);
+				model.setValueAt(lista.get(i).get("Nº SOCIO"), i, 1);
+				model.setValueAt(lista.get(i).get("EMAIL"), i, 2);
+				model.setValueAt(lista.get(i).get("FAMILIAS"), i, 3);
+				model.setValueAt(lista.get(i).get("NOMBRE MADRE"), i, 4);
+				model.setValueAt(lista.get(i).get("NOMBRE2 PADRE"), i, 5);
+			}
+		}
+
+	}
+
+	private void ocultarAvisos() {
+		lblRutaBBDDError.setVisible(false);
+		lblCursoError.setVisible(false);
+		lblDateChooserError.setVisible(false);
+		lblCarnetsGenerados.setVisible(false);
+		lblCarnetsEnviados.setVisible(false);
+		lblError.setVisible(false);
 	}
 
 }
