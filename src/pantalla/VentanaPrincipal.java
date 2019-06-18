@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -46,6 +47,8 @@ public class VentanaPrincipal extends JFrame {
 
 	private int anchoVentana;
 	private int altoVentana;
+	private int altoFila;
+	private int margenIzquierdo;
 	private JPanel panelPrincipal;
 	private JPanel panelListado;
 	private JTextField textFieldRutaBBDD;
@@ -85,9 +88,12 @@ public class VentanaPrincipal extends JFrame {
 		panelPrincipal = new JPanel();
 		panelPrincipal.setBounds(0, 0, anchoVentana, altoVentana);
 		panelPrincipal.setVisible(true);
+		panelPrincipal.setLayout(null);
 		panelListado = new JPanel();
 		panelListado.setBounds(0, 0, anchoVentana, altoVentana);
 		panelListado.setVisible(false);
+		altoFila = altoVentana / 20;
+		margenIzquierdo = anchoVentana / 32;
 		inicializarPanelPrincipal();
 		inicializarPanelListado();
 		add(panelPrincipal);
@@ -119,23 +125,28 @@ public class VentanaPrincipal extends JFrame {
 
 		JLabel lblRutaBBDD = new JLabel(p.getProperty("lblBBDD"));
 		lblRutaBBDD.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+		lblRutaBBDD.setBounds(margenIzquierdo, altoFila, 115, 16);
 
 		// ruta de la base de datos
 		textFieldRutaBBDD = new JTextField();
 		textFieldRutaBBDD.setEditable(false);
 		textFieldRutaBBDD.setColumns(30);
+		textFieldRutaBBDD.setBounds(margenIzquierdo + lblRutaBBDD.getWidth(), altoFila - 3, 350, 22);
 
 		// botón para buscar archivo base de datos
 		btnSeleccionar = new JButton(p.getProperty("btnSeleccionar"));
+		btnSeleccionar.setBounds(margenIzquierdo + lblRutaBBDD.getWidth() + textFieldRutaBBDD.getWidth() + 5, altoFila - 7, 90, 30);
 
 		// aviso de ruta vacía o errónea
 		lblRutaBBDDError = new JLabel(p.getProperty("lblRutaBBDDError"));
 		lblRutaBBDDError.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		lblRutaBBDDError.setForeground(Color.RED);
 		lblRutaBBDDError.setVisible(false);
+		lblRutaBBDDError.setBounds(margenIzquierdo, altoFila * 2, anchoVentana - margenIzquierdo, 16);
 
 		JLabel lblCurso = new JLabel(p.getProperty("lblCurso"));
 		lblCurso.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+		lblCurso.setBounds(margenIzquierdo, altoFila * 4, 115, 16);
 
 		// listado de cursos
 		cursos = p.getProperty("listaCursos").split(",");
@@ -145,47 +156,57 @@ public class VentanaPrincipal extends JFrame {
 		for (String curso : cursos) {
 			comboCursos.addItem(curso);
 		}
+		comboCursos.setBounds(margenIzquierdo + lblCurso.getWidth(), altoFila * 4 - 6, 130, 25);
 
 		// aviso de curso no seleccionado
 		lblCursoError = new JLabel(p.getProperty("lblCursoError"));
 		lblCursoError.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		lblCursoError.setForeground(Color.RED);
 		lblCursoError.setVisible(false);
+		lblCursoError.setBounds(margenIzquierdo, altoFila * 5, anchoVentana - margenIzquierdo, 16);
 
 		JLabel lblValidoHasta = new JLabel(p.getProperty("lblValidoHasta"));
 		lblValidoHasta.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+		lblValidoHasta.setBounds(margenIzquierdo, altoFila * 7, 115, 16);
 
 		// cuadro de selección de fecha de vencimiento
 		JDateChooser dateChooser = new JDateChooser();
+		dateChooser.setBounds(margenIzquierdo + lblValidoHasta.getWidth(), altoFila * 7 - 3, 100, 20);
 
 		// aviso de fecha de vencimiento no seleccionada
 		lblDateChooserError = new JLabel(p.getProperty("lblDateChooserError"));
 		lblDateChooserError.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		lblDateChooserError.setForeground(Color.RED);
 		lblDateChooserError.setVisible(false);
+		lblDateChooserError.setBounds(margenIzquierdo, altoFila * 8, anchoVentana - margenIzquierdo, 16);
 
 		// confirmación de generación de carnets
 		lblCarnetsGenerados = new JLabel();
 		lblCarnetsGenerados.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		lblCarnetsGenerados.setForeground(Color.BLUE);
 		lblCarnetsGenerados.setVisible(false);
+		lblCarnetsGenerados.setBounds(margenIzquierdo, altoFila * 11, anchoVentana - margenIzquierdo, 16);
 
-		// confirmación de generación de carnets
+		// confirmación de carnets enviados
 		lblCarnetsEnviados = new JLabel();
 		lblCarnetsEnviados.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		lblCarnetsEnviados.setForeground(Color.BLUE);
 		lblCarnetsEnviados.setVisible(false);
+		lblCarnetsEnviados.setBounds(margenIzquierdo, altoFila * 11, anchoVentana - margenIzquierdo, 16);
 
 		lblError = new JLabel(p.getProperty("lblError"));
 		lblError.setFont(new Font("Arial", Font.PLAIN, 16));
 		lblError.setForeground(Color.RED);
 		lblError.setVisible(false);
+		lblError.setBounds(margenIzquierdo, altoFila * 12, anchoVentana - margenIzquierdo, 18);
 
 		btnGenerarCarnets = new JButton(p.getProperty("btnGenerarCarnets"));
 		btnGenerarCarnets.setBackground(new Color(153, 204, 153));
 		btnGenerarCarnets.setForeground(Color.BLACK);
+		btnGenerarCarnets.setBounds(anchoVentana / 8, altoFila * 15, 150, 30);
 
 		btnEnviarEmail = new JButton(p.getProperty("btnGenerarEmail"));
+		btnEnviarEmail.setBounds(5 * anchoVentana / 8, altoFila * 15, 150, 30);
 
 		panelPrincipal.add(lblRutaBBDD);
 		panelPrincipal.add(textFieldRutaBBDD);
@@ -202,6 +223,8 @@ public class VentanaPrincipal extends JFrame {
 		panelPrincipal.add(lblCarnetsEnviados);
 		panelPrincipal.add(btnGenerarCarnets);
 		panelPrincipal.add(btnEnviarEmail);
+		
+
 
 		// Este checkbox es del otro panel pero se escucha en este por eso lo inicializo
 		// acá
