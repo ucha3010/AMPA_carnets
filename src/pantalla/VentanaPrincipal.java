@@ -29,6 +29,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -36,7 +38,6 @@ import acciones.EnviarEmailConCarnet;
 import acciones.GenerarCarnets;
 import acciones.LeerFicherosExcel;
 import util.Comprobaciones;
-import util.Hora;
 import util.Logger;
 
 public class VentanaPrincipal extends JFrame {
@@ -234,14 +235,15 @@ public class VentanaPrincipal extends JFrame {
 						&& Comprobaciones.verificarExtensionDeArchivo(textFieldRutaBBDD.getText(), extn)
 						&& !comboCursos.getSelectedItem().toString().equals(cursos[0]) && date != null) {
 
-					panelPrincipal.setVisible(false);
-					panelListado.setVisible(true);
 					lista = leerFicherosExcel.leerExcel(textFieldRutaBBDD.getText());
-
-					cargarListado();
-
-					entro = true;
-					vieneDe = "generarCarnets";
+					if(cargarListado()) {
+						panelPrincipal.setVisible(false);
+						panelListado.setVisible(true);
+						entro = true;
+						vieneDe = "generarCarnets";
+					} else {
+						lblRutaBBDDError.setVisible(true);
+					}
 				}
 				if (!entro) {
 					if (!Comprobaciones.noEsNullNiBlanco(textFieldRutaBBDD.getText())
@@ -266,14 +268,16 @@ public class VentanaPrincipal extends JFrame {
 				if (Comprobaciones.noEsNullNiBlanco(textFieldRutaBBDD.getText())
 						&& Comprobaciones.verificarExtensionDeArchivo(textFieldRutaBBDD.getText(), extn)
 						&& !comboCursos.getSelectedItem().toString().equals(cursos[0])) {
-					panelPrincipal.setVisible(false);
-					panelListado.setVisible(true);
+					
 					lista = leerFicherosExcel.leerExcel(textFieldRutaBBDD.getText());
-
-					cargarListado();
-
-					entro = true;
-					vieneDe = "enviarEmail";
+					if(cargarListado()) {
+						panelPrincipal.setVisible(false);
+						panelListado.setVisible(true);
+						entro = true;
+						vieneDe = "enviarEmail";
+					} else {
+						lblRutaBBDDError.setVisible(true);
+					}
 				}
 				if (!entro) {
 					if (!Comprobaciones.noEsNullNiBlanco(textFieldRutaBBDD.getText())
@@ -395,7 +399,7 @@ public class VentanaPrincipal extends JFrame {
 
 	}
 
-	private void cargarListado() {
+	private boolean cargarListado() {
 
 		panelScroll.add(chckbxSelectAll);
 
@@ -436,6 +440,10 @@ public class VentanaPrincipal extends JFrame {
 		};
 
 		table.setModel(model);
+		
+		// Para que las tablas se puedan ordenar por columna se agregan estas dos líneas
+		TableRowSorter<TableModel> elQueOrdena = new TableRowSorter<TableModel>(model);
+		table.setRowSorter(elQueOrdena);
 
 		model.addColumn("");
 		model.addColumn(p.getProperty("col1"));
@@ -447,16 +455,22 @@ public class VentanaPrincipal extends JFrame {
 		// Data Row
 		if (lista != null) {
 			for (int i = 0; i < lista.size(); i++) {
-				model.addRow(new Object[0]);
-				model.setValueAt(false, i, 0);
-				model.setValueAt(lista.get(i).get("Nº SOCIO"), i, 1);
-				model.setValueAt(lista.get(i).get("EMAIL"), i, 2);
-				model.setValueAt(lista.get(i).get("FAMILIAS"), i, 3);
-				model.setValueAt(lista.get(i).get("NOMBRE MADRE"), i, 4);
-				model.setValueAt(lista.get(i).get("NOMBRE2 PADRE"), i, 5);
+				if(Comprobaciones.noEsNullNiBlanco(lista.get(i).get("Nº SOCIO")) ||
+				Comprobaciones.noEsNullNiBlanco(lista.get(i).get("EMAIL")) ||
+				Comprobaciones.noEsNullNiBlanco(lista.get(i).get("FAMILIAS")) ||
+				Comprobaciones.noEsNullNiBlanco(lista.get(i).get("NOMBRE MADRE")) ||
+				Comprobaciones.noEsNullNiBlanco(lista.get(i).get("NOMBRE2 PADRE"))) {
+					model.addRow(new Object[0]);
+					model.setValueAt(false, i, 0);
+					model.setValueAt(lista.get(i).get("Nº SOCIO"), i, 1);
+					model.setValueAt(lista.get(i).get("EMAIL"), i, 2);
+					model.setValueAt(lista.get(i).get("FAMILIAS"), i, 3);
+					model.setValueAt(lista.get(i).get("NOMBRE MADRE"), i, 4);
+					model.setValueAt(lista.get(i).get("NOMBRE2 PADRE"), i, 5);
+				}
 			}
 		}
-
+		return model.getRowCount() > 0;
 	}
 
 	private void ocultarAvisos() {
