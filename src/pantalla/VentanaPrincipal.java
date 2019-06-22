@@ -2,9 +2,9 @@ package pantalla;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -75,6 +75,7 @@ public class VentanaPrincipal extends JFrame {
 	private JLabel lblCarnetsEnviados;
 	private JLabel lblError;
 	private String idioma;
+	String absolutePath = new File("").getAbsolutePath();
 
 	Properties p;
 
@@ -207,6 +208,10 @@ public class VentanaPrincipal extends JFrame {
 
 		btnEnviarEmail = new JButton(p.getProperty("btnGenerarEmail"));
 		btnEnviarEmail.setBounds(5 * anchoVentana / 8, altoFila * 15, 150, 30);
+		
+//		imagenCargando = new JLabel();
+//		imagenCargando.setIcon(new ImageIcon(absolutePath + "\\src\\imagenes\\cargando.gif"));
+//		imagenCargando.setBounds(anchoVentana * 9/20, altoVentana * 3/4, 32, 32);
 
 		panelPrincipal.add(lblRutaBBDD);
 		panelPrincipal.add(textFieldRutaBBDD);
@@ -258,6 +263,7 @@ public class VentanaPrincipal extends JFrame {
 						&& Comprobaciones.verificarExtensionDeArchivo(textFieldRutaBBDD.getText(), extn)
 						&& !comboCursos.getSelectedItem().toString().equals(cursos[0]) && date != null) {
 
+					comienzaProceso(true);
 					lista = leerFicherosExcel.leerExcel(textFieldRutaBBDD.getText());
 					if(cargarListado()) {
 						panelPrincipal.setVisible(false);
@@ -267,6 +273,7 @@ public class VentanaPrincipal extends JFrame {
 					} else {
 						lblRutaBBDDError.setVisible(true);
 					}
+					comienzaProceso(false);
 				}
 				if (!entro) {
 					if (!Comprobaciones.noEsNullNiBlanco(textFieldRutaBBDD.getText())
@@ -292,6 +299,7 @@ public class VentanaPrincipal extends JFrame {
 						&& Comprobaciones.verificarExtensionDeArchivo(textFieldRutaBBDD.getText(), extn)
 						&& !comboCursos.getSelectedItem().toString().equals(cursos[0])) {
 					
+					comienzaProceso(true);
 					lista = leerFicherosExcel.leerExcel(textFieldRutaBBDD.getText());
 					if(cargarListado()) {
 						panelPrincipal.setVisible(false);
@@ -301,6 +309,7 @@ public class VentanaPrincipal extends JFrame {
 					} else {
 						lblRutaBBDDError.setVisible(true);
 					}
+					comienzaProceso(false);
 				}
 				if (!entro) {
 					if (!Comprobaciones.noEsNullNiBlanco(textFieldRutaBBDD.getText())
@@ -348,6 +357,7 @@ public class VentanaPrincipal extends JFrame {
 
 		btnContinuar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				comienzaProceso(true);				
 				ocultarAvisos();
 				panelPrincipal.setVisible(true);
 				panelListado.setVisible(false);
@@ -375,7 +385,6 @@ public class VentanaPrincipal extends JFrame {
 					}
 				}
 
-				String absolutePath = new File("").getAbsolutePath();
 				if (vieneDe.equals("generarCarnets") && lista.size() > 0) {
 					GenerarCarnets generarCarnets = new GenerarCarnets();
 					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/YYYY");
@@ -406,6 +415,7 @@ public class VentanaPrincipal extends JFrame {
 				} else {
 					lblError.setVisible(true);
 				}
+				comienzaProceso(false);
 
 				System.out.println(Logger.log(this.getClass().getName(), lista.toString()));
 			}
@@ -503,6 +513,19 @@ public class VentanaPrincipal extends JFrame {
 		lblCarnetsGenerados.setVisible(false);
 		lblCarnetsEnviados.setVisible(false);
 		lblError.setVisible(false);
+	}
+
+	@SuppressWarnings("deprecation")
+	private void comienzaProceso(boolean estado) {
+		if(estado) {
+			setCursor(Cursor.WAIT_CURSOR);
+		} else {
+			setCursor(Cursor.DEFAULT_CURSOR);
+		}
+		btnEnviarEmail.setEnabled(!estado);
+		btnGenerarCarnets.setEnabled(!estado);
+		btnContinuar.setEnabled(!estado);
+		btnCancelar.setEnabled(!estado);
 	}
 
 }
