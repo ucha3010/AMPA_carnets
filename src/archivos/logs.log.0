@@ -1,0 +1,118 @@
+jun 23, 2019 7:12:34 PM pantalla.VentanaPrincipal <init>
+INFORMACIÓN: Acceso al programa
+jun 23, 2019 7:12:34 PM pantalla.VentanaPrincipal inicializarPanelPrincipal
+INFORMACIÓN: ENTRADA
+jun 23, 2019 7:12:34 PM pantalla.VentanaPrincipal inicializarPanelPrincipal
+INFORMACIÓN: SALIDA
+jun 23, 2019 7:12:34 PM pantalla.VentanaPrincipal inicializarPanelListado
+INFORMACIÓN: ENTRADA
+jun 23, 2019 7:12:34 PM pantalla.VentanaPrincipal inicializarPanelListado
+INFORMACIÓN: SALIDA
+jun 23, 2019 7:54:02 PM pantalla.VentanaPrincipal <init>
+INFORMACIÓN: Acceso al programa
+jun 23, 2019 7:54:02 PM pantalla.VentanaPrincipal inicializarPanelPrincipal
+INFORMACIÓN: ENTRADA
+jun 23, 2019 7:54:02 PM pantalla.VentanaPrincipal inicializarPanelPrincipal
+INFORMACIÓN: SALIDA
+jun 23, 2019 7:54:02 PM pantalla.VentanaPrincipal inicializarPanelListado
+INFORMACIÓN: ENTRADA
+jun 23, 2019 7:54:02 PM pantalla.VentanaPrincipal inicializarPanelListado
+INFORMACIÓN: SALIDA
+jun 23, 2019 7:54:16 PM pantalla.VentanaPrincipal$2 actionPerformed
+INFORMACIÓN: ENTRADA - btnGenerarCarnets.addActionListener
+jun 23, 2019 7:54:16 PM pantalla.VentanaPrincipal$2 actionPerformed
+INFORMACIÓN: Fecha de vencimiento no seleccionada o errónea
+jun 23, 2019 7:54:16 PM pantalla.VentanaPrincipal$2 actionPerformed
+INFORMACIÓN: SALIDA - btnGenerarCarnets.addActionListener
+jun 23, 2019 7:54:24 PM pantalla.VentanaPrincipal$2 actionPerformed
+INFORMACIÓN: ENTRADA - btnGenerarCarnets.addActionListener
+jun 23, 2019 7:54:25 PM pantalla.VentanaPrincipal cargarListado
+INFORMACIÓN: ENTRADA
+jun 23, 2019 7:54:25 PM pantalla.VentanaPrincipal cargarListado
+INFORMACIÓN: SALIDA
+jun 23, 2019 7:54:25 PM pantalla.VentanaPrincipal$2 actionPerformed
+INFORMACIÓN: SALIDA - btnGenerarCarnets.addActionListener
+jun 23, 2019 7:54:27 PM pantalla.VentanaPrincipal$5 actionPerformed
+INFORMACIÓN: ENTRADA - btnContinuar.addActionListener
+jun 23, 2019 7:54:27 PM pantalla.VentanaPrincipal$5 actionPerformed
+INFORMACIÓN: table.getRowCount(): 30
+jun 23, 2019 7:54:27 PM pantalla.VentanaPrincipal$5 actionPerformed
+INFORMACIÓN: lista.size(): 30
+jun 23, 2019 7:54:28 PM pantalla.VentanaPrincipal$5 actionPerformed
+INFORMACIÓN: Se generaron 30 carnets correctamente y 0 carnets dieron error
+jun 23, 2019 7:54:28 PM pantalla.VentanaPrincipal$5 actionPerformed
+INFORMACIÓN: SALIDA - btnContinuar.addActionListener
+jun 23, 2019 7:54:30 PM pantalla.VentanaPrincipal$3 actionPerformed
+INFORMACIÓN: ENTRADA - btnEnviarEmail.addActionListener
+jun 23, 2019 7:54:30 PM pantalla.VentanaPrincipal cargarListado
+INFORMACIÓN: ENTRADA
+jun 23, 2019 7:54:30 PM pantalla.VentanaPrincipal cargarListado
+INFORMACIÓN: SALIDA
+jun 23, 2019 7:54:30 PM pantalla.VentanaPrincipal$3 actionPerformed
+INFORMACIÓN: SALIDA - btnEnviarEmail.addActionListener
+jun 23, 2019 7:54:42 PM pantalla.VentanaPrincipal$5 actionPerformed
+INFORMACIÓN: ENTRADA - btnContinuar.addActionListener
+jun 23, 2019 7:54:42 PM pantalla.VentanaPrincipal$5 actionPerformed
+INFORMACIÓN: table.getRowCount(): 30
+jun 23, 2019 7:54:42 PM pantalla.VentanaPrincipal$5 actionPerformed
+INFORMACIÓN: lista.size(): 1
+jun 23, 2019 7:54:45 PM pantalla.VentanaPrincipal$5 actionPerformed
+INFORMACIÓN: Se enviaron los 1 emails seleccionados
+jun 23, 2019 7:54:45 PM pantalla.VentanaPrincipal$5 actionPerformed
+INFORMACIÓN: SALIDA - btnContinuar.addActionListener
+jun 23, 2019 11:41:59 PM pantalla.VentanaPrincipal <init>
+INFORMACIÓN: Acceso al programa
+jun 23, 2019 11:41:59 PM pantalla.VentanaPrincipal inicializarPanelPrincipal
+INFORMACIÓN: ENTRADA
+jun 23, 2019 11:41:59 PM pantalla.VentanaPrincipal inicializarPanelPrincipal
+INFORMACIÓN: SALIDA
+jun 23, 2019 11:41:59 PM pantalla.VentanaPrincipal inicializarPanelListado
+INFORMACIÓN: ENTRADA
+jun 23, 2019 11:41:59 PM pantalla.VentanaPrincipal inicializarPanelListado
+INFORMACIÓN: SALIDA
+jun 23, 2019 11:42:08 PM pantalla.VentanaPrincipal$3 actionPerformed
+INFORMACIÓN: ENTRADA - btnEnviarEmail.addActionListener
+jun 23, 2019 11:42:09 PM pantalla.VentanaPrincipal cargarListado
+INFORMACIÓN: ENTRADA
+jun 23, 2019 11:42:09 PM pantalla.VentanaPrincipal cargarListado
+INFORMACIÓN: SALIDA
+jun 23, 2019 11:42:09 PM pantalla.VentanaPrincipal$3 actionPerformed
+INFORMACIÓN: SALIDA - btnEnviarEmail.addActionListener
+jun 23, 2019 11:42:20 PM pantalla.VentanaPrincipal$5 actionPerformed
+INFORMACIÓN: ENTRADA - btnContinuar.addActionListener
+jun 23, 2019 11:42:20 PM pantalla.VentanaPrincipal$5 actionPerformed
+INFORMACIÓN: table.getRowCount(): 30
+jun 23, 2019 11:42:20 PM pantalla.VentanaPrincipal$5 actionPerformed
+INFORMACIÓN: lista.size(): 1
+jun 23, 2019 11:42:23 PM pantalla.VentanaPrincipal$5 actionPerformed
+INFORMACIÓN: Se enviaron los 1 emails seleccionados
+jun 23, 2019 11:42:23 PM pantalla.VentanaPrincipal$5 actionPerformed
+INFORMACIÓN: SALIDA - btnContinuar.addActionListener
+jun 23, 2019 11:53:51 PM pantalla.VentanaPrincipal <init>
+INFORMACIÓN: Acceso al programa
+jun 23, 2019 11:53:51 PM pantalla.VentanaPrincipal inicializarPanelPrincipal
+INFORMACIÓN: ENTRADA
+jun 23, 2019 11:53:51 PM pantalla.VentanaPrincipal inicializarPanelPrincipal
+INFORMACIÓN: SALIDA
+jun 23, 2019 11:53:51 PM pantalla.VentanaPrincipal inicializarPanelListado
+INFORMACIÓN: ENTRADA
+jun 23, 2019 11:53:51 PM pantalla.VentanaPrincipal inicializarPanelListado
+INFORMACIÓN: SALIDA
+jun 23, 2019 11:54:01 PM pantalla.VentanaPrincipal$3 actionPerformed
+INFORMACIÓN: ENTRADA - btnEnviarEmail.addActionListener
+jun 23, 2019 11:54:02 PM pantalla.VentanaPrincipal cargarListado
+INFORMACIÓN: ENTRADA
+jun 23, 2019 11:54:02 PM pantalla.VentanaPrincipal cargarListado
+INFORMACIÓN: SALIDA
+jun 23, 2019 11:54:02 PM pantalla.VentanaPrincipal$3 actionPerformed
+INFORMACIÓN: SALIDA - btnEnviarEmail.addActionListener
+jun 23, 2019 11:54:08 PM pantalla.VentanaPrincipal$5 actionPerformed
+INFORMACIÓN: ENTRADA - btnContinuar.addActionListener
+jun 23, 2019 11:54:08 PM pantalla.VentanaPrincipal$5 actionPerformed
+INFORMACIÓN: table.getRowCount(): 30
+jun 23, 2019 11:54:08 PM pantalla.VentanaPrincipal$5 actionPerformed
+INFORMACIÓN: lista.size(): 1
+jun 23, 2019 11:54:11 PM pantalla.VentanaPrincipal$5 actionPerformed
+INFORMACIÓN: Se enviaron los 1 emails seleccionados
+jun 23, 2019 11:54:11 PM pantalla.VentanaPrincipal$5 actionPerformed
+INFORMACIÓN: SALIDA - btnContinuar.addActionListener

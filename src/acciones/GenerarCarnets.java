@@ -12,17 +12,17 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
 import util.Comprobaciones;
-import util.Logger;
 
 public class GenerarCarnets {
 
-	public Map<String, Integer> rellenarCarnet(List<Map<String, String>> datos, String rutaImagen, String carpetaCarnets, String curso,
-			String validoHasta) {
-		
+	public Map<String, Integer> rellenarCarnet(List<Map<String, String>> datos, String rutaImagen,
+			String carpetaCarnets, String curso, String validoHasta, Logger LOG) {
+
 		Map<String, Integer> salida = null;
 
 		try {
@@ -37,14 +37,15 @@ public class GenerarCarnets {
 				Hashtable<TextAttribute, Object> map = new Hashtable<TextAttribute, Object>();
 				map.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
 
-				// verifico que exista el directorio donde voy a guardar los carnets. Si no existe lo creo.
+				// verifico que exista el directorio donde voy a guardar los carnets. Si no
+				// existe lo creo.
 				String rutaCarnetsFinal = "";
-				if(Comprobaciones.noEsNullNiBlanco(carpetaCarnets) && Comprobaciones.noEsNullNiBlanco(curso)){
+				if (Comprobaciones.noEsNullNiBlanco(carpetaCarnets) && Comprobaciones.noEsNullNiBlanco(curso)) {
 					Comprobaciones.verificarCrearDirectorio(carpetaCarnets + curso);
 					rutaCarnetsFinal = carpetaCarnets + "\\" + curso + "\\";
 				}
-				
-				int carnetsOK = 0;				
+
+				int carnetsOK = 0;
 				salida = new HashMap<String, Integer>();
 
 				for (int i = 0; i < datos.size(); i++) {
@@ -83,23 +84,23 @@ public class GenerarCarnets {
 						g2d.dispose();
 
 						// guardo como JPG (numero_de_socio.jpg)
-						File file = new File(
-								rutaCarnetsFinal + datos.get(i).get("Nº SOCIO") + ".jpg");
+						File file = new File(rutaCarnetsFinal + datos.get(i).get("Nº SOCIO") + ".jpg");
 						ImageIO.write(bufferedImage, "jpg", file);
 						carnetsOK++;
 					} else {
-						System.out.println(Logger.log(this.getClass().getName(), "Carnet de posición " + (i+1) + " del listado no se puede generar"));
+						LOG.info(
+								"Carnet de posición " + (i + 1) + " del listado no se puede generar - " + datos.get(i));
 					}
 				}
 				salida.put("OK", carnetsOK);
 				salida.put("KO", datos.size() - carnetsOK);
 			}
 		} catch (IOException e) {
-			System.out.println(e.getStackTrace());
+			LOG.info(e.getStackTrace().toString());
 		} catch (Exception e) {
-			System.out.println(e.getStackTrace());
+			LOG.info(e.getStackTrace().toString());
 		}
-		
+
 		return salida;
 	}
 

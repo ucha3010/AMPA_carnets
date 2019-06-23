@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -39,7 +40,7 @@ import acciones.EnviarEmailConCarnet;
 import acciones.GenerarCarnets;
 import acciones.LeerFicherosExcel;
 import util.Comprobaciones;
-import util.Logger;
+import util.LocalLogger;
 
 public class VentanaPrincipal extends JFrame {
 
@@ -75,14 +76,16 @@ public class VentanaPrincipal extends JFrame {
 	private JLabel lblCarnetsEnviados;
 	private JLabel lblError;
 	private String idioma;
-	String absolutePath = new File("").getAbsolutePath();
+	private String absolutePath = new File("").getAbsolutePath();
+	private Properties p;
+	private Logger LOG;
 
-	Properties p;
-
-	public VentanaPrincipal(String idioma) throws Exception {
+	public VentanaPrincipal(String idioma, Logger LOG) throws Exception {
 
 		this.idioma = idioma;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.LOG = LOG;
+		LOG.info("Acceso al programa");
 		p = new Properties();
 		p.load(new FileReader("src/util/Constantes_" + this.idioma + ".properties"));
 		inicializarVentana();
@@ -124,6 +127,7 @@ public class VentanaPrincipal extends JFrame {
 
 	private void inicializarPanelPrincipal() {
 
+		LOG.info(LocalLogger.logIn());
 		JLabel lblRutaBBDD = new JLabel(p.getProperty("lblBBDD"));
 		lblRutaBBDD.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		lblRutaBBDD.setBounds(margenIzquierdo, altoFila, 115, 16);
@@ -136,7 +140,8 @@ public class VentanaPrincipal extends JFrame {
 
 		// botón para buscar archivo base de datos
 		btnSeleccionar = new JButton(p.getProperty("btnSeleccionar"));
-		btnSeleccionar.setBounds(margenIzquierdo + lblRutaBBDD.getWidth() + textFieldRutaBBDD.getWidth() + 5, altoFila - 7, 90, 30);
+		btnSeleccionar.setBounds(margenIzquierdo + lblRutaBBDD.getWidth() + textFieldRutaBBDD.getWidth() + 5,
+				altoFila - 7, 90, 30);
 
 		// aviso de ruta vacía o errónea
 		lblRutaBBDDError = new JLabel(p.getProperty("lblRutaBBDDError"));
@@ -208,10 +213,11 @@ public class VentanaPrincipal extends JFrame {
 
 		btnEnviarEmail = new JButton(p.getProperty("btnGenerarEmail"));
 		btnEnviarEmail.setBounds(5 * anchoVentana / 8, altoFila * 15, 150, 30);
-		
-//		imagenCargando = new JLabel();
-//		imagenCargando.setIcon(new ImageIcon(absolutePath + "\\src\\imagenes\\cargando.gif"));
-//		imagenCargando.setBounds(anchoVentana * 9/20, altoVentana * 3/4, 32, 32);
+
+		// imagenCargando = new JLabel();
+		// imagenCargando.setIcon(new ImageIcon(absolutePath +
+		// "\\src\\imagenes\\cargando.gif"));
+		// imagenCargando.setBounds(anchoVentana * 9/20, altoVentana * 3/4, 32, 32);
 
 		panelPrincipal.add(lblRutaBBDD);
 		panelPrincipal.add(textFieldRutaBBDD);
@@ -228,8 +234,6 @@ public class VentanaPrincipal extends JFrame {
 		panelPrincipal.add(lblCarnetsEnviados);
 		panelPrincipal.add(btnGenerarCarnets);
 		panelPrincipal.add(btnEnviarEmail);
-		
-
 
 		// Este checkbox es del otro panel pero se escucha en este por eso lo inicializo
 		// acá
@@ -254,6 +258,7 @@ public class VentanaPrincipal extends JFrame {
 
 		btnGenerarCarnets.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				LOG.info(LocalLogger.logIn("btnGenerarCarnets.addActionListener"));
 				String[] extn = p.getProperty("extensionBBDD").split(",");
 				date = dateChooser.getDate();
 				ocultarAvisos();
@@ -264,14 +269,15 @@ public class VentanaPrincipal extends JFrame {
 						&& !comboCursos.getSelectedItem().toString().equals(cursos[0]) && date != null) {
 
 					comienzaProceso(true);
-					lista = leerFicherosExcel.leerExcel(textFieldRutaBBDD.getText());
-					if(cargarListado()) {
+					lista = leerFicherosExcel.leerExcel(textFieldRutaBBDD.getText(), LOG);
+					if (cargarListado()) {
 						panelPrincipal.setVisible(false);
 						panelListado.setVisible(true);
 						entro = true;
 						vieneDe = "generarCarnets";
 					} else {
 						lblRutaBBDDError.setVisible(true);
+						LOG.info(lblRutaBBDDError.getText());
 					}
 					comienzaProceso(false);
 				}
@@ -279,35 +285,42 @@ public class VentanaPrincipal extends JFrame {
 					if (!Comprobaciones.noEsNullNiBlanco(textFieldRutaBBDD.getText())
 							|| !Comprobaciones.verificarExtensionDeArchivo(textFieldRutaBBDD.getText(), extn)) {
 						lblRutaBBDDError.setVisible(true);
+						LOG.info(lblRutaBBDDError.getText());
 					}
 					if (comboCursos.getSelectedItem().toString().equals(cursos[0])) {
 						lblCursoError.setVisible(true);
+						LOG.info(lblCursoError.getText());
 					}
 					if (date == null) {
 						lblDateChooserError.setVisible(true);
+						LOG.info(lblDateChooserError.getText());
 					}
 				}
+				LOG.info(LocalLogger.logOut("btnGenerarCarnets.addActionListener"));
 			}
 		});
 
 		btnEnviarEmail.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				LOG.info(LocalLogger.logIn("btnEnviarEmail.addActionListener"));
 				ocultarAvisos();
+				chckbxSelectAll.setSelected(false);
 				String[] extn = p.getProperty("extensionBBDD").split(",");
 				boolean entro = false;
 				if (Comprobaciones.noEsNullNiBlanco(textFieldRutaBBDD.getText())
 						&& Comprobaciones.verificarExtensionDeArchivo(textFieldRutaBBDD.getText(), extn)
 						&& !comboCursos.getSelectedItem().toString().equals(cursos[0])) {
-					
+
 					comienzaProceso(true);
-					lista = leerFicherosExcel.leerExcel(textFieldRutaBBDD.getText());
-					if(cargarListado()) {
+					lista = leerFicherosExcel.leerExcel(textFieldRutaBBDD.getText(), LOG);
+					if (cargarListado()) {
 						panelPrincipal.setVisible(false);
 						panelListado.setVisible(true);
 						entro = true;
 						vieneDe = "enviarEmail";
 					} else {
 						lblRutaBBDDError.setVisible(true);
+						LOG.info(lblRutaBBDDError.getText());
 					}
 					comienzaProceso(false);
 				}
@@ -315,11 +328,14 @@ public class VentanaPrincipal extends JFrame {
 					if (!Comprobaciones.noEsNullNiBlanco(textFieldRutaBBDD.getText())
 							|| !Comprobaciones.verificarExtensionDeArchivo(textFieldRutaBBDD.getText(), extn)) {
 						lblRutaBBDDError.setVisible(true);
+						LOG.info(lblRutaBBDDError.getText());
 					}
 					if (comboCursos.getSelectedItem().toString().equals(cursos[0])) {
 						lblCursoError.setVisible(true);
+						LOG.info(lblCursoError.getText());
 					}
 				}
+				LOG.info(LocalLogger.logOut("btnEnviarEmail.addActionListener"));
 			}
 		});
 
@@ -337,11 +353,13 @@ public class VentanaPrincipal extends JFrame {
 				}
 			}
 		});
+		LOG.info(LocalLogger.logOut());
 
 	}
 
 	private void inicializarPanelListado() {
 
+		LOG.info(LocalLogger.logIn());
 		btnContinuar = new JButton(p.getProperty("btnContinuar"));
 		btnCancelar = new JButton(p.getProperty("btnCancelar"));
 
@@ -357,12 +375,14 @@ public class VentanaPrincipal extends JFrame {
 
 		btnContinuar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				comienzaProceso(true);				
+				LOG.info(LocalLogger.logIn("btnContinuar.addActionListener"));
+				comienzaProceso(true);
 				ocultarAvisos();
 				panelPrincipal.setVisible(true);
 				panelListado.setVisible(false);
 				lista = new ArrayList<>();
 				Map<String, String> dato;
+				LOG.info("table.getRowCount(): " + table.getRowCount());
 				for (int i = 0; i < table.getRowCount(); i++) {
 					// miro que, si se va a enviar email traiga número de socio e email
 					// y si se va a generar carnet traiga número de socio
@@ -385,13 +405,14 @@ public class VentanaPrincipal extends JFrame {
 					}
 				}
 
+				LOG.info("lista.size(): " + lista.size());
 				if (vieneDe.equals("generarCarnets") && lista.size() > 0) {
 					GenerarCarnets generarCarnets = new GenerarCarnets();
 					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/YYYY");
 					Map<String, Integer> respuestaGenerarCarnets = generarCarnets.rellenarCarnet(lista,
 							absolutePath + "\\src\\imagenes\\" + p.getProperty("archivoCarnetVacio"),
 							p.getProperty("carpetaGuardarCarnets"), comboCursos.getSelectedItem().toString(),
-							String.valueOf(sdf.format(date)));
+							String.valueOf(sdf.format(date)), LOG);
 					if (respuestaGenerarCarnets == null) {
 						lblCarnetsGenerados.setText(p.getProperty("lblCarnetsGeneradosError"));
 						lblCarnetsGenerados.setVisible(true);
@@ -401,39 +422,47 @@ public class VentanaPrincipal extends JFrame {
 								+ p.getProperty("carnets3"));
 						lblCarnetsGenerados.setVisible(true);
 					}
+					LOG.info(lblCarnetsGenerados.getText());
 				} else if (vieneDe.equals("enviarEmail") && lista.size() > 0) {
 					EnviarEmailConCarnet enviarEmailConCarnet = new EnviarEmailConCarnet();
 					try {
 						lblCarnetsEnviados
 								.setText(enviarEmailConCarnet.enviarEmail(lista, p.getProperty("carpetaGuardarCarnets"),
-										comboCursos.getSelectedItem().toString(), idioma));
+										comboCursos.getSelectedItem().toString(), idioma, LOG));
 						lblCarnetsEnviados.setVisible(true);
+						LOG.info(lblCarnetsEnviados.getText());
 					} catch (Exception e1) {
 						lblError.setVisible(true);
-						e1.printStackTrace();
+						LOG.info(lblError.getText());
+						LOG.info(e1.getStackTrace().toString());
 					}
 				} else {
 					lblError.setVisible(true);
+					LOG.info(lblError.getText());
 				}
+				// LOG.info(LocalLogger.log(this.getClass().getName(), lista.toString()));
 				comienzaProceso(false);
-
-				System.out.println(Logger.log(this.getClass().getName(), lista.toString()));
+				LOG.info(LocalLogger.logOut("btnContinuar.addActionListener"));
 			}
 		});
 
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				LOG.info(LocalLogger.logIn("btnCancelar.addActionListener"));
 				ocultarAvisos();
 				panelPrincipal.setVisible(true);
 				panelListado.setVisible(false);
 				vieneDe = "cancelar";
+				LOG.info(LocalLogger.logOut("btnCancelar.addActionListener"));
 			}
 		});
+		LOG.info(LocalLogger.logOut());
 
 	}
 
 	private boolean cargarListado() {
 
+		LOG.info(LocalLogger.logIn());
 		panelScroll.add(chckbxSelectAll);
 
 		// ScrollPane for Table
@@ -473,7 +502,7 @@ public class VentanaPrincipal extends JFrame {
 		};
 
 		table.setModel(model);
-		
+
 		// Para que las tablas se puedan ordenar por columna se agregan estas dos líneas
 		TableRowSorter<TableModel> elQueOrdena = new TableRowSorter<TableModel>(model);
 		table.setRowSorter(elQueOrdena);
@@ -488,11 +517,11 @@ public class VentanaPrincipal extends JFrame {
 		// Data Row
 		if (lista != null) {
 			for (int i = 0; i < lista.size(); i++) {
-				if(Comprobaciones.noEsNullNiBlanco(lista.get(i).get("Nº SOCIO")) ||
-				Comprobaciones.noEsNullNiBlanco(lista.get(i).get("EMAIL")) ||
-				Comprobaciones.noEsNullNiBlanco(lista.get(i).get("FAMILIAS")) ||
-				Comprobaciones.noEsNullNiBlanco(lista.get(i).get("NOMBRE MADRE")) ||
-				Comprobaciones.noEsNullNiBlanco(lista.get(i).get("NOMBRE2 PADRE"))) {
+				if (Comprobaciones.noEsNullNiBlanco(lista.get(i).get("Nº SOCIO"))
+						|| Comprobaciones.noEsNullNiBlanco(lista.get(i).get("EMAIL"))
+						|| Comprobaciones.noEsNullNiBlanco(lista.get(i).get("FAMILIAS"))
+						|| Comprobaciones.noEsNullNiBlanco(lista.get(i).get("NOMBRE MADRE"))
+						|| Comprobaciones.noEsNullNiBlanco(lista.get(i).get("NOMBRE2 PADRE"))) {
 					model.addRow(new Object[0]);
 					model.setValueAt(false, i, 0);
 					model.setValueAt(lista.get(i).get("Nº SOCIO"), i, 1);
@@ -503,6 +532,7 @@ public class VentanaPrincipal extends JFrame {
 				}
 			}
 		}
+		LOG.info(LocalLogger.logOut());
 		return model.getRowCount() > 0;
 	}
 
@@ -515,9 +545,9 @@ public class VentanaPrincipal extends JFrame {
 		lblError.setVisible(false);
 	}
 
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings({ "deprecation" })
 	private void comienzaProceso(boolean estado) {
-		if(estado) {
+		if (estado) {
 			setCursor(Cursor.WAIT_CURSOR);
 		} else {
 			setCursor(Cursor.DEFAULT_CURSOR);

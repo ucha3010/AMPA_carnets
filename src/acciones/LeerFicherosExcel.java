@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -17,17 +18,15 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import util.Hora;
-import util.Logger;
+import util.LocalLogger;
 
 public class LeerFicherosExcel {
 
 	/**
-	 * pom.xml 
-	 * <!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
+	 * pom.xml <!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
 	 * <dependency> <groupId>org.apache.poi</groupId> <artifactId>poi</artifactId>
-	 * <version>3.16</version> </dependency> 
-	 * <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml --> <dependency>
+	 * <version>3.16</version> </dependency> <!--
+	 * https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml --> <dependency>
 	 * <groupId>org.apache.poi</groupId> <artifactId>poi-ooxml</artifactId>
 	 * <version>3.16</version> </dependency> <!--
 	 * https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml-schemas -->
@@ -39,7 +38,7 @@ public class LeerFicherosExcel {
 	 * <artifactId>xmlbeans</artifactId> <version>2.6.0</version> </dependency>
 	 */
 
-	public List<Map<String, String>> leerExcel(String rutaArchivo) {
+	public List<Map<String, String>> leerExcel(String rutaArchivo, Logger LOG) {
 
 		List<Map<String, String>> listaDatos = new ArrayList<>();
 
@@ -100,10 +99,11 @@ public class LeerFicherosExcel {
 			}
 			worbook.close();
 		} catch (Exception e) {
-			System.out.println(e.getStackTrace());
+			LOG.info(LocalLogger.logError(e.getStackTrace().toString()));
 		}
 
-		System.out.println(Logger.log(this.getClass().getName(), listaDatos.toString()));
+		// System.out.println(LocalLogger.log(this.getClass().getName(),
+		// listaDatos.toString()));
 		return listaDatos;
 	}
 }

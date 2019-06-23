@@ -20,10 +20,10 @@ import javax.mail.PasswordAuthentication;
 
 public class Email{
     
-    public static boolean enviarCarnet(String to, String rutaArchivo){
+    public static boolean enviarCarnet(String emailReceptor, String rutaArchivo, String familia){
         String asunto = "Envío de carnet AMPA";
-        String mensaje = EmailDisenio.disenioCarnets(to, nombreArchivo(rutaArchivo));
-        boolean enviadoCompra = funcionEnviar(to, rutaArchivo, asunto, mensaje);
+        String mensaje = EmailDisenio.disenioCarnets(familia, nombreArchivo(rutaArchivo));
+        boolean enviadoCompra = funcionEnviar(emailReceptor, rutaArchivo, asunto, mensaje);
         /*if(enviadoCompra){
             //Esto sirve para enviarle el mismo email al remitente
             asunto = "Copia del original";

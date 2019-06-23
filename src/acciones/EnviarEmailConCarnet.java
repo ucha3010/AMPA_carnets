@@ -4,15 +4,15 @@ import java.io.FileReader;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 import util.Comprobaciones;
 import util.Email;
-import util.Hora;
-import util.Logger;
+import util.LocalLogger;
 
 public class EnviarEmailConCarnet {
 	
-	public String enviarEmail(List<Map<String, String>> datos, String carpetaCarnets, String curso, String idioma) throws Exception {
+	public String enviarEmail(List<Map<String, String>> datos, String carpetaCarnets, String curso, String idioma, Logger LOG) throws Exception {
 		
 
 		Properties p = new Properties();
@@ -28,14 +28,14 @@ public class EnviarEmailConCarnet {
 				if (datos.get(i) != null && Comprobaciones.noEsNullNiBlanco(datos.get(i).get("EMAIL"))
 						&& Comprobaciones.noEsNullNiBlanco(datos.get(i).get("Nº SOCIO"))) {
 					
-					if(!Email.enviarCarnet(datos.get(i).get("EMAIL"), rutaCarnets + datos.get(i).get("Nº SOCIO") + ".jpg")) {
+					if(!Email.enviarCarnet(datos.get(i).get("EMAIL"), rutaCarnets + datos.get(i).get("Nº SOCIO") + ".jpg", datos.get(i).get("FAMILIAS"))) {
 						enviados = false;
 					} else {
 						contarOK++;
 					}					
 
 				} else {
-					System.out.println(Logger.log(this.getClass().getName(), "Email de posición " + (i+1) + " del listado no se puede enviar por falta de datos - " + datos.get(i)));	
+					LOG.info(LocalLogger.logError("Email de posición " + (i+1) + " del listado no se puede enviar por falta de datos - " + datos.get(i)));	
 				}
 			}
 			if(enviados) {

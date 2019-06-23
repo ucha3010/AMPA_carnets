@@ -2,6 +2,9 @@ package principal;
 
 import java.io.File;
 import java.util.Locale;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import acciones.EnviarEmailConCarnet;
 import acciones.GenerarCarnets;
@@ -23,7 +26,12 @@ public class AMPAcarnets {
 		
 		// Pantalla de visualización
 		try {
-			VentanaPrincipal ventanaPrincipal = new VentanaPrincipal(Locale.getDefault().getLanguage());
+			Logger LOG = Logger.getLogger(VentanaPrincipal.class.getName());
+			FileHandler fh = new FileHandler(absolutePath + "//src//archivos//logs.log", 10240, 10, true);
+			LOG.addHandler(fh);
+			SimpleFormatter formatter = new SimpleFormatter();  
+	        fh.setFormatter(formatter);
+			VentanaPrincipal ventanaPrincipal = new VentanaPrincipal(Locale.getDefault().getLanguage(), LOG);
 			ventanaPrincipal.setVisible(true);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
