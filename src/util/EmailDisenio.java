@@ -13,7 +13,7 @@ public class EmailDisenio {
     //TODO DAMIAN si familia trae acentos, no los muestra bien
     public static String disenioCarnets(String familia, String file){
         String mensaje = "<HTML><BODY>"
-                + "<p>Estimada familia " + familia + "</p>"
+                + "<p>Estimada familia " + Util.conversionHTML(familia) + "</p>"
                 + "<p>" + "Desde el AMPA hemos preparado unos nuevos <b>carnets de socios</b>.  Cada familia asociada dispondr&aacute; de un carnet en <u>formato digital</u>. " + "</p>"
                 + "<p>" + "<b>&iquest;Para qu&eacute; sirven los carnets?</b>" + "</p>"
                 + "<p>" + "Os identificar&aacute; como familia asociada al AMPA del colegio en futuras actividades, por lo que se os podr&aacute; requerir al entrar/participar en las mismas." + "</p>"
@@ -61,8 +61,8 @@ public class EmailDisenio {
     			"text-decoration-color: initial;word-spacing:0px\"><span style=\"font-size:10.0pt;\r\n" + 
     			"font-family:&quot;Segoe UI&quot;,&quot;sans-serif&quot;;color:#201F1E\">S&Iacute;GUENOS EN LAS REDES\r\n" + 
     			"SOCIALES<o:p></o:p></span></p>"
-    			+ "<p style=\"background:white\"><span style=\"font-size:8.0pt;font-family:&quot;Segoe UI&quot;,&quot;sans-serif&quot;;\r\n" + 
-    			"color:#201F1E;background:white\"><a href=\"http://apavallesanchinarro.es/&nbsp;\">http://apavallesanchinarro.es/&nbsp;</a></span><span style=\"font-size:8.0pt;font-family:&quot;Segoe UI&quot;,&quot;sans-serif&quot;;color:#201F1E\"><o:p></o:p></span></p>"
+    			+ "<p style=\"background:white\"><span style=\"font-size:9.5pt;font-family:&quot;Segoe UI&quot;,&quot;sans-serif&quot;;\r\n" + 
+    			"color:#201F1E\"><a href=\"http://ampacolegioelvallesanchinarro.com/\">http://ampacolegioelvallesanchinarro.com</a></span></p>"
     			+ "<p style=\"background:white;-webkit-font-smoothing: antialiased;font-variant-ligatures: normal;\r\n" + 
     			"font-variant-caps: normal;orphans: 2;text-align:start;widows: 2;-webkit-text-stroke-width: 0px;\r\n" + 
     			"text-decoration-style: initial;text-decoration-color: initial;word-spacing:\r\n" + 
@@ -103,8 +103,9 @@ public class EmailDisenio {
     			"color:#201F1E\">En aras del cumplimiento del Reglamento (UE) 2016/679 del\r\n" + 
     			"Parlamento Europeo y del Consejo, de 27 de Abril de 2016, puede ejercer los\r\n" + 
     			"derechos de acceso, rectificaci&oacute;n, cancelaci&oacute;n, limitaci&oacute;n, oposici&oacute;n y\r\n" + 
-    			"portabilidad de manera gratuita mediante correo electr&oacute;nico a:&nbsp;</span><span style=\"font-size:7.5pt;font-family:&quot;Helvetica Neue&quot;,&quot;serif&quot;;mso-bidi-font-family:\r\n" + 
-    			"&quot;Segoe UI&quot;;color:#201F1E\"><a href=\"mailto:info@ampacolegioelvallesanchinarro.com\" data-auth=\"NotApplicable\" style=\"-webkit-font-smoothing: antialiased;font-style:inherit;font-variant:\r\n" + 
+    			"portabilidad de manera gratuita mediante correo electr&oacute;nico a:&nbsp;</span>" +
+    			"<span style=\"font-size:10.0pt;font-family:&quot;Arial&quot;,&quot;sans-serif&quot;;color:#201F1E\">" +
+    			"<a href=\"mailto:info@ampacolegioelvallesanchinarro.com\" data-auth=\"NotApplicable\" style=\"-webkit-font-smoothing: antialiased;font-style:inherit;font-variant:\r\n" + 
     			"inherit;font-weight:inherit;font-stretch: inherit;line-height:inherit\">info@ampacolegioelvallesanchinarro.com</a></span><span style=\"font-size:9.5pt;font-family:&quot;Segoe UI&quot;,&quot;sans-serif&quot;;color:#201F1E\">&nbsp;o\r\n" + 
     			"bien en la direcci&oacute;n: calle Ana de Austria 60, 28050 Madrid<o:p></o:p></span></p>";
     	
