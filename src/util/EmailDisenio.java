@@ -2,15 +2,6 @@ package util;
 
 public class EmailDisenio {
     
-    public static String DisenioAlta(int id){
-        String enlace = "/Vistas/activa.action?accion="+id;
-        String mensaje = "<HTML><BODY>"
-                + "<h1>Para confirmar su usuario </h1><a href=\""+enlace+"\">Presione este enlace</a>"
-                + "</BODY></HTML>";
-        return mensaje;
-    }
-    
-    //TODO DAMIAN si familia trae acentos, no los muestra bien
     public static String disenioCarnets(String familia, String file){
         String mensaje = "<HTML><BODY>"
                 + "<p>Estimada familia " + Util.conversionHTML(familia) + "</p>"
@@ -110,33 +101,5 @@ public class EmailDisenio {
     			"bien en la direcci&oacute;n: calle Ana de Austria 60, 28050 Madrid<o:p></o:p></span></p>";
     	
     	return firma;
-    }
-    
-    public static String DisenioApadrina(String nombre, String email, String u){
-        String enlace = "/Vistas/altaUsuarioApadrinado.action?usuEmail="+email;
-        String mensaje = "<HTML><BODY>"
-                + "<h1>Hola <b>"+nombre+"</b>!</h1><br>"
-                + "<p>Este email te llega porque "+u+" "+u
-                +" te est&aacute; enviando esta invitaci&oacute;n para que te puedas dar de alta en nuestra tienda benefici&aacute;ndote en"
-                + " tus compras con un % de descuento"
-                + " durante  d&iacute;as!<br>"
-                + "Para poder darte de alta por favor pincha en el siguiente enlace:<br>"
-                + "<a href=\""+enlace+"\">Pincha aqu&iacute; para darte de alta</a></p>"
-                + "</BODY></HTML>";
-        return mensaje;        
-    }
-    
-    public static String DisenioRecuperaPass(String u){
-        String enlace = "/Vistas/Tienda.action";
-        String mensaje = "<HTML><BODY>"
-                + "<h1>Hola <b>"+u+" "+u+"</b>!</h1><br>"
-                + "<p>Este email te llega porque has pedido recuperar tu contrase&ntilde;a en nuestra tienda. "
-                + "Te hacemos llegar tu nueva contrase&ntilde;a.<br><br>"
-                + "Usuario: "+u+"<br>"
-                + "Contrase&ntilde;a: nueva<br><br>"
-                + "Para abrir la p&aacute;gina de nuestra tienda por favor pincha en el siguiente enlace:<br>"
-                + "<a href=\""+enlace+"\">Super Look</a></p>"
-                + "</BODY></HTML>";
-        return mensaje;        
     }
 }

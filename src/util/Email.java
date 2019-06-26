@@ -76,7 +76,7 @@ public class Email{
                 message.setRecipient(Message.RecipientType.TO, new InternetAddress(para));                
                 message.setSubject(asunto);                
                 BodyPart messageBodyPart = new MimeBodyPart();
-                messageBodyPart.setContent(mensaje, "text/html");  //text/html
+                messageBodyPart.setContent(mensaje, "text/html");
                 Multipart multipart = new MimeMultipart();
                 multipart.addBodyPart(messageBodyPart);
                 String tipoDeFormato = Comprobaciones.verSiExisteCarpetaOArchivo(rutaArchivo);

@@ -79,6 +79,9 @@ public class VentanaPrincipal extends JFrame {
 	private String absolutePath = new File("").getAbsolutePath();
 	private Properties p;
 	private Logger LOG;
+	private String[] extn;
+	private boolean listadoVacio;
+	private boolean noTieneColumnaDelCursoSeleccionado;
 
 	public VentanaPrincipal(String idioma, Logger LOG) throws Exception {
 
@@ -144,7 +147,7 @@ public class VentanaPrincipal extends JFrame {
 				altoFila - 7, 90, 30);
 
 		// aviso de ruta vacía o errónea
-		lblRutaBBDDError = new JLabel(p.getProperty("lblRutaBBDDError"));
+		lblRutaBBDDError = new JLabel();
 		lblRutaBBDDError.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		lblRutaBBDDError.setForeground(Color.RED);
 		lblRutaBBDDError.setVisible(false);
@@ -241,6 +244,8 @@ public class VentanaPrincipal extends JFrame {
 		// chckbxSelectAll.setBounds(150, 29, 97, 23);
 		chckbxSelectAll.setBackground(Color.WHITE);
 		chckbxSelectAll.setFont(new Font("Verdana", Font.PLAIN, 15));
+		
+		extn = p.getProperty("extensionBBDD").split(",");
 
 		btnSeleccionar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -259,42 +264,35 @@ public class VentanaPrincipal extends JFrame {
 		btnGenerarCarnets.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				LOG.info(LocalLogger.logIn("btnGenerarCarnets.addActionListener"));
-				String[] extn = p.getProperty("extensionBBDD").split(",");
 				date = dateChooser.getDate();
 				ocultarAvisos();
 				chckbxSelectAll.setSelected(false);
 				boolean entro = false;
+				listadoVacio = false;
+				noTieneColumnaDelCursoSeleccionado = false;
 				if (Comprobaciones.noEsNullNiBlanco(textFieldRutaBBDD.getText())
 						&& Comprobaciones.verificarExtensionDeArchivo(textFieldRutaBBDD.getText(), extn)
 						&& !comboCursos.getSelectedItem().toString().equals(cursos[0]) && date != null) {
 
 					comienzaProceso(true);
 					lista = leerFicherosExcel.leerExcel(textFieldRutaBBDD.getText(), LOG);
-					if (cargarListado()) {
-						panelPrincipal.setVisible(false);
-						panelListado.setVisible(true);
-						entro = true;
-						vieneDe = "generarCarnets";
+					if(tieneColumnaDelCursoSeleccionado()) {
+						if (cargarListado()) {
+							panelPrincipal.setVisible(false);
+							panelListado.setVisible(true);
+							entro = true;
+							vieneDe = "generarCarnets";
+						} else {
+							listadoVacio = true;
+						}						
 					} else {
-						lblRutaBBDDError.setVisible(true);
-						LOG.info(lblRutaBBDDError.getText());
+						noTieneColumnaDelCursoSeleccionado = true;
 					}
 					comienzaProceso(false);
 				}
+				
 				if (!entro) {
-					if (!Comprobaciones.noEsNullNiBlanco(textFieldRutaBBDD.getText())
-							|| !Comprobaciones.verificarExtensionDeArchivo(textFieldRutaBBDD.getText(), extn)) {
-						lblRutaBBDDError.setVisible(true);
-						LOG.info(lblRutaBBDDError.getText());
-					}
-					if (comboCursos.getSelectedItem().toString().equals(cursos[0])) {
-						lblCursoError.setVisible(true);
-						LOG.info(lblCursoError.getText());
-					}
-					if (date == null) {
-						lblDateChooserError.setVisible(true);
-						LOG.info(lblDateChooserError.getText());
-					}
+					avisosDeError(true);
 				}
 				LOG.info(LocalLogger.logOut("btnGenerarCarnets.addActionListener"));
 			}
@@ -305,7 +303,6 @@ public class VentanaPrincipal extends JFrame {
 				LOG.info(LocalLogger.logIn("btnEnviarEmail.addActionListener"));
 				ocultarAvisos();
 				chckbxSelectAll.setSelected(false);
-				String[] extn = p.getProperty("extensionBBDD").split(",");
 				boolean entro = false;
 				if (Comprobaciones.noEsNullNiBlanco(textFieldRutaBBDD.getText())
 						&& Comprobaciones.verificarExtensionDeArchivo(textFieldRutaBBDD.getText(), extn)
@@ -313,27 +310,22 @@ public class VentanaPrincipal extends JFrame {
 
 					comienzaProceso(true);
 					lista = leerFicherosExcel.leerExcel(textFieldRutaBBDD.getText(), LOG);
-					if (cargarListado()) {
-						panelPrincipal.setVisible(false);
-						panelListado.setVisible(true);
-						entro = true;
-						vieneDe = "enviarEmail";
+					if(tieneColumnaDelCursoSeleccionado()) {
+						if (cargarListado()) {
+							panelPrincipal.setVisible(false);
+							panelListado.setVisible(true);
+							entro = true;
+							vieneDe = "enviarEmail";
+						} else {
+							listadoVacio = true;
+						}
 					} else {
-						lblRutaBBDDError.setVisible(true);
-						LOG.info(lblRutaBBDDError.getText());
+						noTieneColumnaDelCursoSeleccionado = true;
 					}
 					comienzaProceso(false);
 				}
 				if (!entro) {
-					if (!Comprobaciones.noEsNullNiBlanco(textFieldRutaBBDD.getText())
-							|| !Comprobaciones.verificarExtensionDeArchivo(textFieldRutaBBDD.getText(), extn)) {
-						lblRutaBBDDError.setVisible(true);
-						LOG.info(lblRutaBBDDError.getText());
-					}
-					if (comboCursos.getSelectedItem().toString().equals(cursos[0])) {
-						lblCursoError.setVisible(true);
-						LOG.info(lblCursoError.getText());
-					}
+					avisosDeError(false);
 				}
 				LOG.info(LocalLogger.logOut("btnEnviarEmail.addActionListener"));
 			}
@@ -460,6 +452,17 @@ public class VentanaPrincipal extends JFrame {
 
 	}
 
+	private boolean tieneColumnaDelCursoSeleccionado() {
+		String cursoPagado = pagoAMirar(comboCursos.getSelectedItem().toString());
+		for (int i = 0; i < lista.size(); i++) {
+			if (lista.get(i).get(cursoPagado) != null) {
+				return true;
+			}			
+		}
+		return false;
+	}
+
+	// 1 = OK, 2 = Ruta vacía o errónea, 3 = No existe columna del año 20XX o nadie pagó
 	private boolean cargarListado() {
 
 		LOG.info(LocalLogger.logIn());
@@ -513,27 +516,70 @@ public class VentanaPrincipal extends JFrame {
 		model.addColumn(p.getProperty("col3"));
 		model.addColumn(p.getProperty("col4"));
 		model.addColumn(p.getProperty("col5"));
+		
+		String cursoPagado = pagoAMirar(comboCursos.getSelectedItem().toString());
 
 		// Data Row
+		int filaModelo = 0;
 		if (lista != null) {
 			for (int i = 0; i < lista.size(); i++) {
-				if (Comprobaciones.noEsNullNiBlanco(lista.get(i).get("Nº SOCIO"))
+				if (Comprobaciones.noEsNullNiBlanco(lista.get(i).get(cursoPagado)) 
+						&& lista.get(i).get(cursoPagado).equalsIgnoreCase("PAGADO")
+						&& (Comprobaciones.noEsNullNiBlanco(lista.get(i).get("Nº SOCIO"))
 						|| Comprobaciones.noEsNullNiBlanco(lista.get(i).get("EMAIL"))
 						|| Comprobaciones.noEsNullNiBlanco(lista.get(i).get("FAMILIAS"))
 						|| Comprobaciones.noEsNullNiBlanco(lista.get(i).get("NOMBRE MADRE"))
-						|| Comprobaciones.noEsNullNiBlanco(lista.get(i).get("NOMBRE2 PADRE"))) {
+						|| Comprobaciones.noEsNullNiBlanco(lista.get(i).get("NOMBRE2 PADRE")))) {
 					model.addRow(new Object[0]);
-					model.setValueAt(false, i, 0);
-					model.setValueAt(lista.get(i).get("Nº SOCIO"), i, 1);
-					model.setValueAt(lista.get(i).get("EMAIL"), i, 2);
-					model.setValueAt(lista.get(i).get("FAMILIAS"), i, 3);
-					model.setValueAt(lista.get(i).get("NOMBRE MADRE"), i, 4);
-					model.setValueAt(lista.get(i).get("NOMBRE2 PADRE"), i, 5);
+					model.setValueAt(false, filaModelo, 0);
+					model.setValueAt(lista.get(i).get("Nº SOCIO"), filaModelo, 1);
+					model.setValueAt(lista.get(i).get("EMAIL"), filaModelo, 2);
+					model.setValueAt(lista.get(i).get("FAMILIAS"), filaModelo, 3);
+					model.setValueAt(lista.get(i).get("NOMBRE MADRE"), filaModelo, 4);
+					model.setValueAt(lista.get(i).get("NOMBRE2 PADRE"), filaModelo, 5);
+					filaModelo++;
 				}
 			}
 		}
 		LOG.info(LocalLogger.logOut());
 		return model.getRowCount() > 0;
+	}
+
+	private String pagoAMirar(String curso) {
+		
+		return curso.substring(0, 4);
+	}
+
+	private void avisosDeError(boolean miroDate) {
+		if (!Comprobaciones.noEsNullNiBlanco(textFieldRutaBBDD.getText())) {
+			//ruta vacía
+			lblRutaBBDDError.setText(p.getProperty("lblRutaBBDDError.vacia"));
+			lblRutaBBDDError.setVisible(true);
+			LOG.info(lblRutaBBDDError.getText());
+		} else if(!Comprobaciones.verificarExtensionDeArchivo(textFieldRutaBBDD.getText(), extn)) {
+			//archivo con extensión errónea
+			lblRutaBBDDError.setText(p.getProperty("lblRutaBBDDError.extension"));
+			lblRutaBBDDError.setVisible(true);
+			LOG.info(lblRutaBBDDError.getText());
+		} else if(noTieneColumnaDelCursoSeleccionado) {
+			// no existe columna curso seleccionado
+			lblRutaBBDDError.setText(p.getProperty("lblRutaBBDDError.columna"));
+			lblRutaBBDDError.setVisible(true);
+			LOG.info(lblRutaBBDDError.getText());						
+		} else if(listadoVacio) {
+			// nadie pagó la cuota de ese curso
+			lblRutaBBDDError.setText(p.getProperty("lblRutaBBDDError.cuota"));
+			lblRutaBBDDError.setVisible(true);
+			LOG.info(lblRutaBBDDError.getText());						
+		}
+		if (comboCursos.getSelectedItem().toString().equals(cursos[0])) {
+			lblCursoError.setVisible(true);
+			LOG.info(lblCursoError.getText());
+		}
+		if (date == null && miroDate) {
+			lblDateChooserError.setVisible(true);
+			LOG.info(lblDateChooserError.getText());
+		}				
 	}
 
 	private void ocultarAvisos() {
