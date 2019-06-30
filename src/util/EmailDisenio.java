@@ -24,6 +24,8 @@ public class EmailDisenio {
     }
     
     private static String firma() {
+    	
+    	String cuatroEspaciosBlancos = "&nbsp;&nbsp;&nbsp;&nbsp;";
     	String firma = ""
     			+ "<p style=\"background:white\"><span style=\"font-size:9.5pt;font-family:&quot;Arial&quot;,&quot;sans-serif&quot;;\r\n" + 
     			"color:#201F1E\">Un saludo,</span><span style=\"font-size:9.5pt;font-family:&quot;Segoe UI&quot;,&quot;sans-serif&quot;;\r\n" + 
@@ -52,8 +54,26 @@ public class EmailDisenio {
     			"text-decoration-color: initial;word-spacing:0px\"><span style=\"font-size:10.0pt;\r\n" + 
     			"font-family:&quot;Segoe UI&quot;,&quot;sans-serif&quot;;color:#201F1E\">S&Iacute;GUENOS EN LAS REDES\r\n" + 
     			"SOCIALES<o:p></o:p></span></p>"
-    			+ "<p style=\"background:white\"><span style=\"font-size:9.5pt;font-family:&quot;Segoe UI&quot;,&quot;sans-serif&quot;;\r\n" + 
-    			"color:#201F1E\"><a href=\"http://ampacolegioelvallesanchinarro.com/\">http://ampacolegioelvallesanchinarro.com</a></span></p>"
+    			
+    			+ "<p style=\"background:white\"><span style=\"font-size:9.5pt;font-family:&quot;Segoe UI&quot;,&quot;sans-serif&quot;;\r\ncolor:#201F1E\">"
+    			+ "<a href=\"http://ampacolegioelvallesanchinarro.com/\">"
+    			+ "<img src=\"cid:logo_AMPA\" alt=\"Página AMPA\" height=\"36\" width=\"60\"></a></span>" + cuatroEspaciosBlancos
+    	
+    			+ "<a href=\"mailto:info@ampacolegioelvallesanchinarro.com\">"
+    			+ "<img src=\"cid:logo_email\" alt=\"Facebook AMPA\" height=\"60\" width=\"60\"></a></span>" + cuatroEspaciosBlancos
+    	
+    			+ "<a href=\"https://es-es.facebook.com/AMPAColegioElValleSanchinarro/\">"
+    			+ "<img src=\"cid:logo_facebook\" alt=\"Facebook AMPA\" height=\"60\" width=\"60\"></a></span>" + cuatroEspaciosBlancos
+    			
+    			+ "<a href=\"https://twitter.com/colegioselvalle?lang=es\">"
+    			+ "<img src=\"cid:logo_twitter\" alt=\"Twitter AMPA\" height=\"60\" width=\"60\"></a></span>" + cuatroEspaciosBlancos
+    			
+    			+ "<a href=\"https://www.instagram.com/p/BUMIiOeF-Gs/?hl=es\">"
+    			+ "<img src=\"cid:logo_instagram\" alt=\"Instagram AMPA\" height=\"60\" width=\"60\"></a></span>" + cuatroEspaciosBlancos
+    			
+    			+ "<a href=\"https://www.youtube.com/channel/UCvL-WAhlcKFvATkLXHoWynQ\">"
+    			+ "<img src=\"cid:logo_youtube\" alt=\"Youtube AMPA\" height=\"60\" width=\"60\"></a></span></p>"
+    			
     			+ "<p style=\"background:white;-webkit-font-smoothing: antialiased;font-variant-ligatures: normal;\r\n" + 
     			"font-variant-caps: normal;orphans: 2;text-align:start;widows: 2;-webkit-text-stroke-width: 0px;\r\n" + 
     			"text-decoration-style: initial;text-decoration-color: initial;word-spacing:\r\n" + 

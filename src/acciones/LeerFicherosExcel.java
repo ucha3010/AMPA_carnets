@@ -2,6 +2,8 @@ package acciones;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -99,7 +101,10 @@ public class LeerFicherosExcel {
 			}
 			worbook.close();
 		} catch (Exception e) {
-			LOG.info(LocalLogger.logError(e.getStackTrace().toString()));
+			StringWriter sw = new StringWriter();
+			PrintWriter pw = new PrintWriter(sw);
+			e.printStackTrace(pw);
+			LOG.info(LocalLogger.logError(sw.toString()));
 		}
 
 		// System.out.println(LocalLogger.log(this.getClass().getName(),

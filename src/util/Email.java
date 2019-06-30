@@ -1,5 +1,6 @@
 package util;
 
+import java.io.File;
 import java.io.FileReader;
 import java.util.Properties;
 
@@ -19,6 +20,7 @@ import javax.mail.internet.MimeMultipart;
 import javax.mail.PasswordAuthentication;
 
 public class Email{
+	private static String absolutePath = new File("").getAbsolutePath();
     
     public static boolean enviarCarnet(String emailReceptor, String rutaArchivo, String familia){
         String asunto = "Envío de carnet AMPA";
@@ -91,7 +93,12 @@ public class Email{
                     existeArchivo = true;
                     //para agregar la imagen al multipart (aunque no estoy seguro si el multipart se reemplazará, como
                     //debería ser, o si se agregará lo que traigo a lo que ya había, con lo cual se duplicarán cosas)
-                    //multipart = addCID("cidnombre","ruta comleta del archivo",multipart);
+                    multipart = addCID("logo_AMPA",absolutePath + "\\src\\imagenes\\Logo_AMPA_completo.gif",multipart);
+                    multipart = addCID("logo_email",absolutePath + "\\src\\imagenes\\Email.gif",multipart);
+                    multipart = addCID("logo_facebook",absolutePath + "\\src\\imagenes\\Facebook.gif",multipart);
+                    multipart = addCID("logo_twitter",absolutePath + "\\src\\imagenes\\Twitter.gif",multipart);
+                    multipart = addCID("logo_instagram",absolutePath + "\\src\\imagenes\\Instagram.gif",multipart);
+                    multipart = addCID("logo_youtube",absolutePath + "\\src\\imagenes\\Youtube.gif",multipart);
                 }                
                 message.setContent(multipart);            
 //                messageBodyPart.setText(mensaje); 
