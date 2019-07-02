@@ -81,6 +81,17 @@ public class GenerarCarnets {
 						// escribo la P del final
 						g2d.drawString("P", 569, 283);
 
+
+						//TODO DAMIAN probando código QR (definir bien webCodigoQR)
+						String absolutePath = new File("").getAbsolutePath();
+						String rutaImagenCodigoQR = absolutePath + "\\src\\archivos\\qr";
+						String webCodigoQR = "http://cuervosdemadrid.blogspot.com/";
+						String extensionImagenCodigoQR = "png";
+						int tamanioImagenCodigoQR = 150;
+						GenerarCodigoQR.generarQR(webCodigoQR, rutaImagenCodigoQR, datos.get(i).get("Nº SOCIO"), extensionImagenCodigoQR, tamanioImagenCodigoQR );
+						g2d.drawImage(ImageIO.read( new File(rutaImagenCodigoQR + datos.get(i).get("Nº SOCIO") + extensionImagenCodigoQR )), 475, 25, null);
+						
+
 						g2d.dispose();
 
 						// guardo como JPG (numero_de_socio.jpg)
