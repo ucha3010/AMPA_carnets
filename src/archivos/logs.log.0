@@ -1,50 +1,46 @@
-jul 02, 2019 2:20:28 AM pantalla.VentanaPrincipal inicializarPanelListado
-INFORMACIÓN: ENTRADA
-jul 02, 2019 2:20:28 AM pantalla.VentanaPrincipal inicializarPanelListado
-INFORMACIÓN: SALIDA
-jul 02, 2019 2:20:43 AM pantalla.VentanaPrincipal$2 actionPerformed
+jul 02, 2019 2:00:48 PM pantalla.VentanaPrincipal$2 actionPerformed
 INFORMACIÓN: ENTRADA - btnGenerarCarnets.addActionListener
-jul 02, 2019 2:20:43 AM pantalla.VentanaPrincipal cargarListado
+jul 02, 2019 2:00:49 PM pantalla.VentanaPrincipal cargarListado
 INFORMACIÓN: ENTRADA
-jul 02, 2019 2:20:43 AM pantalla.VentanaPrincipal cargarListado
+jul 02, 2019 2:00:49 PM pantalla.VentanaPrincipal cargarListado
 INFORMACIÓN: SALIDA
-jul 02, 2019 2:20:43 AM pantalla.VentanaPrincipal$2 actionPerformed
+jul 02, 2019 2:00:49 PM pantalla.VentanaPrincipal$2 actionPerformed
 INFORMACIÓN: SALIDA - btnGenerarCarnets.addActionListener
-jul 02, 2019 2:20:46 AM pantalla.VentanaPrincipal$5 actionPerformed
+jul 02, 2019 2:00:53 PM pantalla.VentanaPrincipal$5 actionPerformed
 INFORMACIÓN: ENTRADA - btnContinuar.addActionListener
-jul 02, 2019 2:20:46 AM pantalla.VentanaPrincipal$5 actionPerformed
+jul 02, 2019 2:00:53 PM pantalla.VentanaPrincipal$5 actionPerformed
 INFORMACIÓN: table.getRowCount(): 13
-jul 02, 2019 2:20:46 AM pantalla.VentanaPrincipal$5 actionPerformed
+jul 02, 2019 2:00:53 PM pantalla.VentanaPrincipal$5 actionPerformed
 INFORMACIÓN: lista.size(): 1
-jul 02, 2019 2:20:46 AM pantalla.VentanaPrincipal$5 actionPerformed
+jul 02, 2019 2:00:53 PM pantalla.VentanaPrincipal$5 actionPerformed
 INFORMACIÓN: Se generaron 1 carnets correctamente y 0 carnets dieron error
-jul 02, 2019 2:20:46 AM pantalla.VentanaPrincipal$5 actionPerformed
+jul 02, 2019 2:00:53 PM pantalla.VentanaPrincipal$5 actionPerformed
 INFORMACIÓN: SALIDA - btnContinuar.addActionListener
-jul 02, 2019 2:21:56 AM pantalla.VentanaPrincipal <init>
+jul 02, 2019 2:09:54 PM pantalla.VentanaPrincipal <init>
 INFORMACIÓN: Acceso al programa
-jul 02, 2019 2:21:56 AM pantalla.VentanaPrincipal inicializarPanelPrincipal
+jul 02, 2019 2:09:54 PM pantalla.VentanaPrincipal inicializarPanelPrincipal
 INFORMACIÓN: ENTRADA
-jul 02, 2019 2:21:56 AM pantalla.VentanaPrincipal inicializarPanelPrincipal
+jul 02, 2019 2:09:55 PM pantalla.VentanaPrincipal inicializarPanelPrincipal
 INFORMACIÓN: SALIDA
-jul 02, 2019 2:21:56 AM pantalla.VentanaPrincipal inicializarPanelListado
+jul 02, 2019 2:09:55 PM pantalla.VentanaPrincipal inicializarPanelListado
 INFORMACIÓN: ENTRADA
-jul 02, 2019 2:21:56 AM pantalla.VentanaPrincipal inicializarPanelListado
+jul 02, 2019 2:09:55 PM pantalla.VentanaPrincipal inicializarPanelListado
 INFORMACIÓN: SALIDA
-jul 02, 2019 2:22:11 AM pantalla.VentanaPrincipal$2 actionPerformed
+jul 02, 2019 2:10:13 PM pantalla.VentanaPrincipal$2 actionPerformed
 INFORMACIÓN: ENTRADA - btnGenerarCarnets.addActionListener
-jul 02, 2019 2:22:12 AM pantalla.VentanaPrincipal cargarListado
+jul 02, 2019 2:10:13 PM pantalla.VentanaPrincipal cargarListado
 INFORMACIÓN: ENTRADA
-jul 02, 2019 2:22:12 AM pantalla.VentanaPrincipal cargarListado
+jul 02, 2019 2:10:13 PM pantalla.VentanaPrincipal cargarListado
 INFORMACIÓN: SALIDA
-jul 02, 2019 2:22:12 AM pantalla.VentanaPrincipal$2 actionPerformed
+jul 02, 2019 2:10:13 PM pantalla.VentanaPrincipal$2 actionPerformed
 INFORMACIÓN: SALIDA - btnGenerarCarnets.addActionListener
-jul 02, 2019 2:22:15 AM pantalla.VentanaPrincipal$5 actionPerformed
+jul 02, 2019 2:10:16 PM pantalla.VentanaPrincipal$5 actionPerformed
 INFORMACIÓN: ENTRADA - btnContinuar.addActionListener
-jul 02, 2019 2:22:15 AM pantalla.VentanaPrincipal$5 actionPerformed
+jul 02, 2019 2:10:16 PM pantalla.VentanaPrincipal$5 actionPerformed
 INFORMACIÓN: table.getRowCount(): 13
-jul 02, 2019 2:22:15 AM pantalla.VentanaPrincipal$5 actionPerformed
+jul 02, 2019 2:10:16 PM pantalla.VentanaPrincipal$5 actionPerformed
 INFORMACIÓN: lista.size(): 1
-jul 02, 2019 2:22:15 AM pantalla.VentanaPrincipal$5 actionPerformed
+jul 02, 2019 2:10:16 PM pantalla.VentanaPrincipal$5 actionPerformed
 INFORMACIÓN: Se generaron 1 carnets correctamente y 0 carnets dieron error
-jul 02, 2019 2:22:15 AM pantalla.VentanaPrincipal$5 actionPerformed
+jul 02, 2019 2:10:16 PM pantalla.VentanaPrincipal$5 actionPerformed
 INFORMACIÓN: SALIDA - btnContinuar.addActionListener
