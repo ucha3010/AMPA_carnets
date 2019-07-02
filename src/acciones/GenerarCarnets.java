@@ -7,16 +7,20 @@ import java.awt.RenderingHints;
 import java.awt.font.TextAttribute;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Properties;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
 import util.Comprobaciones;
+import util.Util;
 
 public class GenerarCarnets {
 
@@ -84,12 +88,17 @@ public class GenerarCarnets {
 
 						//TODO DAMIAN probando código QR (definir bien webCodigoQR)
 						String absolutePath = new File("").getAbsolutePath();
-						String rutaImagenCodigoQR = absolutePath + "\\src\\archivos\\qr";
-						String webCodigoQR = "http://cuervosdemadrid.blogspot.com/";
+						String rutaImagenCodigoQR = absolutePath + "\\src\\archivos\\qr\\";
+						String rutaVerificacion = Util.conversionHTML("verificacion"
+						+ "?familia=" + datos.get(i).get("FAMILIAS").toUpperCase()
+						+ "&curso=" + curso 
+						+ "&vencimiento=" + validoHasta);
 						String extensionImagenCodigoQR = "png";
 						int tamanioImagenCodigoQR = 150;
-						GenerarCodigoQR.generarQR(webCodigoQR, rutaImagenCodigoQR, datos.get(i).get("Nº SOCIO"), extensionImagenCodigoQR, tamanioImagenCodigoQR );
-						g2d.drawImage(ImageIO.read( new File(rutaImagenCodigoQR + datos.get(i).get("Nº SOCIO") + extensionImagenCodigoQR )), 475, 25, null);
+						Properties pr = new Properties();
+						pr.load(new FileReader("src/util/Constantes_" + Locale.getDefault().getLanguage() + ".properties"));
+						GenerarCodigoQR.generarQR(pr.getProperty("urlAMPA") + rutaVerificacion, rutaImagenCodigoQR, datos.get(i).get("Nº SOCIO"), extensionImagenCodigoQR, tamanioImagenCodigoQR );
+						g2d.drawImage(ImageIO.read( new File(rutaImagenCodigoQR + datos.get(i).get("Nº SOCIO") + "." + extensionImagenCodigoQR )), 475, 25, null);
 						
 
 						g2d.dispose();

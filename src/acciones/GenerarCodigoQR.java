@@ -25,13 +25,8 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 
 public class GenerarCodigoQR {
-	private static String absolutePath = new File("").getAbsolutePath();
-	
-	public static void main(String[] args) {
-		generarQR("http://cuervosdemadrid.blogspot.com/", absolutePath + "\\src\\archivos\\qr", "cuervosdemadrid", "png", 150 );
-	}
 
-	public static BufferedImage generarQR(String direccionDestino, String rutaGuardado, String nombreArchivo, String formatoImagen, int tamanio) {
+	public static void generarQR(String direccionDestino, String rutaGuardado, String nombreArchivo, String formatoImagen, int tamanio) {
 		try {
 			/*
 			 * direccionDestino: la dirección web que debe abrir el código QR
@@ -42,7 +37,7 @@ public class GenerarCodigoQR {
 			 * */
 			QRCodeWriter qrcode = new QRCodeWriter();
 			BitMatrix matrix = qrcode.encode(direccionDestino, BarcodeFormat.QR_CODE, tamanio, tamanio);
-			File qrFile = new File(rutaGuardado + "\\" + nombreArchivo + "." + formatoImagen);
+			File qrFile = new File(rutaGuardado + nombreArchivo + "." + formatoImagen);
 			int matrixWidth = matrix.getWidth();
 			BufferedImage image = new BufferedImage(matrixWidth, matrixWidth, BufferedImage.TYPE_INT_RGB);
 			image.createGraphics();
@@ -60,12 +55,10 @@ public class GenerarCodigoQR {
 				}
 			}
 			ImageIO.write(image, formatoImagen, qrFile);
-			return ImageIO.read( qrFile);
 		} catch (WriterException ex) {
 			Logger.getLogger(GenerarCodigoQR.class.getName()).log(Level.SEVERE, null, ex);
 		} catch (IOException ex) {
 			Logger.getLogger(GenerarCodigoQR.class.getName()).log(Level.SEVERE, null, ex);
 		}
-		return null;
 	}
 }
