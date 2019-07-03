@@ -24,9 +24,11 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 
+import util.LocalLogger;
+
 public class GenerarCodigoQR {
 
-	public static void generarQR(String direccionDestino, String rutaGuardado, String nombreArchivo, String formatoImagen, int tamanio) {
+	public static BufferedImage generarQR(String direccionDestino, String rutaGuardado, String nombreArchivo, String formatoImagen, int tamanio, Logger LOG) {
 		try {
 			/*
 			 * direccionDestino: la dirección web que debe abrir el código QR
@@ -35,6 +37,8 @@ public class GenerarCodigoQR {
 			 * formatoImagen: el formato de la imagen (png por ejemplo)
 			 * tamanio: el tamaño de la imagen que será un cuadrado
 			 * */
+
+			LOG.info(LocalLogger.logIn("generarQR: "+direccionDestino+" - "+rutaGuardado+" - "+nombreArchivo+" - "+formatoImagen+" - "+tamanio));
 			QRCodeWriter qrcode = new QRCodeWriter();
 			BitMatrix matrix = qrcode.encode(direccionDestino, BarcodeFormat.QR_CODE, tamanio, tamanio);
 			File qrFile = new File(rutaGuardado + nombreArchivo + "." + formatoImagen);
@@ -55,10 +59,14 @@ public class GenerarCodigoQR {
 				}
 			}
 			ImageIO.write(image, formatoImagen, qrFile);
+			BufferedImage bufferedImage =  ImageIO.read( qrFile);
+			LOG.info(LocalLogger.logOut("generarQR: " + bufferedImage));
+			return bufferedImage;
 		} catch (WriterException ex) {
 			Logger.getLogger(GenerarCodigoQR.class.getName()).log(Level.SEVERE, null, ex);
 		} catch (IOException ex) {
 			Logger.getLogger(GenerarCodigoQR.class.getName()).log(Level.SEVERE, null, ex);
 		}
+		return null;
 	}
 }

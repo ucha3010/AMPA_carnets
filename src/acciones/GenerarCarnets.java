@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 import util.Comprobaciones;
+import util.LocalLogger;
 import util.Util;
 
 public class GenerarCarnets {
@@ -27,6 +28,7 @@ public class GenerarCarnets {
 	public Map<String, Integer> rellenarCarnet(List<Map<String, String>> datos, String rutaImagen,
 			String carpetaCarnets, String curso, String validoHasta, Logger LOG) {
 
+		LOG.info(LocalLogger.logIn("rellenarCarnet"));
 		Map<String, Integer> salida = null;
 
 		try {
@@ -85,21 +87,23 @@ public class GenerarCarnets {
 						// escribo la P del final
 						g2d.drawString("P", 569, 283);
 
-
-						//TODO DAMIAN probando código QR (definir bien webCodigoQR)
+						// TODO DAMIAN probando código QR (definir bien webCodigoQR)
 						String absolutePath = new File("").getAbsolutePath();
 						String rutaImagenCodigoQR = absolutePath + "\\src\\archivos\\qr\\";
-						String rutaVerificacion = Util.conversionHTML("verificacion"
-						+ "?familia=" + datos.get(i).get("FAMILIAS").toUpperCase()
+						String rutaVerificacion = Util.conversionHTMLSinAcentos("verificacion.php" 
+						+ "?familia=" + datos.get(i).get("FAMILIAS").toUpperCase() 
 						+ "&curso=" + curso 
 						+ "&vencimiento=" + validoHasta);
 						String extensionImagenCodigoQR = "png";
 						int tamanioImagenCodigoQR = 150;
 						Properties pr = new Properties();
-						pr.load(new FileReader("src/util/Constantes_" + Locale.getDefault().getLanguage() + ".properties"));
-						GenerarCodigoQR.generarQR(pr.getProperty("urlAMPA") + rutaVerificacion, rutaImagenCodigoQR, datos.get(i).get("Nº SOCIO"), extensionImagenCodigoQR, tamanioImagenCodigoQR );
-						g2d.drawImage(ImageIO.read( new File(rutaImagenCodigoQR + datos.get(i).get("Nº SOCIO") + "." + extensionImagenCodigoQR )), 475, 25, null);
-						
+						pr.load(new FileReader(
+								"src/util/Constantes_" + Locale.getDefault().getLanguage() + ".properties"));
+						GenerarCodigoQR.generarQR(pr.getProperty("urlAMPA") + rutaVerificacion, rutaImagenCodigoQR,
+								datos.get(i).get("Nº SOCIO"), extensionImagenCodigoQR, tamanioImagenCodigoQR, LOG);
+						g2d.drawImage(ImageIO.read(new File(
+								rutaImagenCodigoQR + datos.get(i).get("Nº SOCIO") + "." + extensionImagenCodigoQR)),
+								475, 25, null);
 
 						g2d.dispose();
 
@@ -121,6 +125,7 @@ public class GenerarCarnets {
 			LOG.info(e.getStackTrace().toString());
 		}
 
+		LOG.info(LocalLogger.logOut("rellenarCarnet: " + salida));
 		return salida;
 	}
 

@@ -42,6 +42,7 @@ public class LeerFicherosExcel {
 
 	public List<Map<String, String>> leerExcel(String rutaArchivo, Logger LOG) {
 
+		LOG.info(LocalLogger.logIn("leerExcel: " + rutaArchivo));
 		List<Map<String, String>> listaDatos = new ArrayList<>();
 
 		try {
@@ -107,8 +108,7 @@ public class LeerFicherosExcel {
 			LOG.info(LocalLogger.logError(sw.toString()));
 		}
 
-		// System.out.println(LocalLogger.log(this.getClass().getName(),
-		// listaDatos.toString()));
+		LOG.info(LocalLogger.logOut("leerExcel: " + listaDatos));
 		return listaDatos;
 	}
 }
