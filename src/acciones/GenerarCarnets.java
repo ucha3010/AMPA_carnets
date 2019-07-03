@@ -9,6 +9,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
@@ -120,9 +122,15 @@ public class GenerarCarnets {
 				salida.put("KO", datos.size() - carnetsOK);
 			}
 		} catch (IOException e) {
-			LOG.info(e.getStackTrace().toString());
+			StringWriter sw = new StringWriter();
+			PrintWriter pw = new PrintWriter(sw);
+			e.printStackTrace(pw);
+			LOG.info(LocalLogger.logError(sw.toString()));
 		} catch (Exception e) {
-			LOG.info(e.getStackTrace().toString());
+			StringWriter sw = new StringWriter();
+			PrintWriter pw = new PrintWriter(sw);
+			e.printStackTrace(pw);
+			LOG.info(LocalLogger.logError(sw.toString()));
 		}
 
 		LOG.info(LocalLogger.logOut("rellenarCarnet: " + salida));

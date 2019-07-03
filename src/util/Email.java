@@ -2,7 +2,10 @@ package util;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -22,10 +25,10 @@ import javax.mail.PasswordAuthentication;
 public class Email{
 	private static String absolutePath = new File("").getAbsolutePath();
     
-    public static boolean enviarCarnet(String emailReceptor, String rutaArchivo, String familia){
+    public static boolean enviarCarnet(String emailReceptor, String rutaArchivo, String familia, Logger LOG){
         String asunto = "Envío de carnet AMPA";
         String mensaje = EmailDisenio.disenioCarnets(familia, nombreArchivo(rutaArchivo));
-        boolean enviadoCompra = funcionEnviar(emailReceptor, rutaArchivo, asunto, mensaje);
+        boolean enviadoCompra = funcionEnviar(emailReceptor, rutaArchivo, asunto, mensaje, LOG);
         /*if(enviadoCompra){
             //Esto sirve para enviarle el mismo email al remitente
             asunto = "Copia del original";
@@ -36,7 +39,7 @@ public class Email{
     }
     
     //public static boolean enviarCorreo(String[] para){
-    private static boolean funcionEnviar(String para, String rutaArchivo, String asunto, String mensaje){
+    private static boolean funcionEnviar(String para, String rutaArchivo, String asunto, String mensaje, Logger LOG){
         boolean enviado = false;
         boolean existeArchivo = false; //variable para obligar a que exista el archivo para el envío del email
             try{
@@ -108,7 +111,10 @@ public class Email{
                 multipart = null;
                 enviado = true;                
             }catch(Exception e){
-                e.printStackTrace();               
+    			StringWriter sw = new StringWriter();
+    			PrintWriter pw = new PrintWriter(sw);
+    			e.printStackTrace(pw);
+    			LOG.info(LocalLogger.logError(sw.toString()));               
             }        
         return enviado && existeArchivo;
     }

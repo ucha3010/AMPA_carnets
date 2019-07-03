@@ -5,7 +5,8 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
@@ -28,7 +29,8 @@ import util.LocalLogger;
 
 public class GenerarCodigoQR {
 
-	public static BufferedImage generarQR(String direccionDestino, String rutaGuardado, String nombreArchivo, String formatoImagen, int tamanio, Logger LOG) {
+	public static BufferedImage generarQR(String direccionDestino, String rutaGuardado, String nombreArchivo,
+			String formatoImagen, int tamanio, Logger LOG) {
 		try {
 			/*
 			 * direccionDestino: la dirección web que debe abrir el código QR
@@ -62,10 +64,16 @@ public class GenerarCodigoQR {
 			BufferedImage bufferedImage =  ImageIO.read( qrFile);
 			LOG.info(LocalLogger.logOut("generarQR: " + bufferedImage));
 			return bufferedImage;
-		} catch (WriterException ex) {
-			Logger.getLogger(GenerarCodigoQR.class.getName()).log(Level.SEVERE, null, ex);
-		} catch (IOException ex) {
-			Logger.getLogger(GenerarCodigoQR.class.getName()).log(Level.SEVERE, null, ex);
+		} catch (WriterException e) {
+			StringWriter sw = new StringWriter();
+			PrintWriter pw = new PrintWriter(sw);
+			e.printStackTrace(pw);
+			LOG.info(LocalLogger.logError(sw.toString()));
+		} catch (IOException e) {
+			StringWriter sw = new StringWriter();
+			PrintWriter pw = new PrintWriter(sw);
+			e.printStackTrace(pw);
+			LOG.info(LocalLogger.logError(sw.toString()));
 		}
 		return null;
 	}

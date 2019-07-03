@@ -28,7 +28,7 @@ public class EnviarEmailConCarnet {
 				if (datos.get(i) != null && Comprobaciones.noEsNullNiBlanco(datos.get(i).get("EMAIL"))
 						&& Comprobaciones.noEsNullNiBlanco(datos.get(i).get("Nº SOCIO"))) {
 					
-					if(!Email.enviarCarnet(datos.get(i).get("EMAIL"), rutaCarnets + datos.get(i).get("Nº SOCIO") + ".jpg", datos.get(i).get("FAMILIAS"))) {
+					if(!Email.enviarCarnet(datos.get(i).get("EMAIL"), rutaCarnets + datos.get(i).get("Nº SOCIO") + ".jpg", datos.get(i).get("FAMILIAS"), LOG)) {
 						enviados = false;
 					} else {
 						contarOK++;

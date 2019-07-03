@@ -14,12 +14,9 @@ public class EmailDisenio {
                 + "<p>" + "<b>Importante</b>" + "</p>"
                 + "<p>" + "Esta iniciativa est&aacute; dirigida a socios del AMPA. Asociarse cuesta s&oacute;lo 20&euro; al a&ntilde;o. <u>Estar&iacute;amos encantados de recibir nuevas familias socias</u>. Por favor, no utilic&eacute;is el carnet de socio de manera fraudulenta cuando la cuota anual es m&iacute;nima para cualquier familia del colegio. Fomentemos entre todos nuevas altas al AMPA que nos permitan hacer m&aacute;s actividades, y que el trabajo del AMPA beneficie expresamente a las familias asociadas." + "</p>"
                 + "<p>" + "Si ten&eacute;is alg&uacute;n problema con el &aacute;rea de socios no dud&eacute;is en decirnos." + "</p>"
-                + "<p>" + "" + "</p>"
+                + "<br/>"
                 + firma()
                 + "</BODY></HTML>";
-        //para agregar im&aacute;genes pongo dentro del body
-        //<img src='cid:cidnombre' />
-        //colocando en el campo cidnombre el nombre que quiera
         return mensaje;
     }
     
@@ -27,40 +24,20 @@ public class EmailDisenio {
     	
     	String cuatroEspaciosBlancos = "&nbsp;&nbsp;&nbsp;&nbsp;";
     	String firma = ""
-    			+ "<p style=\"background:white\"><span style=\"font-size:9.5pt;font-family:&quot;Arial&quot;,&quot;sans-serif&quot;;\r\n" + 
-    			"color:#201F1E\">Un saludo,</span><span style=\"font-size:9.5pt;font-family:&quot;Segoe UI&quot;,&quot;sans-serif&quot;;\r\n" + 
-    			"color:#201F1E\"><o:p></o:p></span></p>"
-    			+ "<p style=\"background:white;-webkit-font-smoothing: antialiased;font-variant-ligatures: normal;\r\n" + 
-    			"font-variant-caps: normal;orphans: 2;text-align:start;widows: 2;-webkit-text-stroke-width: 0px;\r\n" + 
-    			"text-decoration-style: initial;text-decoration-color: initial;word-spacing:\r\n" + 
-    			"0px\"><span style=\"font-size:9.5pt;font-family:&quot;Arial&quot;,&quot;sans-serif&quot;;color:#201F1E\">AMPA\r\n" + 
-    			"Colegio El Valle <span class=\"SpellE\">Sanchinarro</span></span><span style=\"font-size:9.5pt;font-family:&quot;Segoe UI&quot;,&quot;sans-serif&quot;;color:#201F1E\"><o:p></o:p></span></p>"
-    			+ "<p style=\"mso-outline-level:1;background:white;-webkit-font-smoothing: antialiased;\r\n" + 
-    			"font-variant-ligatures: normal;font-variant-caps: normal;orphans: 2;text-align:\r\n" + 
-    			"start;widows: 2;-webkit-text-stroke-width: 0px;text-decoration-style: initial;\r\n" + 
-    			"text-decoration-color: initial;word-spacing:0px\"><span style=\"font-size:9.5pt;\r\n" + 
-    			"font-family:&quot;Arial&quot;,&quot;sans-serif&quot;;color:#201F1E\">Descarga la revista del AMPA\r\n" + 
-    			"aqu&iacute;:&nbsp;</span><span style=\"font-size:9.5pt;font-family:&quot;Segoe UI&quot;,&quot;sans-serif&quot;;\r\n" + 
-    			"color:#201F1E\"><a href=\"https://ampacolegioelvallesanchinarro.com/la-revista-del-ampa/\" target=\"_blank\" data-auth=\"NotApplicable\" style=\"-webkit-font-smoothing: antialiased\">https://ampacolegioelvallesanchinarro.com/la-revista-del-ampa/</a><o:p></o:p></span></p>"
-    			+ "<p style=\"background:white;-webkit-font-smoothing: antialiased;font-variant-ligatures: normal;\r\n" + 
-    			"font-variant-caps: normal;orphans: 2;text-align:start;widows: 2;-webkit-text-stroke-width: 0px;\r\n" + 
-    			"text-decoration-style: initial;text-decoration-color: initial;word-spacing:\r\n" + 
-    			"0px\"><span style=\"font-size:9.5pt;font-family:&quot;Arial&quot;,&quot;sans-serif&quot;;color:#201F1E\">-\r\n" + 
-    			"- - - - - - - - - - - - - - - - - - - - -</span><span style=\"font-size:9.5pt;\r\n" + 
-    			"font-family:&quot;Segoe UI&quot;,&quot;sans-serif&quot;;color:#201F1E\"><o:p></o:p></span></p>"
-    			+ "<p style=\"mso-outline-level:1;background:white;-webkit-font-smoothing: antialiased;\r\n" + 
-    			"font-variant-ligatures: normal;font-variant-caps: normal;orphans: 2;text-align:\r\n" + 
-    			"start;widows: 2;-webkit-text-stroke-width: 0px;text-decoration-style: initial;\r\n" + 
-    			"text-decoration-color: initial;word-spacing:0px\"><span style=\"font-size:10.0pt;\r\n" + 
-    			"font-family:&quot;Segoe UI&quot;,&quot;sans-serif&quot;;color:#201F1E\">S&Iacute;GUENOS EN LAS REDES\r\n" + 
-    			"SOCIALES<o:p></o:p></span></p>"
+    			+ "<p>Un saludo,</p>"
+    			+ "<p>AMPA Colegio El Valle Sanchinarro</p>"
+    			+ "<br/"
+    			+ "<p>Descarga la revista del AMPA:&nbsp;<span style=\"font-size:11.0pt;color:#00008F\">"
+    			+ "<a href=\"https://ampacolegioelvallesanchinarro.com/la-revista-del-ampa/\" target=\"_blank\" >pinchando aqu&iacute;</a></span></p>"
+    			+ "<p>- - - - - - - - - - - - - - - - - - - - -</p>"
+    			+ "<p>S&Iacute;GUENOS EN LAS REDES SOCIALES</p>"
     			
-    			+ "<p style=\"background:white\"><span style=\"font-size:9.5pt;font-family:&quot;Segoe UI&quot;,&quot;sans-serif&quot;;\r\ncolor:#201F1E\">"
+    			+ "<p style=\"background:white\">"
     			+ "<a href=\"http://ampacolegioelvallesanchinarro.com/\">"
-    			+ "<img src=\"cid:logo_AMPA\" alt=\"Página AMPA\" height=\"36\" width=\"60\"></a></span>" + cuatroEspaciosBlancos
+    			+ "<img src=\"cid:logo_AMPA\" alt=\"P&aacute;gina AMPA\" height=\"36\" width=\"60\"></a></span>" + cuatroEspaciosBlancos
     	
     			+ "<a href=\"mailto:info@ampacolegioelvallesanchinarro.com\">"
-    			+ "<img src=\"cid:logo_email\" alt=\"Facebook AMPA\" height=\"60\" width=\"60\"></a></span>" + cuatroEspaciosBlancos
+    			+ "<img src=\"cid:logo_email\" alt=\"Email AMPA\" height=\"60\" width=\"60\"></a></span>" + cuatroEspaciosBlancos
     	
     			+ "<a href=\"https://es-es.facebook.com/AMPAColegioElValleSanchinarro/\">"
     			+ "<img src=\"cid:logo_facebook\" alt=\"Facebook AMPA\" height=\"60\" width=\"60\"></a></span>" + cuatroEspaciosBlancos
@@ -72,53 +49,42 @@ public class EmailDisenio {
     			+ "<img src=\"cid:logo_instagram\" alt=\"Instagram AMPA\" height=\"60\" width=\"60\"></a></span>" + cuatroEspaciosBlancos
     			
     			+ "<a href=\"https://www.youtube.com/channel/UCvL-WAhlcKFvATkLXHoWynQ\">"
-    			+ "<img src=\"cid:logo_youtube\" alt=\"Youtube AMPA\" height=\"60\" width=\"60\"></a></span></p>"
+    			+ "<img src=\"cid:logo_youtube\" alt=\"Youtube AMPA\" height=\"60\" width=\"60\"></a></p>"
     			
-    			+ "<p style=\"background:white;-webkit-font-smoothing: antialiased;font-variant-ligatures: normal;\r\n" + 
-    			"font-variant-caps: normal;orphans: 2;text-align:start;widows: 2;-webkit-text-stroke-width: 0px;\r\n" + 
-    			"text-decoration-style: initial;text-decoration-color: initial;word-spacing:\r\n" + 
-    			"0px\"><span style=\"font-size:10.0pt;font-family:&quot;Arial&quot;,&quot;sans-serif&quot;;color:#201F1E\">La\r\n" + 
-    			"Asociaci&oacute;n de Madres y Padres de Alumnos Colegio El Valle <span class=\"SpellE\">Sanchinarro</span>,\r\n" + 
-    			"le informa de que los datos que nos facilite ser&aacute;n incorporados a nuestro\r\n" + 
-    			"fichero, con la finalidad de organizar y realizar todas aquellas actuaciones\r\n" + 
-    			"que sean necesarias para la adecuada comunicaci&oacute;n y consecuci&oacute;n de los fines de\r\n" + 
-    			"la Asociaci&oacute;n con sus asociados,&nbsp;as&iacute;&nbsp;como para la gesti&oacute;n interna\r\n" + 
-    			"asociaci&oacute;n-asociado.&nbsp;</span><span style=\"-webkit-font-smoothing: antialiased;\r\n" + 
-    			"font-style:inherit;font-variant:inherit;font-weight:inherit;font-stretch: inherit;\r\n" + 
-    			"font-size:inherit;line-height:inherit;color:inherit\"><span style=\"font-size:\r\n" + 
-    			"9.5pt;font-family:&quot;Arial&quot;,&quot;sans-serif&quot;;color:#201F1E\">Sus\r\n" + 
-    			"datos&nbsp;ser&aacute;n&nbsp;cedidos a las Entidades Bancarias para el cobro de los\r\n" + 
-    			"recibos.</span></span><span style=\"font-size:9.5pt;font-family:&quot;Segoe UI&quot;,&quot;sans-serif&quot;;\r\n" + 
-    			"color:#201F1E\"><o:p></o:p></span></p>"
-    			+ "<p style=\"background:white;-webkit-font-smoothing: antialiased;font-variant-ligatures: normal;\r\n" + 
-    			"font-variant-caps: normal;orphans: 2;text-align:start;widows: 2;-webkit-text-stroke-width: 0px;\r\n" + 
-    			"text-decoration-style: initial;text-decoration-color: initial;word-spacing:\r\n" + 
-    			"0px\"><span style=\"font-size:9.5pt;font-family:&quot;Segoe UI&quot;,&quot;sans-serif&quot;;\r\n" + 
-    			"color:#201F1E\">Este mensaje va dirigido, de manera exclusiva, a su destinatario\r\n" + 
-    			"y puede contener informaci&oacute;n confidencial y sujeta al secreto profesional, cuya\r\n" + 
-    			"divulgaci&oacute;n no est&aacute; permitida por Ley. En caso de haber recibido este mensaje por\r\n" + 
-    			"error, le rogamos que de forma inmediata nos lo comunique mediante correo\r\n" + 
-    			"electr&oacute;nico remitido a nuestra atenci&oacute;n y proceda a su eliminaci&oacute;n, as&iacute; como a\r\n" + 
-    			"la de cualquier documento adjunto al mismo.&nbsp;<o:p></o:p></span></p>"
-    			+ "<p style=\"background:white;-webkit-font-smoothing: antialiased;font-variant-ligatures: normal;\r\n" + 
-    			"font-variant-caps: normal;orphans: 2;text-align:start;widows: 2;-webkit-text-stroke-width: 0px;\r\n" + 
-    			"text-decoration-style: initial;text-decoration-color: initial;word-spacing:\r\n" + 
-    			"0px\"><span style=\"font-size:9.5pt;font-family:&quot;Segoe UI&quot;,&quot;sans-serif&quot;;\r\n" + 
-    			"color:#201F1E\">Asimismo, le comunicamos que la distribuci&oacute;n, copia o\r\n" + 
-    			"utilizaci&oacute;n de este mensaje, o de cualquier documento adjunto al mismo,\r\n" + 
-    			"cualquiera que fuera su finalidad, est&aacute;n prohibidas por la ley.<o:p></o:p></span></p>"
-    			+ "<p style=\"background:white;-webkit-font-smoothing: antialiased;font-variant-ligatures: normal;\r\n" + 
-    			"font-variant-caps: normal;orphans: 2;text-align:start;widows: 2;-webkit-text-stroke-width: 0px;\r\n" + 
-    			"text-decoration-style: initial;text-decoration-color: initial;word-spacing:\r\n" + 
-    			"0px\"><span style=\"font-size:9.5pt;font-family:&quot;Segoe UI&quot;,&quot;sans-serif&quot;;\r\n" + 
-    			"color:#201F1E\">En aras del cumplimiento del Reglamento (UE) 2016/679 del\r\n" + 
-    			"Parlamento Europeo y del Consejo, de 27 de Abril de 2016, puede ejercer los\r\n" + 
-    			"derechos de acceso, rectificaci&oacute;n, cancelaci&oacute;n, limitaci&oacute;n, oposici&oacute;n y\r\n" + 
-    			"portabilidad de manera gratuita mediante correo electr&oacute;nico a:&nbsp;</span>" +
-    			"<span style=\"font-size:10.0pt;font-family:&quot;Arial&quot;,&quot;sans-serif&quot;;color:#201F1E\">" +
-    			"<a href=\"mailto:info@ampacolegioelvallesanchinarro.com\" data-auth=\"NotApplicable\" style=\"-webkit-font-smoothing: antialiased;font-style:inherit;font-variant:\r\n" + 
-    			"inherit;font-weight:inherit;font-stretch: inherit;line-height:inherit\">info@ampacolegioelvallesanchinarro.com</a></span><span style=\"font-size:9.5pt;font-family:&quot;Segoe UI&quot;,&quot;sans-serif&quot;;color:#201F1E\">&nbsp;o\r\n" + 
-    			"bien en la direcci&oacute;n: calle Ana de Austria 60, 28050 Madrid<o:p></o:p></span></p>";
+    			+ "<p style=\"font-size:9.0pt;font-family: Arial, sans-serif;text-align: justify;color:#201F1E\">"
+    			+ "La Asociaci&oacute;n de Madres y Padres de Alumnos Colegio El Valle Sanchinarro "
+    			+ "le informa de que los datos que nos facilite ser&aacute;n incorporados a nuestro "
+    			+ "fichero, con la finalidad de organizar y realizar todas aquellas actuaciones "
+    			+ "que sean necesarias para la adecuada comunicaci&oacute;n y consecuci&oacute;n de los fines de "
+    			+ "la Asociaci&oacute;n con sus asociados, as&iacute; como para la gesti&oacute;n interna "
+    			+ "asociaci&oacute;n-asociado. Sus datos ser&aacute;n cedidos a las Entidades Bancarias para el cobro de los recibos."
+    			+ "</p>"
+
+    			+ "<p style=\"font-size:9.0pt;font-family: Arial, sans-serif;text-align: justify;color:#201F1E\">"
+    			+ "Este mensaje va dirigido, de manera exclusiva, a su destinatario "
+    			+ "y puede contener informaci&oacute;n confidencial y sujeta al secreto profesional, cuya "
+    			+ "divulgaci&oacute;n no est&aacute; permitida por Ley. En caso de haber recibido este mensaje por "
+    			+ "error, le rogamos que de forma inmediata nos lo comunique mediante correo "
+    			+ "electr&oacute;nico remitido a nuestra atenci&oacute;n y proceda a su eliminaci&oacute;n, as&iacute; como a "
+    			+ "la de cualquier documento adjunto al mismo."
+    			+ "</p>"
+
+    			+ "<p style=\"font-size:9.0pt;font-family: Arial, sans-serif;text-align: justify;color:#201F1E\">"
+    			+ "Asimismo, le comunicamos que la distribuci&oacute;n, copia o "
+    			+ "utilizaci&oacute;n de este mensaje, o de cualquier documento adjunto al mismo, "
+    			+ "cualquiera que fuera su finalidad, est&aacute;n prohibidas por la ley."
+    			+ "</p>"
+
+    			+ "<p style=\"font-size:9.0pt;font-family: Arial, sans-serif;text-align: justify;color:#201F1E\">"
+    			+ "En aras del cumplimiento del Reglamento (UE) 2016/679 del "
+    			+ "Parlamento Europeo y del Consejo, de 27 de Abril de 2016, puede ejercer los "
+    			+ "derechos de acceso, rectificaci&oacute;n, cancelaci&oacute;n, limitaci&oacute;n, oposici&oacute;n y "
+    			+ "portabilidad de manera gratuita mediante correo electr&oacute;nico a: "
+    			+ "<span style=\"font-size:10.0pt;font-family: Arial;, sans-serif;color:#201F1E\">"
+    			+ "<a href=\"mailto:info@ampacolegioelvallesanchinarro.com\">info@ampacolegioelvallesanchinarro.com</a>"
+    			+ "</span>"
+    			+ " o bien en la direcci&oacute;n: calle Ana de Austria 60, 28050 Madrid"
+    			+ "</p>";
     	
     	return firma;
     }
