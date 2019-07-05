@@ -35,14 +35,16 @@ public class Comprobaciones {
 	 * bien null si no existe
 	 */
 	public static String verSiExisteCarpetaOArchivo(String ruta) {
-		File archivo = new File(ruta);
 		String respuesta = null;
-		if (archivo.exists()) {
-			if (archivo.isFile()) {
-				respuesta = "archivo";
-			}
-			if (archivo.isDirectory()) {
-				respuesta = "carpeta";
+		if(noEsNullNiBlanco(ruta)) {
+			File archivo = new File(ruta);
+			if (archivo.exists()) {
+				if (archivo.isFile()) {
+					respuesta = "archivo";
+				}
+				if (archivo.isDirectory()) {
+					respuesta = "carpeta";
+				}
 			}
 		}
 		return respuesta;

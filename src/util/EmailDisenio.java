@@ -1,5 +1,8 @@
 package util;
 
+import java.util.List;
+import java.util.Map;
+
 public class EmailDisenio {
     
     public static String disenioCarnets(String familia, String file){
@@ -88,4 +91,33 @@ public class EmailDisenio {
     	
     	return firma;
     }
+
+	public static String disenioResumen(List<Map<String, String>> datosEnviados) {
+        String mensaje = "<HTML>"
+        		+ "<head><style>table, th, td { border: 1px solid black; }</style></head>"
+        		+ "<BODY>"
+        		+ "<p>Resumen de los emails enviados</p>"
+        		+ "<br/>"
+        		+ "<table>"
+        		+ "<tr>"
+        		+ "<th>Número socio</th>"
+        		+ "<th>Familia</th>"
+        		+ "<th>Email</th>"
+        		+ "</tr>";
+        		String datosTabla = "";
+        		for(int i=0; i < datosEnviados.size(); i++) {
+        			datosTabla += "<tr>"
+            		+ "<th>" + datosEnviados.get(i).get("Nº SOCIO") + "</th>"
+            		+ "<th>" + datosEnviados.get(i).get("FAMILIAS") + "</th>"
+            		+ "<th>" + datosEnviados.get(i).get("EMAIL") + "</th>"
+            		+ "</tr>";        			
+        		}
+        		mensaje += datosTabla;
+        		mensaje += "</table>";
+        		mensaje += "<br/>";
+        		mensaje += "Número de emails enviados: ";
+        		mensaje += datosEnviados.size();
+        		mensaje += "</BODY></HTML>";
+        return Util.conversionHTML(mensaje);
+	}
 }

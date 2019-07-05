@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -38,10 +40,18 @@ public class Email{
         return enviadoCompra;
     }
     
+    public static boolean enviarResumen(String emailReceptor, List<Map<String, String>> datosEnviados, Logger LOG){
+        String asunto = "Resumen envío carnets";
+        String mensaje = EmailDisenio.disenioResumen(datosEnviados);
+        boolean enviadoCompra = funcionEnviar(emailReceptor, null, asunto, mensaje, LOG);
+        return enviadoCompra;
+    }
+    
     //public static boolean enviarCorreo(String[] para){
     private static boolean funcionEnviar(String para, String rutaArchivo, String asunto, String mensaje, Logger LOG){
         boolean enviado = false;
         boolean existeArchivo = false; //variable para obligar a que exista el archivo para el envío del email
+        LOG.info(LocalLogger.log("funcionEnviar", "Email para: " + para));
             try{
             	Properties p = new Properties();
     			p.load(new FileReader("src/util/Conexion.properties"));
@@ -84,28 +94,29 @@ public class Email{
                 messageBodyPart.setContent(mensaje, "text/html");
                 Multipart multipart = new MimeMultipart();
                 multipart.addBodyPart(messageBodyPart);
-                String tipoDeFormato = Comprobaciones.verSiExisteCarpetaOArchivo(rutaArchivo);
-                if(Comprobaciones.noEsNullNiBlanco(rutaArchivo) && tipoDeFormato != null && 
-                		tipoDeFormato.equals("archivo")){
-                    messageBodyPart = new MimeBodyPart();
-                    String archivo = nombreArchivo(rutaArchivo);
-                    DataSource source = new FileDataSource(rutaArchivo);
-                    messageBodyPart.setDataHandler(new DataHandler(source));
-                    messageBodyPart.setFileName(archivo);
-                    multipart.addBodyPart(messageBodyPart);
-                    existeArchivo = true;
-                    //para agregar la imagen al multipart (aunque no estoy seguro si el multipart se reemplazará, como
-                    //debería ser, o si se agregará lo que traigo a lo que ya había, con lo cual se duplicarán cosas)
-                    multipart = addCID("logo_AMPA",absolutePath + "\\src\\imagenes\\Logo_AMPA_completo.gif",multipart);
-                    multipart = addCID("logo_email",absolutePath + "\\src\\imagenes\\Email.gif",multipart);
-                    multipart = addCID("logo_facebook",absolutePath + "\\src\\imagenes\\Facebook.gif",multipart);
-                    multipart = addCID("logo_twitter",absolutePath + "\\src\\imagenes\\Twitter.gif",multipart);
-                    multipart = addCID("logo_instagram",absolutePath + "\\src\\imagenes\\Instagram.gif",multipart);
-                    multipart = addCID("logo_youtube",absolutePath + "\\src\\imagenes\\Youtube.gif",multipart);
-                }                
+                if(Comprobaciones.noEsNullNiBlanco(rutaArchivo)) {
+	                String tipoDeFormato = Comprobaciones.verSiExisteCarpetaOArchivo(rutaArchivo);
+	                if(tipoDeFormato != null && tipoDeFormato.equals("archivo")){
+	                    messageBodyPart = new MimeBodyPart();
+	                    String archivo = nombreArchivo(rutaArchivo);
+	                    DataSource source = new FileDataSource(rutaArchivo);
+	                    messageBodyPart.setDataHandler(new DataHandler(source));
+	                    messageBodyPart.setFileName(archivo);
+	                    multipart.addBodyPart(messageBodyPart);
+	                    existeArchivo = true;
+	                    //para agregar la imagen al multipart (aunque no estoy seguro si el multipart se reemplazará, como
+	                    //debería ser, o si se agregará lo que traigo a lo que ya había, con lo cual se duplicarán cosas)
+	                    multipart = addCID("logo_AMPA",absolutePath + "\\src\\imagenes\\Logo_AMPA_completo.gif",multipart);
+	                    multipart = addCID("logo_email",absolutePath + "\\src\\imagenes\\Email.gif",multipart);
+	                    multipart = addCID("logo_facebook",absolutePath + "\\src\\imagenes\\Facebook.gif",multipart);
+	                    multipart = addCID("logo_twitter",absolutePath + "\\src\\imagenes\\Twitter.gif",multipart);
+	                    multipart = addCID("logo_instagram",absolutePath + "\\src\\imagenes\\Instagram.gif",multipart);
+	                    multipart = addCID("logo_youtube",absolutePath + "\\src\\imagenes\\Youtube.gif",multipart);
+	                }  
+                }
                 message.setContent(multipart);            
 //                messageBodyPart.setText(mensaje); 
-                if(existeArchivo) {
+                if(existeArchivo || asunto.substring(0, 7).equals("Resumen")) {
                 	Transport.send(message);
                 }
                 multipart = null;
