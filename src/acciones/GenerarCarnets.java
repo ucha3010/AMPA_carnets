@@ -28,7 +28,7 @@ import util.Util;
 public class GenerarCarnets {
 
 	public Map<String, Integer> rellenarCarnet(List<Map<String, String>> datos, String rutaImagen,
-			String carpetaCarnets, String curso, String validoHasta, Logger LOG) {
+			String carpetaCarnets, String curso, String validoHasta, Logger LOG, String carpetaQR) {
 
 		LOG.info(LocalLogger.logIn("rellenarCarnet"));
 		Map<String, Integer> salida = null;
@@ -89,9 +89,7 @@ public class GenerarCarnets {
 						// escribo la P del final
 						g2d.drawString("P", 569, 283);
 
-						// TODO DAMIAN probando código QR (definir bien webCodigoQR)
-						String absolutePath = new File("").getAbsolutePath();
-						String rutaImagenCodigoQR = absolutePath + "\\src\\archivos\\qr\\";
+						Comprobaciones.verificarCrearDirectorio(carpetaQR);
 						String rutaVerificacion = Util.conversionHTMLSinAcentos("verificacion.php" 
 						+ "?familia=" + datos.get(i).get("FAMILIAS").toUpperCase() 
 						+ "&curso=" + curso 
@@ -101,10 +99,10 @@ public class GenerarCarnets {
 						Properties pr = new Properties();
 						pr.load(new FileReader(
 								"src/util/Constantes_" + Locale.getDefault().getLanguage() + ".properties"));
-						GenerarCodigoQR.generarQR(pr.getProperty("urlAMPA") + rutaVerificacion, rutaImagenCodigoQR,
+						GenerarCodigoQR.generarQR(pr.getProperty("urlAMPA") + rutaVerificacion, carpetaQR,
 								datos.get(i).get("Nº SOCIO"), extensionImagenCodigoQR, tamanioImagenCodigoQR, LOG);
 						g2d.drawImage(ImageIO.read(new File(
-								rutaImagenCodigoQR + datos.get(i).get("Nº SOCIO") + "." + extensionImagenCodigoQR)),
+								carpetaQR + datos.get(i).get("Nº SOCIO") + "." + extensionImagenCodigoQR)),
 								475, 25, null);
 
 						g2d.dispose();

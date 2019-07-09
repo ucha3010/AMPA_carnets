@@ -21,10 +21,12 @@ public class Comprobaciones {
 			String[] listadoRuta = carpetaCarnets.split("\\\\");
 			String rutaAux = "C:", rutaFinal = "";
 			for (int i = 1; i < listadoRuta.length; i++) {
-				rutaFinal = rutaAux.concat("\\" + listadoRuta[i]);
-				File directorio = new File(rutaFinal);
-				directorio.mkdir();
-				rutaAux = rutaFinal;
+				if (Comprobaciones.noEsNullNiBlanco(listadoRuta[i])) {
+					rutaFinal = rutaAux.concat("\\" + listadoRuta[i]);
+					File directorio = new File(rutaFinal);
+					directorio.mkdir();
+					rutaAux = rutaFinal;
+				}
 			}
 		}
 	}

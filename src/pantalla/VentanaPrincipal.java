@@ -10,7 +10,6 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -75,7 +74,6 @@ public class VentanaPrincipal extends JFrame {
 	private JLabel lblCarnetsGenerados;
 	private JLabel lblCarnetsEnviados;
 	private JLabel lblError;
-	private String idioma;
 	private String absolutePath = new File("").getAbsolutePath();
 	private Properties p;
 	private Logger LOG;
@@ -83,14 +81,12 @@ public class VentanaPrincipal extends JFrame {
 	private boolean listadoVacio;
 	private boolean noTieneColumnaDelCursoSeleccionado;
 
-	public VentanaPrincipal(String idioma, Logger LOG) throws Exception {
+	public VentanaPrincipal(Properties p, Logger LOG) throws Exception {
 
-		this.idioma = idioma;
+		this.p = p;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.LOG = LOG;
 		LOG.info("Acceso al programa");
-		p = new Properties();
-		p.load(new FileReader("src/util/Constantes_" + this.idioma + ".properties"));
 		inicializarVentana();
 		panelPrincipal = new JPanel();
 		panelPrincipal.setBounds(0, 0, anchoVentana, altoVentana);
@@ -404,7 +400,7 @@ public class VentanaPrincipal extends JFrame {
 					Map<String, Integer> respuestaGenerarCarnets = generarCarnets.rellenarCarnet(lista,
 							absolutePath + "\\src\\imagenes\\" + p.getProperty("archivoCarnetVacio"),
 							p.getProperty("carpetaGuardarCarnets"), comboCursos.getSelectedItem().toString(),
-							String.valueOf(sdf.format(date)), LOG);
+							String.valueOf(sdf.format(date)), LOG, p.getProperty("carpetaGuardarCodigosQR"));
 					if (respuestaGenerarCarnets == null) {
 						lblCarnetsGenerados.setText(p.getProperty("lblCarnetsGeneradosError"));
 						lblCarnetsGenerados.setVisible(true);
@@ -419,8 +415,7 @@ public class VentanaPrincipal extends JFrame {
 					EnviarEmailConCarnet enviarEmailConCarnet = new EnviarEmailConCarnet();
 					try {
 						lblCarnetsEnviados
-								.setText(enviarEmailConCarnet.enviarEmail(lista, p.getProperty("carpetaGuardarCarnets"),
-										comboCursos.getSelectedItem().toString(), idioma, LOG));
+								.setText(enviarEmailConCarnet.enviarEmail(lista, comboCursos.getSelectedItem().toString(), p, LOG));
 						lblCarnetsEnviados.setVisible(true);
 						LOG.info(lblCarnetsEnviados.getText());
 					} catch (Exception e1) {

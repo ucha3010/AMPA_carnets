@@ -13,14 +13,13 @@ import util.LocalLogger;
 
 public class EnviarEmailConCarnet {
 	
-	public String enviarEmail(List<Map<String, String>> datos, String carpetaCarnets, String curso, String idioma, Logger LOG) throws Exception {
+	public String enviarEmail(List<Map<String, String>> datos, String curso, Properties p, Logger LOG) throws Exception {
 		
-
-		Properties p = new Properties();
-		p.load(new FileReader("src/util/Constantes_" + idioma + ".properties"));
+    	Properties conexion = new Properties();
+    	conexion.load(new FileReader("src/util/Conexion.properties"));
 		
 		String respuesta = null;
-		String rutaCarnets = carpetaCarnets + curso + "\\";
+		String rutaCarnets = p.getProperty("carpetaGuardarCarnets") + curso + "\\";
 		String rutaOArchivo = Comprobaciones.verSiExisteCarpetaOArchivo(rutaCarnets);
 		List<Map<String, String>> datosEnviados;
 		if(rutaOArchivo != null && rutaOArchivo.equals("carpeta") && datos != null && datos.size() > 0){
@@ -44,7 +43,7 @@ public class EnviarEmailConCarnet {
 				}
 			}
 			if(datosEnviados != null && datosEnviados.size() > 0) {
-				Email.enviarResumen(p.getProperty("receptorResumen"), datosEnviados, LOG);
+				Email.enviarResumen(conexion.getProperty("receptorResumen"), datosEnviados, LOG);
 			}
 			if(enviados) {
 				respuesta = p.getProperty("enviosOK") + " " + contarOK + " " + p.getProperty("enviosFinMensaje");
