@@ -1,4 +1,4 @@
-package acciones;
+package main.java.acciones;
 
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -7,16 +7,16 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-import util.Comprobaciones;
-import util.Email;
-import util.LocalLogger;
+import main.java.util.Comprobaciones;
+import main.java.util.Email;
+import main.java.util.LocalLogger;
 
 public class EnviarEmailConCarnet {
 	
 	public String enviarEmail(List<Map<String, String>> datos, String curso, Properties p, Logger LOG) throws Exception {
 		
     	Properties conexion = new Properties();
-    	conexion.load(new FileReader("src/util/Conexion.properties"));
+    	conexion.load(new FileReader("src/main/resources/Conexion.properties"));
 		
 		String respuesta = null;
 		String rutaCarnets = p.getProperty("carpetaGuardarCarnets") + curso + "\\";

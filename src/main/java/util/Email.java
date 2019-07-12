@@ -1,4 +1,4 @@
-package util;
+package main.java.util;
 
 import java.io.File;
 import java.io.FileReader;
@@ -54,7 +54,7 @@ public class Email{
         LOG.info(LocalLogger.log("funcionEnviar", "Email para: " + para));
             try{
             	Properties p = new Properties();
-    			p.load(new FileReader("src/util/Conexion.properties"));
+    			p.load(new FileReader("src/main/resources/Conexion.properties"));
         		
                 String de = p.getProperty("email");
                 final String username = p.getProperty("usuario");
@@ -106,12 +106,12 @@ public class Email{
 	                    existeArchivo = true;
 	                    //para agregar la imagen al multipart (aunque no estoy seguro si el multipart se reemplazará, como
 	                    //debería ser, o si se agregará lo que traigo a lo que ya había, con lo cual se duplicarán cosas)
-	                    multipart = addCID("logo_AMPA",absolutePath + "\\src\\imagenes\\Logo_AMPA_completo.gif",multipart);
-	                    multipart = addCID("logo_email",absolutePath + "\\src\\imagenes\\Email.gif",multipart);
-	                    multipart = addCID("logo_facebook",absolutePath + "\\src\\imagenes\\Facebook.gif",multipart);
-	                    multipart = addCID("logo_twitter",absolutePath + "\\src\\imagenes\\Twitter.gif",multipart);
-	                    multipart = addCID("logo_instagram",absolutePath + "\\src\\imagenes\\Instagram.gif",multipart);
-	                    multipart = addCID("logo_youtube",absolutePath + "\\src\\imagenes\\Youtube.gif",multipart);
+	                    multipart = addCID("logo_AMPA",absolutePath + "\\src\\main\\resources\\imagenes\\Logo_AMPA_completo.gif",multipart);
+	                    multipart = addCID("logo_email",absolutePath + "\\src\\main\\resources\\imagenes\\Email.gif",multipart);
+	                    multipart = addCID("logo_facebook",absolutePath + "\\src\\main\\resources\\imagenes\\Facebook.gif",multipart);
+	                    multipart = addCID("logo_twitter",absolutePath + "\\src\\main\\resources\\imagenes\\Twitter.gif",multipart);
+	                    multipart = addCID("logo_instagram",absolutePath + "\\src\\main\\resources\\imagenes\\Instagram.gif",multipart);
+	                    multipart = addCID("logo_youtube",absolutePath + "\\src\\main\\resources\\imagenes\\Youtube.gif",multipart);
 	                }  
                 }
                 message.setContent(multipart);            

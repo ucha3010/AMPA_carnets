@@ -1,4 +1,4 @@
-package acciones;
+package main.java.acciones;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -21,9 +21,9 @@ import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
-import util.Comprobaciones;
-import util.LocalLogger;
-import util.Util;
+import main.java.util.Comprobaciones;
+import main.java.util.LocalLogger;
+import main.java.util.Util;
 
 public class GenerarCarnets {
 
@@ -98,7 +98,7 @@ public class GenerarCarnets {
 						int tamanioImagenCodigoQR = 150;
 						Properties pr = new Properties();
 						pr.load(new FileReader(
-								"src/util/Constantes_" + Locale.getDefault().getLanguage() + ".properties"));
+								"src/main/resources/Constantes_" + Locale.getDefault().getLanguage() + ".properties"));
 						GenerarCodigoQR.generarQR(pr.getProperty("urlAMPA") + rutaVerificacion, carpetaQR,
 								datos.get(i).get("Nº SOCIO"), extensionImagenCodigoQR, tamanioImagenCodigoQR, LOG);
 						g2d.drawImage(ImageIO.read(new File(

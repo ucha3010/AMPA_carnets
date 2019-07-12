@@ -1,4 +1,4 @@
-package pantalla;
+package main.java.pantalla;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -35,11 +35,11 @@ import javax.swing.table.TableRowSorter;
 
 import com.toedter.calendar.JDateChooser;
 
-import acciones.EnviarEmailConCarnet;
-import acciones.GenerarCarnets;
-import acciones.LeerFicherosExcel;
-import util.Comprobaciones;
-import util.LocalLogger;
+import main.java.acciones.EnviarEmailConCarnet;
+import main.java.acciones.GenerarCarnets;
+import main.java.acciones.LeerFicherosExcel;
+import main.java.util.Comprobaciones;
+import main.java.util.LocalLogger;
 
 public class VentanaPrincipal extends JFrame {
 
@@ -215,7 +215,7 @@ public class VentanaPrincipal extends JFrame {
 
 		// imagenCargando = new JLabel();
 		// imagenCargando.setIcon(new ImageIcon(absolutePath +
-		// "\\src\\imagenes\\cargando.gif"));
+		// "\\src\\main\\resources\\imagenes\\cargando.gif"));
 		// imagenCargando.setBounds(anchoVentana * 9/20, altoVentana * 3/4, 32, 32);
 
 		panelPrincipal.add(lblRutaBBDD);
@@ -398,7 +398,7 @@ public class VentanaPrincipal extends JFrame {
 					GenerarCarnets generarCarnets = new GenerarCarnets();
 					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/YYYY");
 					Map<String, Integer> respuestaGenerarCarnets = generarCarnets.rellenarCarnet(lista,
-							absolutePath + "\\src\\imagenes\\" + p.getProperty("archivoCarnetVacio"),
+							absolutePath + "\\src\\main\\resources\\imagenes\\" + p.getProperty("archivoCarnetVacio"),
 							p.getProperty("carpetaGuardarCarnets"), comboCursos.getSelectedItem().toString(),
 							String.valueOf(sdf.format(date)), LOG, p.getProperty("carpetaGuardarCodigosQR"));
 					if (respuestaGenerarCarnets == null) {

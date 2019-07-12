@@ -1,4 +1,4 @@
-package acciones;
+package main.java.acciones;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -25,7 +25,7 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 
-import util.LocalLogger;
+import main.java.util.LocalLogger;
 
 public class GenerarCodigoQR {
 

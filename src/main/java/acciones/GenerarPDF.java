@@ -1,4 +1,4 @@
-package acciones;
+package main.java.acciones;
 
 
 import com.itextpdf.text.Anchor;
