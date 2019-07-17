@@ -23,7 +23,7 @@ public class AMPAcarnets {
 			Properties p = new Properties();
 			p.load(new FileReader("src/main/resources/Constantes_" + Locale.getDefault().getLanguage() + ".properties"));
 			Comprobaciones.verificarCrearDirectorio(p.getProperty("carpetaLogs"));
-			FileHandler fh = new FileHandler(p.getProperty("carpetaLogs") + "logs.log", 10240, 10, true);
+			FileHandler fh = new FileHandler(p.getProperty("carpetaLogs") + "logs.log", 10485760, 10, true);
 			LOG.addHandler(fh);
 			SimpleFormatter formatter = new SimpleFormatter();  
 	        fh.setFormatter(formatter);
