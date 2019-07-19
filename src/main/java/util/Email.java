@@ -1,7 +1,6 @@
 package main.java.util;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
@@ -16,21 +15,21 @@ import javax.mail.Authenticator;
 import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.Multipart;
+import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import javax.mail.PasswordAuthentication;
 
 public class Email{
 	private static String absolutePath = new File("").getAbsolutePath();
     
-    public static boolean enviarCarnet(String emailReceptor, String rutaArchivo, String familia, Logger LOG){
+    public static boolean enviarCarnet(String emailReceptor, String rutaArchivo, String familia, Properties conexion, Logger LOG){
         String asunto = "Envío de carnet AMPA";
         String mensaje = EmailDisenio.disenioCarnets(familia, nombreArchivo(rutaArchivo));
-        boolean enviadoCompra = funcionEnviar(emailReceptor, rutaArchivo, asunto, mensaje, LOG);
+        boolean enviadoCompra = funcionEnviar(emailReceptor, rutaArchivo, asunto, mensaje, conexion, LOG);
         /*if(enviadoCompra){
             //Esto sirve para enviarle el mismo email al remitente
             asunto = "Copia del original";
@@ -40,32 +39,29 @@ public class Email{
         return enviadoCompra;
     }
     
-    public static boolean enviarResumen(String emailReceptor, List<Map<String, String>> datosEnviados, Logger LOG){
+    public static boolean enviarResumen(String emailReceptor, List<Map<String, String>> datosEnviados, Properties conexion, Logger LOG){
         String asunto = "Resumen envío carnets";
         String mensaje = EmailDisenio.disenioResumen(datosEnviados);
-        boolean enviadoCompra = funcionEnviar(emailReceptor, null, asunto, mensaje, LOG);
+        boolean enviadoCompra = funcionEnviar(emailReceptor, null, asunto, mensaje, conexion, LOG);
         return enviadoCompra;
     }
     
     //public static boolean enviarCorreo(String[] para){
-    private static boolean funcionEnviar(String para, String rutaArchivo, String asunto, String mensaje, Logger LOG){
+    private static boolean funcionEnviar(String para, String rutaArchivo, String asunto, String mensaje, Properties conexion, Logger LOG){
         boolean enviado = false;
         boolean existeArchivo = false; //variable para obligar a que exista el archivo para el envío del email
         LOG.info(LocalLogger.log("funcionEnviar", "Email para: " + para));
-            try{
-            	Properties p = new Properties();
-    			p.load(new FileReader("src/main/resources/Conexion.properties"));
-        		
-                String de = p.getProperty("email");
-                final String username = p.getProperty("usuario");
-                final String password = p.getProperty("clave");
+            try{        		
+                String de = conexion.getProperty("email");
+                final String username = conexion.getProperty("usuario");
+                final String password = conexion.getProperty("clave");
                 
                 Properties prop = System.getProperties();
                 
-                prop.put("mail.smtp.starttls.enable",p.getProperty("mail.smtp.starttls.enable"));
-                prop.put("mail.smtp.host", p.getProperty("mail.smtp.host"));
-                prop.put("mail.smtp.port",p.getProperty("mail.smtp.port"));
-                prop.put("mail.smtp.auth",p.getProperty("mail.smtp.auth"));
+                prop.put("mail.smtp.starttls.enable",conexion.getProperty("mail.smtp.starttls.enable"));
+                prop.put("mail.smtp.host", conexion.getProperty("mail.smtp.host"));
+                prop.put("mail.smtp.port",conexion.getProperty("mail.smtp.port"));
+                prop.put("mail.smtp.auth",conexion.getProperty("mail.smtp.auth"));
                 
                 Session sesion = Session.getInstance(prop,
                    new Authenticator() {

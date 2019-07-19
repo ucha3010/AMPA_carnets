@@ -16,7 +16,7 @@ public class EnviarEmailConCarnet {
 	public String enviarEmail(List<Map<String, String>> datos, String curso, Properties p, Logger LOG) throws Exception {
 		
     	Properties conexion = new Properties();
-    	conexion.load(new FileReader("src/main/resources/Conexion.properties"));
+    	conexion.load(new FileReader(p.getProperty("carpetaConexion") + "Conexion.properties"));
 		
 		String respuesta = null;
 		String rutaCarnets = p.getProperty("carpetaGuardarCarnets") + curso + "\\";
@@ -31,7 +31,7 @@ public class EnviarEmailConCarnet {
 						&& Comprobaciones.noEsNullNiBlanco(datos.get(i).get("Nº SOCIO"))) {
 					
 					if (!Email.enviarCarnet(datos.get(i).get("EMAIL"),
-							rutaCarnets + datos.get(i).get("Nº SOCIO") + ".jpg", datos.get(i).get("FAMILIAS"), LOG)) {
+							rutaCarnets + datos.get(i).get("Nº SOCIO") + ".jpg", datos.get(i).get("FAMILIAS"), conexion, LOG)) {
 						enviados = false;
 					} else {
 						datosEnviados.add(datos.get(i));
@@ -43,7 +43,7 @@ public class EnviarEmailConCarnet {
 				}
 			}
 			if(datosEnviados != null && datosEnviados.size() > 0) {
-				Email.enviarResumen(conexion.getProperty("receptorResumen"), datosEnviados, LOG);
+				Email.enviarResumen(conexion.getProperty("receptorResumen"), datosEnviados, conexion, LOG);
 			}
 			if(enviados) {
 				respuesta = p.getProperty("enviosOK") + " " + contarOK + " " + p.getProperty("enviosFinMensaje");

@@ -414,6 +414,7 @@ public class VentanaPrincipal extends JFrame {
 				} else if (vieneDe.equals("enviarEmail") && lista.size() > 0) {
 					EnviarEmailConCarnet enviarEmailConCarnet = new EnviarEmailConCarnet();
 					try {
+						//TODO DAMIAN ver si puedo meter en método enviarEmail un label y hacerlo visible dentro
 						lblCarnetsEnviados
 								.setText(enviarEmailConCarnet.enviarEmail(lista, comboCursos.getSelectedItem().toString(), p, LOG));
 						lblCarnetsEnviados.setVisible(true);
