@@ -10,6 +10,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,10 +36,10 @@ import javax.swing.table.TableRowSorter;
 
 import com.toedter.calendar.JDateChooser;
 
-import main.java.acciones.EnviarEmailConCarnet;
 import main.java.acciones.GenerarCarnets;
 import main.java.acciones.LeerFicherosExcel;
 import main.java.util.Comprobaciones;
+import main.java.util.Email;
 import main.java.util.LocalLogger;
 
 public class VentanaPrincipal extends JFrame {
@@ -381,14 +382,12 @@ public class VentanaPrincipal extends JFrame {
 									&& Comprobaciones.noEsNullNiBlanco(table.getValueAt(i, 1).toString()))) {
 
 						Boolean chked = Boolean.valueOf(table.getValueAt(i, 0).toString());
-						// String dataCol1 = table.getValueAt(i, 1).toString();
 						if (chked) {
 							dato = new HashMap<>();
 							dato.put("Nº SOCIO", table.getValueAt(i, 1).toString());
 							dato.put("EMAIL", table.getValueAt(i, 2).toString());
 							dato.put("FAMILIAS", table.getValueAt(i, 3).toString());
 							lista.add(dato);
-							// JOptionPane.showMessageDialog(null, dataCol1);
 						}
 					}
 				}
@@ -412,11 +411,8 @@ public class VentanaPrincipal extends JFrame {
 					}
 					LOG.info(lblCarnetsGenerados.getText());
 				} else if (vieneDe.equals("enviarEmail") && lista.size() > 0) {
-					EnviarEmailConCarnet enviarEmailConCarnet = new EnviarEmailConCarnet();
 					try {
-						//TODO DAMIAN ver si puedo meter en método enviarEmail un label y hacerlo visible dentro
-						lblCarnetsEnviados
-								.setText(enviarEmailConCarnet.enviarEmail(lista, comboCursos.getSelectedItem().toString(), p, LOG));
+						new Thread(new Hilo()).start();
 						lblCarnetsEnviados.setVisible(true);
 						LOG.info(lblCarnetsEnviados.getText());
 					} catch (Exception e1) {
@@ -428,7 +424,6 @@ public class VentanaPrincipal extends JFrame {
 					lblError.setVisible(true);
 					LOG.info(lblError.getText());
 				}
-				// LOG.info(LocalLogger.log(this.getClass().getName(), lista.toString()));
 				comienzaProceso(false);
 				LOG.info(LocalLogger.logOut("btnContinuar.addActionListener"));
 			}
@@ -599,5 +594,65 @@ public class VentanaPrincipal extends JFrame {
 		btnContinuar.setEnabled(!estado);
 		btnCancelar.setEnabled(!estado);
 	}
+	
+	public class Hilo implements Runnable {
 
+		@Override
+		public void run() {
+			Properties conexion = new Properties();
+			try {
+				conexion.load(new FileReader(p.getProperty("carpetaConexion") + "Conexion.properties"));
+
+				String respuesta = null;
+				String rutaCarnets = p.getProperty("carpetaGuardarCarnets") + comboCursos.getSelectedItem().toString() + "\\";
+				String rutaOArchivo = Comprobaciones.verSiExisteCarpetaOArchivo(rutaCarnets);
+				
+				List<Map<String, String>> datosEnviados;
+				if (rutaOArchivo != null && rutaOArchivo.equals("carpeta") && lista != null && lista.size() > 0) {
+					boolean enviados = true;
+					int contarOK = 0;
+					datosEnviados = new ArrayList<Map<String, String>>();
+					for (int i = 0; i < lista.size(); i++) {
+						if (lista.get(i) != null && Comprobaciones.noEsNullNiBlanco(lista.get(i).get("EMAIL"))
+								&& Comprobaciones.noEsNullNiBlanco(lista.get(i).get("Nº SOCIO"))) {
+							lblCarnetsEnviados
+									.setText("Enviando email " + (i + 1) + " a: " + lista.get(i).get("EMAIL"));
+							if (!Email.enviarCarnet(lista.get(i).get("EMAIL"),
+									rutaCarnets + lista.get(i).get("Nº SOCIO") + ".jpg", lista.get(i).get("FAMILIAS"),
+									conexion, LOG)) {
+								enviados = false;
+							} else {
+								datosEnviados.add(lista.get(i));
+								contarOK++;
+							}
+
+						} else {
+							LOG.info(LocalLogger.logError("Email de posición " + (i + 1)
+									+ " del listado no se puede enviar por falta de datos - " + lista.get(i)));
+						}
+					}
+					if (datosEnviados != null && datosEnviados.size() > 0) {
+						Email.enviarResumen(conexion.getProperty("receptorResumen"), datosEnviados, conexion, LOG);
+					}
+					if (enviados) {
+						respuesta = p.getProperty("enviosOK") + " " + contarOK + " "
+								+ p.getProperty("enviosFinMensaje");
+					} else {
+						respuesta = p.getProperty("enviosKO1") + " " + contarOK + " " + p.getProperty("enviosKO2") + " "
+								+ lista.size() + " " + p.getProperty("enviosFinMensaje");
+					}
+
+				} else {
+					respuesta = p.getProperty("carpetaError");
+				}
+
+				lblCarnetsEnviados.setText(respuesta);
+			} catch (Exception e1) {
+				lblError.setVisible(true);
+				LOG.info(lblError.getText());
+				LOG.info(e1.getStackTrace().toString());
+			}
+		}
+		
+	}
 }
