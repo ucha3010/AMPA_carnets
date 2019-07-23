@@ -81,6 +81,7 @@ public class VentanaPrincipal extends JFrame {
 	private String[] extn;
 	private boolean listadoVacio;
 	private boolean noTieneColumnaDelCursoSeleccionado;
+	private JLabel lblErrorLecturaFicheroExcel;
 
 	public VentanaPrincipal(Properties p, Logger LOG) throws Exception {
 
@@ -272,7 +273,7 @@ public class VentanaPrincipal extends JFrame {
 						&& !comboCursos.getSelectedItem().toString().equals(cursos[0]) && date != null) {
 
 					comienzaProceso(true);
-					lista = leerFicherosExcel.leerExcel(textFieldRutaBBDD.getText(), LOG);
+					lista = leerFicherosExcel.leerExcel(textFieldRutaBBDD.getText(), lblErrorLecturaFicheroExcel, LOG);
 					if(tieneColumnaDelCursoSeleccionado()) {
 						if (cargarListado()) {
 							panelPrincipal.setVisible(false);
@@ -306,7 +307,7 @@ public class VentanaPrincipal extends JFrame {
 						&& !comboCursos.getSelectedItem().toString().equals(cursos[0])) {
 
 					comienzaProceso(true);
-					lista = leerFicherosExcel.leerExcel(textFieldRutaBBDD.getText(), LOG);
+					lista = leerFicherosExcel.leerExcel(textFieldRutaBBDD.getText(), lblErrorLecturaFicheroExcel, LOG);
 					if(tieneColumnaDelCursoSeleccionado()) {
 						if (cargarListado()) {
 							panelPrincipal.setVisible(false);
@@ -352,6 +353,13 @@ public class VentanaPrincipal extends JFrame {
 		btnContinuar = new JButton(p.getProperty("btnContinuar"));
 		btnCancelar = new JButton(p.getProperty("btnCancelar"));
 
+		// confirmación de generación de carnets
+		lblErrorLecturaFicheroExcel = new JLabel();
+		lblErrorLecturaFicheroExcel.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+		lblErrorLecturaFicheroExcel.setForeground(Color.RED);
+		lblErrorLecturaFicheroExcel.setVisible(false);
+		lblErrorLecturaFicheroExcel.setBounds(margenIzquierdo, altoFila * 11, anchoVentana - margenIzquierdo, 16);
+
 		panelListado.setLayout(new BorderLayout());
 
 		panelScroll = new JPanel();
@@ -360,6 +368,7 @@ public class VentanaPrincipal extends JFrame {
 		JPanel botones = new JPanel();
 		botones.add(btnContinuar);
 		botones.add(btnCancelar);
+		botones.add(lblErrorLecturaFicheroExcel);
 		panelListado.add(botones, BorderLayout.SOUTH);
 
 		btnContinuar.addActionListener(new ActionListener() {
@@ -580,6 +589,7 @@ public class VentanaPrincipal extends JFrame {
 		lblCarnetsGenerados.setVisible(false);
 		lblCarnetsEnviados.setVisible(false);
 		lblError.setVisible(false);
+		lblErrorLecturaFicheroExcel.setVisible(false);
 	}
 
 	@SuppressWarnings({ "deprecation" })

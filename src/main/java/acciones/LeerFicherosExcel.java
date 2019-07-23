@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import javax.swing.JLabel;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DateUtil;
@@ -40,7 +42,7 @@ public class LeerFicherosExcel {
 	 * <artifactId>xmlbeans</artifactId> <version>2.6.0</version> </dependency>
 	 */
 
-	public List<Map<String, String>> leerExcel(String rutaArchivo, Logger LOG) {
+	public List<Map<String, String>> leerExcel(String rutaArchivo, JLabel lblErrorLecturaFicheroExcel, Logger LOG) {
 
 		LOG.info(LocalLogger.logIn("leerExcel: " + rutaArchivo));
 		List<Map<String, String>> listaDatos = new ArrayList<>();
@@ -106,6 +108,8 @@ public class LeerFicherosExcel {
 			PrintWriter pw = new PrintWriter(sw);
 			e.printStackTrace(pw);
 			LOG.info(LocalLogger.logError(sw.toString()));
+			lblErrorLecturaFicheroExcel.setText(e.getMessage());
+			lblErrorLecturaFicheroExcel.setVisible(true);
 		}
 
 		LOG.info(LocalLogger.logOut("leerExcel: " + listaDatos));
