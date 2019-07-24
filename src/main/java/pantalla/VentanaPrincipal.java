@@ -406,9 +406,8 @@ public class VentanaPrincipal extends JFrame {
 					GenerarCarnets generarCarnets = new GenerarCarnets();
 					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/YYYY");
 					Map<String, Integer> respuestaGenerarCarnets = generarCarnets.rellenarCarnet(lista,
-							absolutePath + "\\src\\main\\resources\\imagenes\\" + p.getProperty("archivoCarnetVacio"),
-							p.getProperty("carpetaGuardarCarnets"), comboCursos.getSelectedItem().toString(),
-							String.valueOf(sdf.format(date)), LOG, p.getProperty("carpetaGuardarCodigosQR"));
+							absolutePath + "\\src\\main\\resources\\imagenes\\",
+							comboCursos.getSelectedItem().toString(), String.valueOf(sdf.format(date)), p, LOG);
 					if (respuestaGenerarCarnets == null) {
 						lblCarnetsGenerados.setText(p.getProperty("lblCarnetsGeneradosError"));
 						lblCarnetsGenerados.setVisible(true);

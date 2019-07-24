@@ -3,6 +3,7 @@ package main.java.principal;
 import java.io.FileReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.logging.FileHandler;
@@ -21,9 +22,17 @@ public class AMPAcarnets {
 		
 		// Pantalla de visualización
 		try {
+			String idioma = Locale.getDefault().getLanguage();
+			ArrayList<String> idiomasPermitidos = new ArrayList<String>();
+			idiomasPermitidos.add("es");
+			
 			// genero conexión con archivo de constantes
 			Properties p = new Properties();
-			p.load(new FileReader("src/main/resources/Constantes_" + Locale.getDefault().getLanguage() + ".properties"));
+			if(idioma != null && idiomasPermitidos.contains(idioma)) {
+				p.load(new FileReader("src/main/resources/Constantes_" + idioma.toLowerCase() + ".properties"));
+			} else {
+				p.load(new FileReader("src/main/resources/Constantes_es.properties"));
+			}
 			
 			// preparo ficheros de log
 			Comprobaciones.verificarCrearDirectorio(p.getProperty("carpetaLogs"));

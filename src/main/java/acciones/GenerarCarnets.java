@@ -7,14 +7,12 @@ import java.awt.RenderingHints;
 import java.awt.font.TextAttribute;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Logger;
@@ -27,11 +25,14 @@ import main.java.util.Util;
 
 public class GenerarCarnets {
 
-	public Map<String, Integer> rellenarCarnet(List<Map<String, String>> datos, String rutaImagen,
-			String carpetaCarnets, String curso, String validoHasta, Logger LOG, String carpetaQR) {
+	public Map<String, Integer> rellenarCarnet(List<Map<String, String>> datos, String rutaImg,
+			String curso, String validoHasta, Properties pr, Logger LOG) {
 
 		LOG.info(LocalLogger.logIn("rellenarCarnet"));
 		Map<String, Integer> salida = null;
+		String rutaImagen = rutaImg + pr.getProperty("archivoCarnetVacio");
+		String carpetaCarnets = pr.getProperty("carpetaGuardarCarnets");
+		String carpetaQR = pr.getProperty("carpetaGuardarCodigosQR");
 
 		try {
 			if (datos != null) {
@@ -96,9 +97,6 @@ public class GenerarCarnets {
 						+ "&vencimiento=" + validoHasta);
 						String extensionImagenCodigoQR = "png";
 						int tamanioImagenCodigoQR = 150;
-						Properties pr = new Properties();
-						pr.load(new FileReader(
-								"src/main/resources/Constantes_" + Locale.getDefault().getLanguage() + ".properties"));
 						GenerarCodigoQR.generarQR(pr.getProperty("urlAMPA") + rutaVerificacion, carpetaQR,
 								datos.get(i).get("Nº SOCIO"), extensionImagenCodigoQR, tamanioImagenCodigoQR, LOG);
 						g2d.drawImage(ImageIO.read(new File(
