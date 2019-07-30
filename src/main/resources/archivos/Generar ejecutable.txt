@@ -1,0 +1,14 @@
+Para generar el exe
+
+- con el cmd entro en la ruta del proyecto (ej: C:\git\Proyecto)
+- mvn clean
+- mvn install
+- creo una carpeta en algún lugar donde dejaré mi ejecutable (ej: C:\users\damian\CarpetaProyecto)
+- dentro de esa carpeta copio la carpeta del JRE que quiera usar (ej: jre1.8.0_221)
+- abro el programa launch4j
+- pestaña Basic, Output file: pongo ruta y nombre del exe a crear (ej: C:\users\damian\CarpetaProyecto\proyecto.exe)
+- pestaña Basic, Jar: pongo la ruta al jar que se generó en la carpeta target dentro del proyecto
+- pestaña Basic, Icon: si tengo un icono, pongo la ruta al archivo acá
+- pestaña JRE, Bundled JRE path: pongo el nombre de la carpeta del JRE (ej: jre1.8.0_221)
+- pestaña JRE, Min JRE version: pongo el número de la versión del JRE (ej: 1.8.0_221)
+- toco el botón del engranaje
