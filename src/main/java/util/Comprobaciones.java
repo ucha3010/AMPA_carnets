@@ -59,4 +59,12 @@ public class Comprobaciones {
 		return Arrays.stream(extn).anyMatch(entry -> s.endsWith(entry));
 	}
 
+	/*
+	 * Verifica que la cadena de entrada no sea null ni esté en blanco
+	 */
+	public static boolean noEsNullNiBlanco(Object objetoString) {
+		
+		return objetoString != null && objetoString.toString() != null && !objetoString.toString().trim().equals("");
+	}
+
 }

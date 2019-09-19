@@ -385,8 +385,8 @@ public class VentanaPrincipal extends JFrame {
 					// miro que, si se va a enviar email traiga número de socio e email
 					// y si se va a generar carnet traiga número de socio
 					if ((vieneDe.equals("enviarEmail")
-							&& Comprobaciones.noEsNullNiBlanco(table.getValueAt(i, 1).toString())
-							&& Comprobaciones.noEsNullNiBlanco(table.getValueAt(i, 2).toString()))
+							&& Comprobaciones.noEsNullNiBlanco(table.getValueAt(i, 1))
+							&& Comprobaciones.noEsNullNiBlanco(table.getValueAt(i, 2)))
 							|| (vieneDe.equals("generarCarnets")
 									&& Comprobaciones.noEsNullNiBlanco(table.getValueAt(i, 1).toString()))) {
 
