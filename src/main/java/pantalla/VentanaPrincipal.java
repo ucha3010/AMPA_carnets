@@ -386,15 +386,19 @@ public class VentanaPrincipal extends JFrame {
 					// y si se va a generar carnet traiga número de socio
 					if ((vieneDe.equals("enviarEmail")
 							&& Comprobaciones.noEsNullNiBlanco(table.getValueAt(i, 1))
-							&& Comprobaciones.noEsNullNiBlanco(table.getValueAt(i, 2)))
+							&& Comprobaciones.noEsNullNiBlanco(table.getValueAt(i, 2))
+							&& Comprobaciones.noEsNullNiBlanco(table.getValueAt(i, 3)))
 							|| (vieneDe.equals("generarCarnets")
-									&& Comprobaciones.noEsNullNiBlanco(table.getValueAt(i, 1).toString()))) {
+									&& Comprobaciones.noEsNullNiBlanco(table.getValueAt(i, 1))
+									&& Comprobaciones.noEsNullNiBlanco(table.getValueAt(i, 3)))) {
 
 						Boolean chked = Boolean.valueOf(table.getValueAt(i, 0).toString());
 						if (chked) {
 							dato = new HashMap<>();
 							dato.put("Nº SOCIO", table.getValueAt(i, 1).toString());
-							dato.put("EMAIL", table.getValueAt(i, 2).toString());
+							if(Comprobaciones.noEsNullNiBlanco(table.getValueAt(i, 2))) {
+								dato.put("EMAIL", table.getValueAt(i, 2).toString());
+							}
 							dato.put("FAMILIAS", table.getValueAt(i, 3).toString());
 							lista.add(dato);
 						}
