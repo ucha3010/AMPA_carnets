@@ -36,6 +36,12 @@ public class Email{
             mensaje = "Una copia de lo enviado";
             funcionEnviar(p.getProperty("email"),rutaArchivo,asunto,mensaje);
         }*/
+        //pongo un retardo entre cada envío de carnet de 2 segundos a pedido de Java del AMPA
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return enviadoCompra;
     }
     
